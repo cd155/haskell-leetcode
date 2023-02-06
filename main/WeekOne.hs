@@ -1,3 +1,5 @@
+module WeekOne where
+
 {-
     Two Sum:
 
@@ -10,17 +12,14 @@
     You can return the answer in any order.
 -}
 
--- test case
-sample1 = [2,7,11,15]
-
 -- Natural number
 type Nat = Integer
 
 -- Brutal force, O(n^2)
-twoSumBF :: [Integer] -> Integer -> (Integer, Integer)
+twoSumBF :: [Integer] -> Integer -> (Nat, Nat)
 twoSumBF xs tar = twoSumBFHelper xs tar 0
 
-twoSumBFHelper :: [Integer] -> Integer -> Nat -> (Integer, Integer)
+twoSumBFHelper :: [Integer] -> Integer -> Nat -> (Nat, Nat)
 twoSumBFHelper [] _ _ = error "No two number add up to the target"
 twoSumBFHelper (x:xs) tar i
     | isYExist xs y = (i, i + yIndex xs y + 1)
