@@ -1,5 +1,5 @@
 # haskell-leetcode
-Using haskell to solve Grind 75 leetcode questions
+Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75) leetcode questions
 
 Week 1
 - Two Sum	Easy	15 mins
