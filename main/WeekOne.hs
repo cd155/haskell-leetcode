@@ -1,4 +1,6 @@
 module WeekOne where
+import Prelude hiding (lookup)
+import Data.Map
 
 {-
     Two Sum:
@@ -37,3 +39,28 @@ yIndexHelper [] _ _ = error "No y find, check isYExist"
 yIndexHelper (x:xs) y i
     | x == y = i
     | otherwise = yIndexHelper xs y (i+1)
+
+-- Hash, O(n)
+twoSumHash :: [Integer] -> Integer -> (Nat, Nat)
+twoSumHash xs tar = twoSumHashHelper xs tar dict
+    where dict = convToDict xs
+
+twoSumHashHelper :: [Integer] -> Integer -> Map Integer [Nat] -> (Nat, Nat)
+twoSumHashHelper [] tar dict = error "No two number add up to the target"
+twoSumHashHelper (x:xs) tar dict 
+    | x == y && length indX > 1 = (indX!!1, indX!!0) -- format (smaller #, larger #)
+    | x == y && length indX <= 1 = twoSumHashHelper xs tar dict
+    | y `member` dict = (head indX, head indY)
+    | otherwise = twoSumHashHelper xs tar dict
+    where y = tar - x
+          Just indX = lookup x dict
+          Just indY = lookup y dict
+
+convToDict :: [Integer] -> Map Integer [Nat]
+convToDict xs = convToDictHelper xs empty 0
+
+convToDictHelper :: [Integer] -> Map Integer [Nat] -> Nat -> Map Integer [Nat]
+convToDictHelper [] dict _ = dict
+convToDictHelper (x:xs) dict i
+    | x `member` dict = convToDictHelper xs (insertWith (++) x [i] dict) (i+1)
+    | otherwise = convToDictHelper xs (insert x [i] dict) (i+1)  
