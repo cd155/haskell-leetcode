@@ -19,19 +19,19 @@ answerTS =
         (4,6)
     ]
 
-runTSTest :: [[Integer]] -> [Integer]-> [(Nat,Nat)] -> Bool
-runTSTest [] _ _ = True
-runTSTest _ [] _ = True
-runTSTest _ _ [] = True
-runTSTest (x:xs) (y:ys) (z:zs)
+runTwoSumTest :: [[Integer]] -> [Integer]-> [(Nat,Nat)] -> Bool
+runTwoSumTest [] _ _ = True
+runTwoSumTest _ [] _ = True
+runTwoSumTest _ _ [] = True
+runTwoSumTest (x:xs) (y:ys) (z:zs)
     | (twoSumBF x y) == z && (twoSumHash x y) == z = 
-        True && runTSTest xs ys zs
+        True && runTwoSumTest xs ys zs
     | otherwise = error (
         "Input: " ++ show (x,y) ++ 
         "is not match with Output: "++ show z)
 
 testAll = do
-    let ts = runTSTest sampleTS targetTS answerTS
+    let ts = runTwoSumTest sampleTS targetTS answerTS
     if ts then
         putStrLn "All Two Sum cases passed."
     else
