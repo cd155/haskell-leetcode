@@ -30,10 +30,24 @@ runTwoSumTest (x:xs) (y:ys) (z:zs)
         "Input: " ++ show (x,y) ++ 
         "is not match with Output: "++ show z)
 
+sampleIVP = ["()", "()[]{}", "([{()}{}])", "(]", "(([][])[})"]
+answerIVP = [True, True, True, False, False]
+
+runIsValidParen :: [String] -> [Bool] -> Bool
+runIsValidParen [] _ = True
+runIsValidParen _ [] = True
+runIsValidParen (x:xs) (y:ys)
+    | isValidParen x == y = True && runIsValidParen xs ys
+    | otherwise = error (
+        "Input: " ++ show (x) ++ 
+        "is not match with Output: "++ show y)
+
 testAll = do
     let ts = runTwoSumTest sampleTS targetTS answerTS
-    if ts then
-        putStrLn "All Two Sum cases passed."
+    let ivp = runIsValidParen sampleIVP answerIVP
+
+    if ts && ivp then
+        putStrLn "All cases passed."
     else
         putStrLn $ show ts
     
