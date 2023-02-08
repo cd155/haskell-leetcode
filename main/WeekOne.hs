@@ -1,6 +1,5 @@
 module WeekOne where
-import Prelude hiding (lookup)
-import Data.Map
+import qualified Data.Map as M
 
 {-
     Two Sum:
@@ -54,23 +53,56 @@ twoSumHash :: [Integer] -> Integer -> (Nat, Nat)
 twoSumHash xs tar = twoSumHashHelper xs tar dict
     where dict = convToDict xs
 
-twoSumHashHelper :: [Integer] -> Integer -> Map Integer [Nat] -> (Nat, Nat)
+twoSumHashHelper :: [Integer] -> Integer -> M.Map Integer [Nat] -> (Nat, Nat)
 twoSumHashHelper [] tar dict = error "No two number add up to the target"
 twoSumHashHelper (x:xs) tar dict 
     | x == y && length indX > 1 = (indX!!1, indX!!0) -- format (smaller #, larger #)
     | x == y && length indX <= 1 = twoSumHashHelper xs tar dict
-    | y `member` dict = (head indX, head indY)
+    | y `M.member` dict = (head indX, head indY)
     | otherwise = twoSumHashHelper xs tar dict
     where y = tar - x
-          Just indX = lookup x dict
-          Just indY = lookup y dict
+          Just indX = M.lookup x dict
+          Just indY = M.lookup y dict
 
 -- convert list to a hash table with indexes as values
-convToDict :: [Integer] -> Map Integer [Nat]
-convToDict xs = convToDictHelper xs empty 0
+convToDict :: [Integer] -> M.Map Integer [Nat]
+convToDict xs = convToDictHelper xs M.empty 0
 
-convToDictHelper :: [Integer] -> Map Integer [Nat] -> Nat -> Map Integer [Nat]
+convToDictHelper :: [Integer] -> M.Map Integer [Nat] -> Nat -> M.Map Integer [Nat]
 convToDictHelper [] dict _ = dict
 convToDictHelper (x:xs) dict i
-    | x `member` dict = convToDictHelper xs (insertWith (++) x [i] dict) (i+1)
-    | otherwise = convToDictHelper xs (insert x [i] dict) (i+1)  
+    | x `M.member` dict = convToDictHelper xs (M.insertWith (++) x [i] dict) (i+1)
+    | otherwise = convToDictHelper xs (M.insert x [i] dict) (i+1)  
+
+{-
+    Valid Parentheses:
+
+    Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', 
+    determine if the input string is valid.
+    
+    An input string is valid if:
+
+    Open brackets must be closed by the same type of brackets.
+    Open brackets must be closed in the correct order.
+    Every close bracket has a corresponding open bracket of the same type.
+-}
+
+-- hash contains cancelable characters
+parenDict = M.fromList [
+    (')', '('), 
+    (']', '['),
+    ('}', '{')]
+  
+isValidParen :: String -> Bool
+isValidParen [] = error "empty string"
+isValidParen xs = 
+    let 
+        isValidParenHelper :: String -> String -> Bool
+        isValidParenHelper [] s = if null s then True else False
+        isValidParenHelper (y:ys) s
+            | (not $ null s) && (y `M.member` parenDict) && (lParen == head s) = 
+                isValidParenHelper ys (tail s)
+            | otherwise = isValidParenHelper ys (y:s)
+            where Just lParen = M.lookup y parenDict
+    in 
+        isValidParenHelper xs []
