@@ -17,7 +17,11 @@ import Data.Map
 -- Natural number
 type Nat = Integer
 
--- Brutal force, O(n^2)
+{-
+    Brutal force, O(n^2)
+
+    In each element, check if the tar exist in the rest of list.
+-}
 twoSumBF :: [Integer] -> Integer -> (Nat, Nat)
 twoSumBF xs tar = twoSumBFHelper xs tar 0
 
@@ -31,6 +35,7 @@ twoSumBFHelper (x:xs) tar i
 isYExist :: [Integer] -> Integer -> Bool
 isYExist xs y = y `elem` xs
 
+-- calculate the index of Y
 yIndex :: [Integer] -> Integer -> Nat
 yIndex xs y = yIndexHelper xs y 0
 
@@ -40,7 +45,11 @@ yIndexHelper (x:xs) y i
     | x == y = i
     | otherwise = yIndexHelper xs y (i+1)
 
--- Hash, O(n)
+{-
+    Hash table, O(n)
+
+    In each element, check if the tar exist in the hash table.
+-}
 twoSumHash :: [Integer] -> Integer -> (Nat, Nat)
 twoSumHash xs tar = twoSumHashHelper xs tar dict
     where dict = convToDict xs
@@ -56,6 +65,7 @@ twoSumHashHelper (x:xs) tar dict
           Just indX = lookup x dict
           Just indY = lookup y dict
 
+-- convert list to a hash table with indexes as values
 convToDict :: [Integer] -> Map Integer [Nat]
 convToDict xs = convToDictHelper xs empty 0
 
