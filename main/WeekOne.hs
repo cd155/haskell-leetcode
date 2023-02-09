@@ -116,8 +116,11 @@ isValidParen xs =
 -}
 data LinkedList a = Empty | Node a (LinkedList a) deriving Show
 
-list1 = Node 1 (Node 2 (Node 4 Empty))
-list2 = Node 1 (Node 3 (Node 4 Empty))
+instance Eq a => Eq (LinkedList a) where
+    Empty == Empty = True
+    Empty == (Node _ _) = False
+    (Node _ _) == Empty = False
+    (Node v1 n1) == (Node v2 n2) = v1 == v2 && n1 == n2
 
 -- take list1 as default, insert elements from list2 O(n*m)
 mergeLists :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
