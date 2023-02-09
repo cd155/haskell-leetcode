@@ -24,7 +24,7 @@ runTwoSumTest (x:xs) (y:ys)
     | (twoSumBF (fst x) (snd x)) == y && (twoSumHash (fst x) (snd x)) == y = 
         True && runTwoSumTest xs ys
     | otherwise = error (
-        "Input: " ++ show (fst x,snd x) ++ 
+        "Input: " ++ show (fst x, snd x) ++ 
         "is not match with Output: "++ show y)
 
 sampleIsValidParen = ["()", "()[]{}", "([{()}{}])", "(]", "(([][])[})"]
@@ -39,13 +39,38 @@ runIsValidParen (x:xs) (y:ys)
         "Input: " ++ show (x) ++ 
         "is not match with Output: "++ show y)
 
+sampleMergeLists = 
+    [
+        (Node 1 (Node 2 (Node 4 Empty)), Node 1 (Node 3 (Node 4 Empty))),
+        (Empty, Empty),
+        (Empty, Node 0 Empty)
+    ]
+
+answerMergeLists = 
+    [
+        Node 1 (Node 1 (Node 2 (Node 3 (Node 4 (Node 4 Empty))))),
+        Empty,
+        Node 0 Empty
+    ]
+
+runMergeLists :: Ord a => Show a => 
+    [(LinkedList a, LinkedList a)] -> [LinkedList a] -> Bool
+runMergeLists [] _ = True
+runMergeLists _ [] = True
+runMergeLists (x:xs) (y:ys)
+    | (mergeLists (fst x) (snd x)) == y && (mergeLists' (fst x) (snd x)) == y = True && runMergeLists xs ys
+    | otherwise = error (
+        "Input: " ++ show (fst x, snd x) ++ 
+        "is not match with Output: "++ show y)
+
 testAll = do
     let ts = runTwoSumTest sampleTwoSum answerTwoSum
     let ivp = runIsValidParen sampleIsValidParen answerIsValidParen
+    let ml = runMergeLists sampleMergeLists answerMergeLists
 
-    if ts && ivp then
+    if ts && ivp && ml then
         putStrLn "All cases passed."
     else
-        putStrLn $ show ts
+        putStrLn $ show (ts, ivp, ml)
     
     putStrLn "----End----"
