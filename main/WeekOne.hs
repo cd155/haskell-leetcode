@@ -106,3 +106,38 @@ isValidParen xs =
             where Just lParen = M.lookup y parenDict
     in 
         isValidParenHelper xs []
+
+{-
+    Merge Two Sorted Single Linked Lists
+
+    You are given the heads of two sorted linked lists list1 and list2.
+    Merge the two linked lists in a one sorted list. Return the head of the 
+    merged linked list.
+-}
+data LinkedList a = Empty | Node a (LinkedList a) deriving Show
+
+list1 = Node 1 (Node 2 (Node 4 Empty))
+list2 = Node 1 (Node 3 (Node 4 Empty))
+
+-- take list1 as default, insert elements from list2 O(n*m)
+mergeLists :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
+mergeLists l1 Empty = l1
+mergeLists l1 (Node v next) = 
+    let 
+        -- insert a single node in list1 (next2 is always Empty)
+        insertNode :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
+        insertNode l1 Empty = l1
+        insertNode Empty l2 = l2
+        insertNode (Node v1 next1) (Node v2 next2)
+            | v1 < v2 = Node v1 (insertNode next1 (Node v2 next2))
+            | otherwise = Node v2 (Node v1 next1)
+    in
+        mergeLists (insertNode l1 (Node v Empty)) next
+
+-- Loop two lists at the same time O(n+m)
+mergeLists' :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
+mergeLists' l1 Empty = l1
+mergeLists' Empty l2 = l2
+mergeLists' (Node v1 next1) (Node v2 next2)
+    | v1 < v2 = Node v1 (mergeLists' next1 (Node v2 next2))
+    | otherwise = Node v2 (mergeLists' (Node v1 next1) next2)
