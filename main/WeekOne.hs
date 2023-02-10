@@ -114,6 +114,7 @@ isValidParen xs =
     Merge the two linked lists in a one sorted list. Return the head of the 
     merged linked list.
 -}
+
 data LinkedList a = Empty | Node a (LinkedList a) deriving Show
 
 instance Eq a => Eq (LinkedList a) where
@@ -144,3 +145,43 @@ mergeLists' Empty l2 = l2
 mergeLists' (Node v1 next1) (Node v2 next2)
     | v1 < v2 = Node v1 (mergeLists' next1 (Node v2 next2))
     | otherwise = Node v2 (mergeLists' (Node v1 next1) next2)
+
+{-
+    Best Time to Buy and Sell Stock
+
+    You are given passed data in an array prices where prices[i] is the price 
+    of a given stock on the ith day. You want to maximize your profit by 
+    choosing a single day to buy one stock and choosing a different day 
+    in the future to sell that stock.
+
+    Return the maximum profit you can achieve from this transaction. 
+    If you cannot achieve any profit, return 0.
+-}
+
+-- find every pairs of the list, then find the maximum O(n^2)
+maxProfit :: [Int] -> Int
+maxProfit xs = if maxPro < 0 then 0 else maxPro
+    where allPairs = allPairOf xs
+          maxPro = maximum (map (\x -> snd x - fst x) allPairs)
+
+allPairOf :: [Int] -> [(Int, Int)]
+allPairOf [] = []
+allPairOf (x:xs) = 
+    let 
+        pairOf :: Int -> [Int] -> [(Int, Int)]
+        pairOf _ [] = []
+        pairOf x (y:ys) = (x, y): x `pairOf` ys
+    in
+        x `pairOf` xs ++ allPairOf xs
+
+-- Keep track bottom and maxProfit
+maxProfit' :: [Int] -> Int
+maxProfit' [] = 0
+maxProfit' xs = maxProfitHelper xs (head xs) 0
+
+maxProfitHelper :: [Int] -> Int -> Int -> Int
+maxProfitHelper [] _ maxPro = maxPro
+maxProfitHelper (x:xs) minPrice maxPro
+    | x < minPrice = maxProfitHelper xs x maxPro
+    | otherwise = maxProfitHelper xs minPrice newMax
+    where newMax = max maxPro (x-minPrice)
