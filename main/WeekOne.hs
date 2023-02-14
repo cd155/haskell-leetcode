@@ -226,3 +226,28 @@ covertPerm xs = foldl (\acc x ->
                         then M.insertWith (-) x 1 acc -- combine new value (1) and old value
                         else M.insert x 1 acc
                         ) M.empty xs
+
+{-
+    Invert a binary tree
+
+    once swap to node, children go with original, they need to swap as well
+-}
+data BiTree a = Empty' | Node' a (BiTree a, BiTree a) deriving Show
+
+-- [1,2,3,n,n,4]
+tree1 = Node' 1 (Node' 2 (Empty', Empty'), Node' 3 (Node' 4 (Empty', Empty'), Empty'))
+-- [1,3,2,n,4]
+tree2 = Node' 1 (Node' 3 (Empty', Node' 4 (Empty', Empty')), Node' 2 (Empty', Empty'))
+
+invert :: BiTree a -> BiTree a
+invert Empty' = Empty'
+invert (Node' v (c1,c2)) = Node' v (invert c2, invert c1)
+
+-- What if I just want to swap node values
+swap :: BiTree a -> BiTree a
+swap Empty' = Empty'
+swap (Node' v (Empty',Empty')) = Node' v (Empty',Empty')
+swap (Node' v (Empty',c2)) = Node' v (c2, Empty')
+swap (Node' v (c1, Empty')) = Node' v (Empty', c1)
+swap (Node' v (Node' cv1 (l1,r1), Node' cv2 (l2,r2)))
+    = Node' v (Node' cv2 (swap r1, swap l1), Node' cv1 (swap r2, swap l2))
