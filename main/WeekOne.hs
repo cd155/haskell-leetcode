@@ -1,5 +1,6 @@
 module WeekOne where
 import qualified Data.Map as M
+import Data.Char
 
 {-
     Two Sum:
@@ -185,3 +186,43 @@ maxProfitHelper (x:xs) minPrice maxPro
     | x < minPrice = maxProfitHelper xs x maxPro
     | otherwise = maxProfitHelper xs minPrice newMax
     where newMax = max maxPro (x-minPrice)
+
+{-
+    A phrase is a palindrome if, after converting all uppercase letters 
+    into lowercase letters and removing all non-alphanumeric characters, 
+    it reads the same forward and backward. Alphanumeric characters include 
+    letters and numbers.
+
+    Given a string s, return true if it is a palindrome, or false otherwise.
+    
+    Test:
+        isPalindrome "A man, a plan, a canal: Panama" -> True
+        isPalindrome "race a car"                     -> False
+        isPalindrome " "                              -> True
+-}
+
+-- clean string
+cleanStr :: String -> String
+cleanStr [] = []
+cleanStr (x:xs) 
+    | lc `elem` lAlphabet = lc: cleanStr xs
+    | otherwise = cleanStr xs
+    where lc = toLower x
+          lAlphabet = ['a'..'z']
+
+-- run palindrome checker
+isPalindrome :: String -> Bool
+isPalindrome xs
+    | reverse f == s || reverse f == tail s = True
+    | otherwise = False
+    where cleanedData = cleanStr xs
+          mid = length cleanedData `div` 2
+          (f,s) = splitAt mid cleanedData
+
+-- check permutation
+covertPerm :: String -> M.Map Char Integer
+covertPerm xs = foldl (\acc x -> 
+                        if x `M.member` acc 
+                        then M.insertWith (-) x 1 acc -- combine new value (1) and old value
+                        else M.insert x 1 acc
+                        ) M.empty xs
