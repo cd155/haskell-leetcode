@@ -139,6 +139,23 @@ mergeLists l1 (Node v next) =
     in
         mergeLists (insertNode l1 (Node v Empty)) next
 
+-- -- this is case version
+-- mergeLists l1 l2 = 
+--     case (l1, l2) of
+--          (l1, Empty) -> l1
+--          (Empty, l2) -> l2
+--          (l1, Node v next) -> 
+--             let 
+--                 -- insert a single node in list1 (next2 is always Empty)
+--                 insertNode :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
+--                 insertNode l1 Empty = l1
+--                 insertNode Empty l2 = l2
+--                 insertNode (Node v1 next1) (Node v2 next2)
+--                     | v1 < v2 = Node v1 (insertNode next1 (Node v2 next2))
+--                     | otherwise = Node v2 (Node v1 next1)
+--             in
+--                 mergeLists (insertNode l1 (Node v Empty)) next 
+
 -- Loop two lists at the same time O(n+m)
 mergeLists' :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
 mergeLists' l1 Empty = l1
@@ -251,3 +268,12 @@ swap (Node' v (Empty',c2)) = Node' v (c2, Empty')
 swap (Node' v (c1, Empty')) = Node' v (Empty', c1)
 swap (Node' v (Node' cv1 (l1,r1), Node' cv2 (l2,r2)))
     = Node' v (Node' cv2 (swap r1, swap l1), Node' cv1 (swap r2, swap l2))
+
+{-
+    Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+    An Anagram is a word or phrase formed by rearranging the letters of a different 
+    word or phrase, typically using all the original letters exactly once.
+
+    anagram aka "meaningful" permutation
+-}
