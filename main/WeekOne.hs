@@ -298,3 +298,30 @@ isAnagramHelper (x:xs) d2
     | x `M.member` d2 = isAnagramHelper xs newDict
     | otherwise = False
     where newDict =  M.insertWith (+) x (-1) d2
+
+{-
+    Given an array of integers which is sorted in ascending order, 
+    and an integer target, write a function to search target in the array. 
+    If target exists, then return its index. Otherwise, return None.
+
+    You must write an algorithm with O(log n) runtime complexity.
+
+    Test case:
+    findInt [-1,0,3,5,9,12] 9 -> Just 4
+    findInt [-1,0,3,5,9,12] 2 -> Nothing
+-}
+
+findInt :: [Int] -> Int -> Maybe Int
+findInt [] _ = Nothing
+findInt xs t = if xs!!i == t then Just i else Nothing
+    where i = findIntHelper xs t
+
+findIntHelper :: [Int] -> Int -> Int
+findIntHelper [] _ = 0
+findIntHelper [x] _ = 0
+findIntHelper xs t
+    | t < xs!!mid = findIntHelper left t -- find t in left part
+    | t == xs!!mid = mid
+    | otherwise = mid + findIntHelper right t -- find t in right part
+    where mid = length xs `div` 2
+          (left,right) = splitAt mid xs
