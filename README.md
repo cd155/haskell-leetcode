@@ -1,7 +1,7 @@
 # haskell-leetcode
 Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75) leetcode questions
 
-Week 1
+[Week 1](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekOne.hs)
 - Two Sum	Easy	15 mins
 - Valid Parentheses	Easy	20 mins
 - Merge Two Sorted Lists	Easy	20 mins
