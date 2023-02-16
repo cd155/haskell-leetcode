@@ -101,7 +101,8 @@ isValidParen xs =
         isValidParenHelper :: String -> String -> Bool
         isValidParenHelper [] s = if null s then True else False
         isValidParenHelper (y:ys) s
-            | (not $ null s) && (y `M.member` parenDict) && (lParen == head s) = 
+            | null s = isValidParenHelper ys (y:s)
+            | (y `M.member` parenDict) && (lParen == head s) = 
                 isValidParenHelper ys (tail s)
             | otherwise = isValidParenHelper ys (y:s)
             where Just lParen = M.lookup y parenDict
