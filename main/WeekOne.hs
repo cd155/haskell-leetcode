@@ -237,14 +237,6 @@ isPalindrome xs
           mid = length cleanedData `div` 2
           (f,s) = splitAt mid cleanedData
 
--- check permutation
-covertPerm :: String -> M.Map Char Integer
-covertPerm xs = foldl (\acc x -> 
-                        if x `M.member` acc 
-                        then M.insertWith (-) x 1 acc -- combine new value (1) and old value
-                        else M.insert x 1 acc
-                        ) M.empty xs
-
 {-
     Invert a binary tree
 
@@ -271,10 +263,38 @@ swap (Node' v (Node' cv1 (l1,r1), Node' cv2 (l2,r2)))
     = Node' v (Node' cv2 (swap r1, swap l1), Node' cv1 (swap r2, swap l2))
 
 {-
-    Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+    Given two strings s and t, return true if t is an anagram of s, and false 
+    otherwise.
 
-    An Anagram is a word or phrase formed by rearranging the letters of a different 
-    word or phrase, typically using all the original letters exactly once.
+    An Anagram is a word or phrase formed by rearranging the letters of a 
+    different word or phrase, typically using all the original letters exactly 
+    once.
 
     anagram aka "meaningful" permutation
+    All anagram are permutation
+
+    Test case:
+    isAnagram "anagram" "nagaram" -> True
+    isAnagram "rat" "car"         -> False
+    isAnagram "" "a"              -> False
+    isAnagram """"                -> True
 -}
+
+-- convert string to dictionary (character: showup times)
+convToDict' :: String -> M.Map Char Integer
+convToDict' xs = foldl (\acc x -> 
+                        if x `M.member` acc 
+                        then M.insertWith (+) x 1 acc -- combine new value (1) and old value
+                        else M.insert x 1 acc
+                        ) M.empty xs
+
+isAnagram :: String -> String -> Bool
+isAnagram s1 s2 = isAnagramHelper s1 (convToDict' s2)
+
+isAnagramHelper :: String -> M.Map Char Integer -> Bool
+isAnagramHelper [] d2 = foldl (\acc x -> acc && x == 0) True vs
+    where vs = M.elems d2
+isAnagramHelper (x:xs) d2
+    | x `M.member` d2 = isAnagramHelper xs newDict
+    | otherwise = False
+    where newDict =  M.insertWith (+) x (-1) d2
