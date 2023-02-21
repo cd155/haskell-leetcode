@@ -99,7 +99,7 @@ isValidParen [] = error "empty string"
 isValidParen xs = 
     let 
         isValidParenHelper :: String -> String -> Bool
-        isValidParenHelper [] s = if null s then True else False
+        isValidParenHelper [] s = null s
         isValidParenHelper (y:ys) s
             | null s = isValidParenHelper ys (y:s)
             | (y `M.member` parenDict) && (lParen == head s) = 
@@ -206,6 +206,8 @@ maxProfitHelper (x:xs) minPrice maxPro
     where newMax = max maxPro (x-minPrice)
 
 {-
+    Valid Palindrome
+    
     A phrase is a palindrome if, after converting all uppercase letters 
     into lowercase letters and removing all non-alphanumeric characters, 
     it reads the same forward and backward. Alphanumeric characters include 
@@ -263,6 +265,8 @@ swap (Node' v (Node' cv1 (l1,r1), Node' cv2 (l2,r2)))
     = Node' v (Node' cv2 (swap r1, swap l1), Node' cv1 (swap r2, swap l2))
 
 {-
+    Valid Anagram
+
     Given two strings s and t, return true if t is an anagram of s, and false 
     otherwise.
 
@@ -300,6 +304,8 @@ isAnagramHelper (x:xs) d2
     where newDict =  M.insertWith (+) x (-1) d2
 
 {-
+    Binary Search
+
     Given an array of integers which is sorted in ascending order, 
     and an integer target, write a function to search target in the array. 
     If target exists, then return its index. Otherwise, return None.
@@ -327,6 +333,8 @@ findIntHelper xs t
           (left,right) = splitAt mid xs
 
 {-
+    Flood Fill
+
     An image is represented by an m x n integer grid image where image[i][j] 
     represents the pixel value of the image. You are also given three 
     integers  sr, sc, and color. You should perform a flood fill on the 
