@@ -369,6 +369,7 @@ type Color = Int -- integer represent color
 
 fillUp :: Image -> Pixel -> Color -> Image
 fillUp [] _ _ = []
+fillUp [[]] _ _ = [[]]
 fillUp img (ph, pw) c = foldl (\acc x -> paint acc x c) img paintList
     where paintList = findAreaInColor img [(ph, pw)] (img!!ph!!pw) []
 
