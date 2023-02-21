@@ -15,7 +15,7 @@ import Data.Char
 -}
 
 -- Natural number
-type Nat = Integer
+type Nat = Int
 
 {-
     Brutal force, O(n^2)
@@ -325,3 +325,75 @@ findIntHelper xs t
     | otherwise = mid + findIntHelper right t -- find t in right part
     where mid = length xs `div` 2
           (left,right) = splitAt mid xs
+
+{-
+    An image is represented by an m x n integer grid image where image[i][j] 
+    represents the pixel value of the image. You are also given three 
+    integers  sr, sc, and color. You should perform a flood fill on the 
+    image starting from the pixel image[sr][sc].
+
+    To perform a flood fill, consider the starting pixel, plus any pixels 
+    connected 4-directionally to the starting pixel of the same color as 
+    the starting pixel, plus any pixels connected 4-directionally to those 
+    pixels (also with the same color), and so on. Replace the color of all 
+    of the aforementioned pixels with color.
+
+    Return the modified image after performing the flood fill.
+
+    Test case:
+    fillUp testImage1 (0,0) 3 [[3,3,3],
+                               [3,2,3],
+                               [2,1,3]]
+    fillUp testImage2 (1,1) 3 [[1,1,1],
+                               [1,3,3],
+                               [1,3,3]]
+    fillUp testImage2 (0,1) 3 [[3,3,3],
+                               [3,2,2],
+                               [3,2,2]]
+-}
+testImage1 :: Image
+testImage1 = [
+    [1,1,1],
+    [1,2,1],
+    [2,1,3]]
+
+testImage2 :: Image
+testImage2 = [
+    [1,1,1],
+    [1,2,2],
+    [1,2,2]]
+
+type Image = [[Nat]]
+type Pixel = (Nat, Nat)
+type Color = Int -- integer represent color
+
+fillUp :: Image -> Pixel -> Color -> Image
+fillUp [] _ _ = []
+fillUp img (ph, pw) c = foldl (\acc x -> paint acc x c) img paintList
+    where paintList = findAreaInColor img [(ph, pw)] (img!!ph!!pw) []
+
+paint :: Image -> Pixel -> Color -> Image
+paint img (ph, pw) c = tops ++ [newLine] ++ tail bots
+    where (tops, bots) = splitAt ph img
+          (l, r) = splitAt pw $ head bots
+          newLine = l ++ [c] ++ tail r
+
+{-
+    Find the list of pixels where equal to the color start with the pixel
+
+    ((ph,pw):ps) is a stack of potential pixels need to check
+    dict         is the dictionary to skip checked pixel
+-}
+findAreaInColor :: Image -> [Pixel] -> Color -> [Pixel]-> [Pixel]
+findAreaInColor _ [] _ _ = []
+findAreaInColor img ((ph,pw):ps) c dict
+    -- skip outbound pixel
+    | ph >= h || pw >= w || ph < 0 || pw < 0= findAreaInColor img ps c dict
+    -- skip repeated pixel
+    | (ph,pw) `elem` dict = findAreaInColor img ps c dict
+    | img!!ph!!pw == c = (ph,pw): findAreaInColor img newPs c newDict
+    | otherwise = findAreaInColor img ps c dict
+    where h = length img
+          w = length $ head img
+          newDict = (ph,pw):dict
+          newPs = ps ++ [(ph-1, pw),(ph+1, pw),(ph, pw-1),(ph, pw+1)]
