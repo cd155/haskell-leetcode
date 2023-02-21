@@ -406,3 +406,65 @@ findAreaInColor img ((ph,pw):ps) c dict
           w = length $ head img
           newDict = (ph,pw):dict
           newPs = ps ++ [(ph-1, pw),(ph+1, pw),(ph, pw-1),(ph, pw+1)]
+
+{-
+    Lowest Common Ancestor of a Binary Search Tree
+
+    Given a binary search tree (BST), find the lowest common ancestor (LCA)
+    (also called least common ancestor) node of two given nodes in the BST.
+
+    The LCA of v and w in T is the shared ancestor of v and w that is located 
+    farthest from the root. 
+-}
+
+-- left, mid, right
+preOrder :: BiTree a -> [a]
+preOrder Empty' = []
+preOrder (Node' a (left, right)) = preOrder left ++ [a] ++ preOrder right
+
+-- mid, left, right
+inOrder :: BiTree a -> [a]
+inOrder Empty' = []
+inOrder (Node' a (left, right)) = [a] ++ inOrder left ++ inOrder right
+
+-- left, right, mid
+postOrder :: BiTree a -> [a]
+postOrder Empty' = []
+postOrder (Node' a (left, right)) = postOrder left ++ postOrder right ++ [a] 
+
+preOrderDept :: BiTree a -> [Nat]
+preOrderDept xs = preOrderDepthHelper xs 0
+
+preOrderDepthHelper :: BiTree a -> Nat -> [Nat]
+preOrderDepthHelper Empty' d = []
+preOrderDepthHelper (Node' a (left, right)) d = 
+    preOrderDepthHelper left (d+1) ++ [d] ++ preOrderDepthHelper right (d+1)
+
+index :: Eq a => [a] -> a -> Nat
+index [] _ = error "Element not existed"
+index xs t = if xs!!i == t then i else error "Element not existed"
+    where i = (indexHelper xs t) -1
+
+indexHelper :: Eq a => [a] -> a -> Nat
+indexHelper [] _ = 0
+indexHelper (x:xs) t 
+    | x == t = 1 
+    | otherwise = 1 + indexHelper xs t
+
+{-
+    find the the lowest common ancestor(LCA) via range minimum query (RMQ)
+
+    1. have a pre-order list and a pre-order depth list
+    2. find the range we want do RMQ
+    3. find the minimum depth
+    4. find related node associated with the min depth
+-}
+findLCA :: Eq a => BiTree a -> a -> a -> a
+findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth))
+    where preOrderList = preOrder root
+          preOrderDepthList = preOrderDept root
+          (start, end) = 
+            (min (index preOrderList n1) (index preOrderList n2), 
+             max (index preOrderList n1) (index preOrderList n2))
+          tailoredDepthList = take (end-start+1) (drop start preOrderDepthList)
+          minDepth = minimum tailoredDepthList 
