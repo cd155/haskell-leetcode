@@ -421,7 +421,19 @@ findAreaInColor img ((ph,pw):ps) c dict
 
     The LCA of v and w in T is the shared ancestor of v and w that is located 
     farthest from the root. 
+
+    Test cases:
+    findLCA tree3 2 8 => 6
+    findLCA tree3 2 4 => 2
+    findLCA (Node' 2 (Empty', Node' 1 (Empty', Empty'))) 2 1 => 2
 -}
+
+tree3 = Node' 6 
+    (Node' 2 
+        (Node' 0 (Empty', Empty'), 
+         Node' 4 (Node' 3 (Empty', Empty'), Node' 5 (Empty', Empty'))), 
+     Node' 8 
+        (Node' 7 (Empty', Empty'), Node' 9 (Empty', Empty')))
 
 -- left, mid, right
 preOrder :: BiTree a -> [a]
@@ -484,6 +496,7 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
     the height of left and right subtrees of every node differ <= 1
 -}
 
+-- O(log(n)^2)
 leavesDepthHelper :: Eq a => BiTree a -> Nat -> [Nat]
 leavesDepthHelper Empty' d = []
 leavesDepthHelper (Node' a (l, r)) d 
