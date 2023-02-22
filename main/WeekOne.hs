@@ -522,4 +522,23 @@ permuOf:: a -> [a] -> [(a,a)]
 permuOf _ [] = []
 permuOf f (x:xs) = (f,x): permuOf f xs
 
+-- isBalanced' :: BiTree a -> Bool
+-- isBalanced' Empty' = True
+-- isBalanced' (Node a (l,r))= abs (hf - hr) <= 1 && isBalanced' l && isBalanced' r
 
+-- heightDict :: BiTree a -> Map a Nat
+
+height :: BiTree a -> Int
+height Empty' = 0
+height (Node' _ (l, r)) = 1 + max (height l) (height r)
+
+slow_fib :: Int -> Integer
+slow_fib 0 = 0
+slow_fib 1 = 1
+slow_fib n = slow_fib (n-2) + slow_fib (n-1)
+
+memoized_fib :: Int -> Integer
+memoized_fib n = (map fib [0 ..] !!) n
+   where fib 0 = 0
+         fib 1 = 1
+         fib n = memoized_fib (n-2) + memoized_fib (n-1)
