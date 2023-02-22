@@ -246,6 +246,12 @@ isPalindrome xs
 -}
 data BiTree a = Empty' | Node' a (BiTree a, BiTree a) deriving Show
 
+instance Eq a => Eq (BiTree a ) where
+    Empty' == Empty' = True
+    Empty' == Node' {} = False
+    Node' {} == Empty' = False
+    Node' x (l1,r1) == Node' y (l2,r2) = x == y && l1 == l2 && r1 == r2 
+
 -- [1,2,3,n,n,4]
 tree1 = Node' 1 (Node' 2 (Empty', Empty'), Node' 3 (Node' 4 (Empty', Empty'), Empty'))
 -- [1,3,2,n,4]
@@ -468,3 +474,19 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
              max (index preOrderList n1) (index preOrderList n2))
           tailoredDepthList = take (end-start+1) (drop start preOrderDepthList)
           minDepth = minimum tailoredDepthList 
+
+{-
+    Balanced Binary Tree
+
+    Given a binary tree, determine if it is balanced
+
+    Balanced Tree: 
+    the height of left and right subtrees of every node differ <= 1
+-}
+
+leavesDepthHelper :: Eq a => BiTree a -> Nat -> [Nat]
+leavesDepthHelper Empty' d = []
+leavesDepthHelper (Node' a (l, r)) d 
+    | l == Empty' || r == Empty' = 
+        leavesDepthHelper l (d+1) ++ [d] ++ leavesDepthHelper r (d+1)
+    | otherwise = leavesDepthHelper l (d+1) ++ leavesDepthHelper r (d+1)
