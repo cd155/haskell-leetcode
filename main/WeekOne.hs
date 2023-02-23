@@ -522,23 +522,24 @@ permuOf:: a -> [a] -> [(a,a)]
 permuOf _ [] = []
 permuOf f (x:xs) = (f,x): permuOf f xs
 
--- isBalanced' :: BiTree a -> Bool
--- isBalanced' Empty' = True
--- isBalanced' (Node a (l,r))= abs (hf - hr) <= 1 && isBalanced' l && isBalanced' r
-
--- heightDict :: BiTree a -> Map a Nat
+isBalanced' :: BiTree a -> Bool
+isBalanced' Empty' = True
+isBalanced' (Node' a (l,r))= abs (height l - height r) <= 1 && isBalanced' l && isBalanced' r
 
 height :: BiTree a -> Int
 height Empty' = 0
 height (Node' _ (l, r)) = 1 + max (height l) (height r)
 
-slow_fib :: Int -> Integer
-slow_fib 0 = 0
-slow_fib 1 = 1
-slow_fib n = slow_fib (n-2) + slow_fib (n-1)
+isBalanced'' :: BiTree a -> Bool
+isBalanced'' tr
+    | mb == Nothing = False
+    | otherwise = True 
+    where mb = isBalancedWithHeight tr
 
-memoized_fib :: Int -> Integer
-memoized_fib n = (map fib [0 ..] !!) n
-   where fib 0 = 0
-         fib 1 = 1
-         fib n = memoized_fib (n-2) + memoized_fib (n-1)
+isBalancedWithHeight :: BiTree a -> Maybe Int
+isBalancedWithHeight Empty' = Just 0
+isBalancedWithHeight (Node' _ (l,r))
+    | abs(lh - rh) <= 1 = Just (max lh rh + 1)
+    | otherwise = Nothing
+    where Just lh = isBalancedWithHeight l
+          Just rh = isBalancedWithHeight r
