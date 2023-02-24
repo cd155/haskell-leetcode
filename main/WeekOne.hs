@@ -500,7 +500,7 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
     isBalanced tree3 => True
     isBalanced tree4 => False
 -}
-tree4 = Node' 1 (Empty', Node' 2 (Empty', Node' 3 (Empty', Empty')))
+tree4 = Node' 1 (Empty', Node' 2 (Empty', Node' 3 (Empty', Node' 4 (Empty', Empty'))))
 
 isBalanced :: Eq a => BiTree a -> Bool
 isBalanced tr = foldl (\acc (f, s) -> acc && (abs(f-s) <= 1)) True diffs
@@ -539,6 +539,8 @@ isBalanced'' tr
 isBalancedWithHeight :: BiTree a -> Maybe Int
 isBalancedWithHeight Empty' = Just 0
 isBalancedWithHeight (Node' _ (l,r))
+    | isBalancedWithHeight l == Nothing || isBalancedWithHeight r == Nothing = 
+        Nothing
     | abs(lh - rh) <= 1 = Just (max lh rh + 1)
     | otherwise = Nothing
     where Just lh = isBalancedWithHeight l
