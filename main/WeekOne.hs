@@ -536,12 +536,21 @@ isBalanced'' tr
     | otherwise = True 
     where mb = isBalancedWithHeight tr
 
-isBalancedWithHeight :: BiTree a -> Maybe Int
-isBalancedWithHeight Empty' = Just 0
-isBalancedWithHeight (Node' _ (l,r))
-    | isBalancedWithHeight l == Nothing || isBalancedWithHeight r == Nothing = 
-        Nothing
+isBalancedWithHeight' :: BiTree a -> Maybe Int
+isBalancedWithHeight' Empty' = Just 0
+isBalancedWithHeight' (Node' _ (l,r))
+    -- | isBalancedWithHeight l == Nothing || isBalancedWithHeight r == Nothing = 
+    --     Nothing
     | abs(lh - rh) <= 1 = Just (max lh rh + 1)
     | otherwise = Nothing
-    where Just lh = isBalancedWithHeight l
-          Just rh = isBalancedWithHeight r
+    where Just lh = isBalancedWithHeight' l
+          Just rh = isBalancedWithHeight' r
+
+isBalancedWithHeight :: BiTree a -> Maybe Int
+isBalancedWithHeight Empty' = Just 0
+isBalancedWithHeight (Node' _ (l,r)) = do
+  lh <- isBalancedWithHeight l
+  rh <- isBalancedWithHeight r
+  if abs (lh-rh) <= 1
+    then Just $ max lh rh + 1
+    else Nothing
