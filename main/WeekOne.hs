@@ -554,3 +554,32 @@ isBalancedWithHeight (Node' _ (l,r)) = do
   if abs (lh-rh) <= 1
     then Just $ max lh rh + 1
     else Nothing
+
+{-
+    Linked List Cycle
+    
+    Given head, the head of a linked list, determine if the linked list has a 
+    cycle in it. There is a cycle in a linked list if there is some node in 
+    the list that can be reached again.
+
+    Note: There is no pointer in functional programming language.
+
+    Return true if there is a cycle in the linked list. Otherwise, return false.
+-}
+-- how to used lazy evaluation to make test case (whereCycled cycledCase) works?
+cycledCase = createCycledList (Node 1 (Node 2 (Node 4 Empty)))
+
+createCycledList :: LinkedList a -> LinkedList a 
+createCycledList xs = 
+    case xs of 
+        Empty -> createCycledList xs
+        Node a next -> Node a (createCycledList next)
+
+whereCycled :: Eq a => LinkedList a -> Maybe Int
+whereCycled lst = whereCycledHelper lst []
+
+whereCycledHelper :: Eq a => LinkedList a -> [a] -> Maybe Int
+whereCycledHelper Empty _ = Nothing
+whereCycledHelper (Node v next) visited 
+    | v `elem` visited = Just (index visited v)
+    | otherwise = whereCycledHelper next (visited++[v])
