@@ -14,6 +14,7 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 - Lowest Common Ancestor of a Binary Search Tree	Easy	20 mins
 - Balanced Binary Tree	Easy	15 mins
 - Linked List Cycle	Easy    20 mins
+- Implement Queue using Stacks Easy  20 mins
 
 Week 2
 - Implement Queue using Stacks	Easy	20 mins
@@ -28,3 +29,4 @@ Week 2
 - Middle of the Linked List	Easy	20 mins
 - Maximum Depth of Binary Tree	Easy	15 mins
 - Contains Duplicate	Easy	15 mins
+- Maximum Subarray Medium  20 mins
