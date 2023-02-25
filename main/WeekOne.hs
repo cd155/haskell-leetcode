@@ -586,5 +586,29 @@ whereCycledHelper (Node v next) visited
 
 {-
     Implement Queue using Stacks
+
+    Only use stack methods to implement a queue
 -}
+{-
+    only used push and pop
+    
+    s1: e1, e2, e3
+    s2: e3, e2, e1
+    s2: e4, e3, e2, e1
+    s1: e1, e2, e3, e4
+-} 
 enQue :: a -> [a] -> [a]
+enQue e s1 = foldl (\acc' x' -> x':acc') [] (e:s2)
+    where s2 = foldl (\acc x -> x:acc) [] s1
+
+deQue :: [a] -> [a]
+deQue [] = []
+deQue (_:xs) = xs
+
+peck :: [a] -> Maybe a
+peek [] = Nothing
+peck (x:_) = Just x
+
+isEmpty :: [a] -> Bool
+isEmpty [] = True
+isEmpty (_:_) = False
