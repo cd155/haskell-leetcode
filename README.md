@@ -15,8 +15,9 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 - Balanced Binary Tree	Easy	15 mins
 - Linked List Cycle	Easy    20 mins
 - Implement Queue using Stacks Easy  20 mins
+(Completed on Feb 25, 2023)
 
-Week 2
+[Week 2](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekTwo.hs)
 - Implement Queue using Stacks	Easy	20 mins
 - First Bad Version	Easy	20 mins
 - Ransom Note	Easy	15 mins
