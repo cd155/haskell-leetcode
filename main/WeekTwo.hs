@@ -33,3 +33,15 @@ findBadVerHelper (start,end)
     | isBadVersion (start+mid) = findBadVerHelper (start,start+mid)
     | otherwise = findBadVerHelper (start+mid+1, end)
     where mid = (end-start) `div` 2
+
+{-
+    Ransom Note
+
+    Given two strings ransomNote and magazine, return true if ransomNote can 
+    be constructed by using the letters from magazine and false otherwise.
+
+    Each letter in magazine can only be used once in ransomNote.
+-}
+
+isConstFrom :: String -> String -> Bool
+isConstFrom note mag = error "Not Implement"
