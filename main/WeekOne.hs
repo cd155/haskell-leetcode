@@ -3,7 +3,7 @@ import qualified Data.Map as M
 import Data.Char
 
 {-
-    Two Sum:
+    1. Two Sum:
 
     Given an array of integers and an integer target, 
     return indexes of the two numbers that they add up to target.
@@ -76,7 +76,7 @@ convToDictHelper (x:xs) dict i
     | otherwise = convToDictHelper xs (M.insert x [i] dict) (i+1)  
 
 {-
-    Valid Parentheses:
+    2. Valid Parentheses:
 
     Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', 
     determine if the input string is valid.
@@ -110,7 +110,7 @@ isValidParen xs =
         isValidParenHelper xs []
 
 {-
-    Merge Two Sorted Single Linked Lists
+    3. Merge Two Sorted Single Linked Lists
 
     You are given the heads of two sorted linked lists list1 and list2.
     Merge the two linked lists in a one sorted list. Return the head of the 
@@ -166,7 +166,7 @@ mergeLists' (Node v1 next1) (Node v2 next2)
     | otherwise = Node v2 (mergeLists' (Node v1 next1) next2)
 
 {-
-    Best Time to Buy and Sell Stock
+    4. Best Time to Buy and Sell Stock
 
     You are given passed data in an array prices where prices[i] is the price 
     of a given stock on the ith day. You want to maximize your profit by 
@@ -206,7 +206,7 @@ maxProfitHelper (x:xs) minPrice maxPro
     where newMax = max maxPro (x-minPrice)
 
 {-
-    Valid Palindrome
+    5. Valid Palindrome
     
     A phrase is a palindrome if, after converting all uppercase letters 
     into lowercase letters and removing all non-alphanumeric characters, 
@@ -240,7 +240,7 @@ isPalindrome xs
           (f,s) = splitAt mid cleanedData
 
 {-
-    Invert a binary tree
+    6. Invert a binary tree
 
     once swap to node, children go with original, they need to swap as well
 -}
@@ -271,7 +271,7 @@ swap (Node' v (Node' cv1 (l1,r1), Node' cv2 (l2,r2)))
     = Node' v (Node' cv2 (swap r1, swap l1), Node' cv1 (swap r2, swap l2))
 
 {-
-    Valid Anagram
+    7. Valid Anagram
 
     Given two strings s and t, return true if t is an anagram of s, and false 
     otherwise.
@@ -310,7 +310,7 @@ isAnagramHelper (x:xs) d2
     where newDict =  M.insertWith (+) x (-1) d2
 
 {-
-    Binary Search
+    8. Binary Search
 
     Given an array of integers which is sorted in ascending order, 
     and an integer target, write a function to search target in the array. 
@@ -339,7 +339,7 @@ findIntHelper xs t
           (left,right) = splitAt mid xs
 
 {-
-    Flood Fill
+    9. Flood Fill
 
     An image is represented by an m x n integer grid image where image[i][j] 
     represents the pixel value of the image. You are also given three 
@@ -414,7 +414,7 @@ findAreaInColor img ((ph,pw):ps) c dict
           newPs = ps ++ [(ph-1, pw),(ph+1, pw),(ph, pw-1),(ph, pw+1)]
 
 {-
-    Lowest Common Ancestor of a Binary Search Tree
+    10. Lowest Common Ancestor of a Binary Search Tree
 
     Given a binary search tree (BST), find the lowest common ancestor (LCA)
     (also called least common ancestor) node of two given nodes in the BST.
@@ -488,7 +488,7 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
           minDepth = minimum tailoredDepthList 
 
 {-
-    Balanced Binary Tree
+    11. Balanced Binary Tree
 
     Given a binary tree, determine if it is balanced
 
@@ -556,7 +556,7 @@ isBalancedWithHeight (Node' _ (l,r)) = do
     else Nothing
 
 {-
-    Linked List Cycle
+    12. Linked List Cycle
     
     Given head, the head of a linked list, determine if the linked list has a 
     cycle in it. There is a cycle in a linked list if there is some node in 
@@ -585,7 +585,7 @@ whereCycledHelper (Node v next) visited
     | otherwise = whereCycledHelper next (visited++[v])
 
 {-
-    Implement Queue using Stacks
+    13. Implement Queue using Stacks
 
     Only use stack methods to implement a queue
 -}
