@@ -1,7 +1,7 @@
 module WeekWeek where
 
 {-
-    First Bad Version
+    14. First Bad Version
 
     You are a product manager and currently leading a team to develop a new 
     product. Unfortunately, the latest version of your product fails the 
@@ -35,7 +35,7 @@ findBadVerHelper (start,end)
     where mid = (end-start) `div` 2
 
 {-
-    Ransom Note
+    15. Ransom Note
 
     Given two strings ransomNote and magazine, return true if ransomNote can 
     be constructed by using the letters from magazine and false otherwise.
