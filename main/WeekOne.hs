@@ -329,7 +329,7 @@ findInt xs t = if xs!!i == t then Just i else Nothing
     where i = findIntHelper xs t
 
 findIntHelper :: [Int] -> Int -> Int
-findIntHelper [] _ = error "Empty List" 
+findIntHelper [] _ = 0 
 findIntHelper [x] _ = 0
 findIntHelper xs t
     | t < xs!!mid = findIntHelper left t -- find t in left part
