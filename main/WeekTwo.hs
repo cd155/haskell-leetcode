@@ -1,5 +1,7 @@
 module WeekWeek where
 
+import qualified Data.Map as M
+
 {-
     14. First Bad Version
 
@@ -41,7 +43,28 @@ findBadVerHelper (start,end)
     be constructed by using the letters from magazine and false otherwise.
 
     Each letter in magazine can only be used once in ransomNote.
+
+    "a"  `isConstFrom` "b"   -> False
+    "aa" `isConstFrom` "ab"  -> False
+    "aa" `isConstFrom` "aab" -> True
 -}
 
 isConstFrom :: String -> String -> Bool
-isConstFrom note mag = error "Not Implement"
+isConstFrom note mag = isConstFromAux note dict 
+    where dict = increaseDict mag
+
+isConstFromAux :: String -> M.Map Char Int -> Bool
+isConstFromAux [] _ = True
+isConstFromAux (x:xs) dict
+    | x `M.member` dict && v >= 1 = True && isConstFromAux xs (M.insertWith (+) x (-1) dict)
+    | otherwise = False
+        where Just v = M.lookup x dict
+
+increaseDict :: String -> M.Map Char Int
+increaseDict str = increaseDictAux str M.empty
+
+increaseDictAux :: String -> M.Map Char Int -> M.Map Char Int
+increaseDictAux [] dict = dict
+increaseDictAux (x:xs) dict
+    | x `M.member` dict = increaseDictAux xs (M.insertWith (+) x 1 dict)
+    | otherwise = increaseDictAux xs (M.insert x 1 dict)
