@@ -44,6 +44,7 @@ findBadVerHelper (start,end)
 
     Each letter in magazine can only be used once in ransomNote.
 
+    Test Cases:
     "a"  `isConstFrom` "b"   -> False
     "aa" `isConstFrom` "ab"  -> False
     "aa" `isConstFrom` "aab" -> True
@@ -68,3 +69,41 @@ increaseDictAux [] dict = dict
 increaseDictAux (x:xs) dict
     | x `M.member` dict = increaseDictAux xs (M.insertWith (+) x 1 dict)
     | otherwise = increaseDictAux xs (M.insert x 1 dict)
+
+{-
+    You are climbing a staircase. It takes n steps to reach the top.
+
+    Each time you can either climb 1 or 2 steps. In how many distinct ways can 
+    you climb to the top?
+
+    Test Cases:
+    climb  2 -> 2 
+    climb' 2 -> 2 
+    climb  5 -> 8 
+    climb' 5 -> 8 
+-}
+-- the same question with fibonacci number problem O(n^2)
+climb :: Int -> Int
+climb n
+    | n == 0 = 0
+    | otherwise = climbAux n
+
+climbAux :: Int -> Int
+climbAux n
+    | n == 0 = 1
+    | n == 1 = 1
+    | otherwise = climbAux (n-2) + climbAux (n-1)
+
+-- memorization version O(n)
+climb' :: Int -> Int
+climb' n
+    | n == 0 = 0
+    | n == 1 = 1
+    | otherwise = head climbMemo
+    where climbMemo = climb'Aux (2, n) [2,1]
+
+climb'Aux :: (Int, Int) -> [Int] -> [Int]
+climb'Aux (i, end) memo
+    | i >= end = memo
+    | otherwise = climb'Aux (i+1,end) newMemo
+        where newMemo = (head memo + head (tail memo)): memo
