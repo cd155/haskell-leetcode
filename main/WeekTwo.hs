@@ -71,6 +71,8 @@ increaseDictAux (x:xs) dict
     | otherwise = increaseDictAux xs (M.insert x 1 dict)
 
 {-
+    16. Climbing Stairs
+
     You are climbing a staircase. It takes n steps to reach the top.
 
     Each time you can either climb 1 or 2 steps. In how many distinct ways can 
@@ -107,3 +109,12 @@ climb'Aux (i, end) memo
     | i >= end = memo
     | otherwise = climb'Aux (i+1,end) newMemo
         where newMemo = (head memo + head (tail memo)): memo
+
+{-
+    17. Longest Palindrome
+
+    Given a string s which consists of lowercase or uppercase letters, return the 
+    length of the longest palindrome that can be built with those letters.
+
+    Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
+-}
