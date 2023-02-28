@@ -496,12 +496,13 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
     the height of left and right subtrees of every node differ <= 1
 
     Test cases:
-    isBalanced tree1 => True
-    isBalanced tree3 => True
-    isBalanced tree4 => False
+    isBalanced'' tree1 => True
+    isBalanced'' tree3 => True
+    isBalanced'' tree4 => False
 -}
 tree4 = Node' 1 (Empty', Node' 2 (Empty', Node' 3 (Empty', Node' 4 (Empty', Empty'))))
 
+-- odd version
 isBalanced :: Eq a => BiTree a -> Bool
 isBalanced tr = foldl (\acc (f, s) -> acc && (abs(f-s) <= 1)) True diffs
     where diffs = permuOfList (leavesDepthHelper tr 0)
@@ -534,18 +535,21 @@ isBalanced'' :: BiTree a -> Bool
 isBalanced'' tr
     | mb == Nothing = False
     | otherwise = True 
-    where mb = isBalancedWithHeight tr
+    where mb = isBalancedWithHeight' tr
 
+-- preferred version
 isBalancedWithHeight' :: BiTree a -> Maybe Int
 isBalancedWithHeight' Empty' = Just 0
-isBalancedWithHeight' (Node' _ (l,r))
-    -- | isBalancedWithHeight l == Nothing || isBalancedWithHeight r == Nothing = 
-    --     Nothing
-    | abs(lh - rh) <= 1 = Just (max lh rh + 1)
-    | otherwise = Nothing
-    where Just lh = isBalancedWithHeight' l
-          Just rh = isBalancedWithHeight' r
+isBalancedWithHeight' (Node' _ (l,r)) =
+    case (lh,rh) of
+        (Nothing,_) -> Nothing
+        (_,Nothing) -> Nothing
+        (Just lh', Just rh') -> if abs(lh' - rh') <= 1 
+                                then Just (max lh' rh' + 1)
+                                else Nothing
+    where (lh,rh) = (isBalancedWithHeight' l, isBalancedWithHeight' r)
 
+-- Monad version
 isBalancedWithHeight :: BiTree a -> Maybe Int
 isBalancedWithHeight Empty' = Just 0
 isBalancedWithHeight (Node' _ (l,r)) = do
