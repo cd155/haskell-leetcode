@@ -118,3 +118,15 @@ climb'Aux (i, end) memo
 
     Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
 -}
+findLongestPalin :: String -> Int
+findLongestPalin s1 
+    | isExistOdd allVals = 2 * numOfPair + 1
+    | otherwise = 2 * numOfPair
+    where allVals = M.elems $ increaseDict s1
+          numOfPair = foldl (\acc x -> acc + x `div` 2) 0 allVals
+
+isExistOdd :: [Int] -> Bool
+isExistOdd [] = False
+isExistOdd (x:xs)
+    | odd x = True
+    | otherwise = isExistOdd xs
