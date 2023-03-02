@@ -113,10 +113,11 @@ climb'Aux (i, end) memo
 {-
     17. Longest Palindrome
 
-    Given a string s which consists of lowercase or uppercase letters, return the 
-    length of the longest palindrome that can be built with those letters.
+    Given a string s which consists of lowercase or uppercase letters, return 
+    the length of the longest palindrome that can be built with those letters.
 
-    Letters are case sensitive, for example, "Aa" is not considered a palindrome here.
+    Letters are case sensitive, for example, "Aa" is not considered a 
+    palindrome here.
 -}
 findLongestPalin :: String -> Int
 findLongestPalin s1 
@@ -130,3 +131,20 @@ isExistOdd [] = False
 isExistOdd (x:xs)
     | odd x = True
     | otherwise = isExistOdd xs
+
+{-
+    18. Reverse Linked List
+    
+    Given the head of a singly linked list, reverse the list, and return the 
+    reversed list.
+-}
+
+
+{-
+    19. Majority Element
+    
+    Given an array nums of size n, return the majority element.
+
+    The majority element is the element that appears more than ⌊n / 2⌋ times. 
+    You may assume that the majority element always exists in the array.
+-}
