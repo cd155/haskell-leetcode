@@ -1,6 +1,7 @@
 module WeekWeek where
 
 import qualified Data.Map as M
+import WeekOne
 
 {-
     14. First Bad Version
@@ -118,6 +119,10 @@ climb'Aux (i, end) memo
 
     Letters are case sensitive, for example, "Aa" is not considered a 
     palindrome here.
+
+    Test Cases:
+    findLongestPalin "abccccdd" -> 7
+    findLongestPalin "a" -> 1
 -}
 findLongestPalin :: String -> Int
 findLongestPalin s1 
@@ -137,14 +142,30 @@ isExistOdd (x:xs)
     
     Given the head of a singly linked list, reverse the list, and return the 
     reversed list.
--}
 
+    Test Cases:
+    reverseLinkedList (Node 1 (Node 2 (Node 4 Empty)))
+        -> (Node 4 (Node 2 (Node 1 Empty))
+-}
+reverseLinkedList :: LinkedList a -> LinkedList a
+reverseLinkedList lst = convertListToLinked newLst
+    where newLst = convertLinkedToList lst
+
+convertLinkedToList :: LinkedList a -> [a]
+convertLinkedToList lst = convertLinkedToListAux lst []
+
+convertLinkedToListAux :: LinkedList a -> [a] -> [a]
+convertLinkedToListAux Empty acc = acc
+convertLinkedToListAux (Node x next) acc = convertLinkedToListAux next (x:acc)
+
+convertListToLinked :: [a] -> LinkedList a
+convertListToLinked [] = Empty
+convertListToLinked (x:xs) = Node x (convertListToLinked xs)
 
 {-
     19. Majority Element
     
-    Given an array nums of size n, return the majority element.
+    Given an [Int] of size n, return the majority element.
 
-    The majority element is the element that appears more than ⌊n / 2⌋ times. 
-    You may assume that the majority element always exists in the array.
+    The majority element is the element that appears more than n/2 times. 
 -}
