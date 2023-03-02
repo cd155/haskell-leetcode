@@ -166,6 +166,13 @@ convertListToLinked (x:xs) = Node x (convertListToLinked xs)
     19. Majority Element
     
     Given an [Int] of size n, return the majority element.
-
+     
     The majority element is the element that appears more than n/2 times. 
+    You may assume that the majority element always exists in the array.
 -}
+-- If majority always exist and it appears mor than n/2 time, 
+-- then it locates at the mid of the sort list
+findMajorNum :: [Int] -> Int
+findMajorNum xs = sortedXs !! mid
+    where sortedXs = sort xs
+          mid = length xs `div` 2
