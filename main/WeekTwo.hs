@@ -206,3 +206,9 @@ findMajorNumBMAux (y:ys) y' count
     | y == y' = findMajorNumBMAux ys y (count+1)
     | count == 0 = findMajorNumBMAux ys y 1
     | otherwise = findMajorNumBMAux ys y' (count-1)
+
+{-
+    20. Add Binary
+
+    Given two binary strings a and b, return their sum as a binary string.
+-}
