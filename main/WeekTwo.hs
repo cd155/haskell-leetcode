@@ -1,6 +1,7 @@
 module WeekWeek where
 
 import qualified Data.Map as M
+import Data.List
 import WeekOne
 
 {-
@@ -169,10 +170,39 @@ convertListToLinked (x:xs) = Node x (convertListToLinked xs)
      
     The majority element is the element that appears more than n/2 times. 
     You may assume that the majority element always exists in the array.
+
+    Test Cases:
+    [3,2,3]
+    [2,2,1,1,1,2,2]
 -}
 -- If majority always exist and it appears mor than n/2 time, 
 -- then it locates at the mid of the sort list
-findMajorNum :: [Int] -> Int
+findMajorNum :: Ord a => [a] -> a
 findMajorNum xs = sortedXs !! mid
     where sortedXs = sort xs
           mid = length xs `div` 2
+
+-- Work in more general environment. If no majority, return Nothing
+findMajorNumHash :: Ord a => [a] -> Maybe a
+findMajorNumHash xs = findMajorNumHashAux xs (length xs `div` 2) M.empty
+
+findMajorNumHashAux :: Ord a => [a] -> Int -> M.Map a Int -> Maybe a
+findMajorNumHashAux [] _ _ = Nothing
+findMajorNumHashAux (x:xs) mlen dict
+    | x `M.member` dict = if v+1 > mlen 
+                          then Just x 
+                          else findMajorNumHashAux xs mlen newDict
+    | otherwise = findMajorNumHashAux xs mlen (M.insert x 1 dict)
+    where Just v = M.lookup x dict
+          newDict = M.insertWith (+) x 1 dict
+
+-- Boyer–Moore majority vote algorithm
+findMajorNumBM :: Eq a => [a] -> Maybe a
+findMajorNumBM xs = findMajorNumBMAux xs (head xs) 0
+
+findMajorNumBMAux :: Eq a => [a] -> a -> Int -> Maybe a
+findMajorNumBMAux [] x count = if count < 1 then Nothing else Just x
+findMajorNumBMAux (y:ys) y' count
+    | y == y' = findMajorNumBMAux ys y (count+1)
+    | count == 0 = findMajorNumBMAux ys y 1
+    | otherwise = findMajorNumBMAux ys y' (count-1)
