@@ -262,4 +262,31 @@ addBinary x y = digitToBinary (digitX + digitY)
 
     The length of a path between two nodes is represented by the number 
     of edges between them.
+
+    Test Case: 
+    findDiameter tree5 -> 6
 -}
+tree5 = Node' 6 
+    (Node' 2 
+        (Node' 0 (Empty', 
+                  Node' 7 (Node' 10 (Empty', Empty'), Empty')), 
+         Node' 4 (Node' 3 (Empty', Empty'), 
+                  Node' 5 (Node' 9 (Empty', Empty'), Empty'))), 
+     Node' 8 (Empty', Empty'))
+-- O(n)
+findDiameter :: BiTree a -> Int
+findDiameter tr = fst $ getNodeDetail tr
+
+getNodeDetail :: BiTree a -> (Int, Int) -- (diameter,the longest path)
+getNodeDetail Empty' = (0,0)
+getNodeDetail (Node' _ (Empty', Empty')) = (0,0)
+getNodeDetail (Node' _ (l, Empty')) = incPair $ getNodeDetail l
+getNodeDetail (Node' _ (Empty', r)) = incPair $ getNodeDetail r
+getNodeDetail (Node' _ (l, r))
+    | 2 + (lp1 + lp2) > max dia1 dia2 = (2 + (lp1 + lp2), max lp1 lp2 + 1)
+    | otherwise = (max dia1 dia2, max lp1 lp2 + 1)
+    where (dia1, lp1) = getNodeDetail l
+          (dia2, lp2) = getNodeDetail r
+
+incPair :: (Int, Int) -> (Int, Int)
+incPair (x,y) = (x+1, y+1)
