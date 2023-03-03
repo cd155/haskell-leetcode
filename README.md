@@ -1,6 +1,8 @@
 # haskell-leetcode
 Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75) leetcode questions
 
+(Started on Feb 05, 2023)
+
 [Week 1](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekOne.hs)
 
 1. Two Sum	Easy	15 mins
