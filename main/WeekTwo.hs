@@ -2,6 +2,7 @@ module WeekWeek where
 
 import qualified Data.Map as M
 import Data.List
+import Data.Char
 import WeekOne
 
 {-
@@ -211,4 +212,42 @@ findMajorNumBMAux (y:ys) y' count
     20. Add Binary
 
     Given two binary strings a and b, return their sum as a binary string.
+    
+    Test Cases:
+    addBinary (Binary "11")   (Binary "1")    -> Binary "100"
+    addBinary (Binary "1010") (Binary "1011") -> Binary "10101"
 -}
+data Binary = Binary String deriving Show
+
+{-
+    Divide the number by 2.
+    Get the integer quotient for the next iteration.
+    Get the remainder for the binary digit.
+    Repeat the steps until the quotient is equal to 0
+-}
+digitToBinary :: Int -> Binary
+digitToBinary n
+    | divided == 0 = Binary (show moded)
+    | otherwise = Binary (nextBinary ++ show moded)
+    where divided = n `div` 2
+          moded = n `mod` 2
+          Binary nextBinary = digitToBinary divided
+
+-- decimal = d_0 * 2^0 + d_1 * 2^1 + d_2 * 2^2 + ...
+binaryToDigit :: Binary -> Int
+binaryToDigit (Binary bx) = binaryToDigitAux (Binary bx) (length bx - 1)
+
+binaryToDigitAux :: Binary -> Int -> Int
+binaryToDigitAux (Binary []) exp = 0
+binaryToDigitAux (Binary (x:xs)) exp = 
+    (digitToInt x) * 2 `powerOf` exp + binaryToDigitAux (Binary xs) (exp-1)
+
+powerOf :: Int -> Int -> Int
+powerOf base times
+    | times == 0 = 1
+    | otherwise = base * (powerOf base (times-1))
+
+addBinary :: Binary -> Binary -> Binary
+addBinary x y = digitToBinary (digitX + digitY)
+    where digitX = binaryToDigit x
+          digitY = binaryToDigit y
