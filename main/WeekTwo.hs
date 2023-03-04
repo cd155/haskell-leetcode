@@ -147,7 +147,7 @@ isExistOdd (x:xs)
 
     Test Cases:
     reverseLinkedList (Node 1 (Node 2 (Node 4 Empty)))
-        -> (Node 4 (Node 2 (Node 1 Empty))
+        -> (Node 4 (Node 2 (Node 1 Empty)))
 -}
 reverseLinkedList :: LinkedList a -> LinkedList a
 reverseLinkedList lst = convertListToLinked newLst
@@ -298,9 +298,24 @@ incPair (x,y) = (x+1, y+1)
     the linked list.
     
     If there are two middle nodes, return the second middle node.
--}
 
+    Test Cases:
+    (Node 1 (Node 2 (Node 4 Empty))) -> Node 2 (Node 4 Empty)
+
+    (Node 1 (Node 2 (Node 4 (Node 5 Empty)))) -> Node 4 (Node 5 Empty)
+-}
 -- get the length, then traverse to 1/2 length
+findMidByLen :: LinkedList a -> LinkedList a
+findMidByLen lst = findMidByLenAux lst 0 (findLengthOf lst `div` 2) 
+
+findMidByLenAux :: LinkedList a -> Int -> Int -> LinkedList a
+findMidByLenAux Empty _ _ = error "Wrong initial mid length" 
+findMidByLenAux (Node v next) i mid = 
+    if i < mid then findMidByLenAux next (i+1) mid else Node v next
+
+findLengthOf :: LinkedList a -> Int
+findLengthOf Empty = 0
+findLengthOf (Node _ next) = 1 + findLengthOf next
 
 -- store LinkedList into Array, find th second half array, then recreate LinkedList
 
