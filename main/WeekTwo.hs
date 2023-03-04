@@ -318,5 +318,10 @@ findLengthOf Empty = 0
 findLengthOf (Node _ next) = 1 + findLengthOf next
 
 -- store LinkedList into Array, find th second half array, then recreate LinkedList
+findMidByArr :: LinkedList a -> LinkedList a
+findMidByArr lst = convertListToLinked r
+    where arr = reverse $ convertLinkedToList lst
+          mid = length arr `div` 2
+          (_,r) = splitAt mid arr
 
 -- Traverse the LinkedList with a track value, but only update the track value 1/2 times
