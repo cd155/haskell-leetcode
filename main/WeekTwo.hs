@@ -290,3 +290,18 @@ getNodeDetail (Node' _ (l, r))
 
 incPair :: (Int, Int) -> (Int, Int)
 incPair (x,y) = (x+1, y+1)
+
+{-
+    22. Middle of the Linked List
+
+    Given the head of a singly linked list, return the middle node of 
+    the linked list.
+    
+    If there are two middle nodes, return the second middle node.
+-}
+
+-- get the length, then traverse to 1/2 length
+
+-- store LinkedList into Array, find th second half array, then recreate LinkedList
+
+-- Traverse the LinkedList with a track value, but only update the track value 1/2 times
