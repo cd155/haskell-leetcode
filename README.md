@@ -5,19 +5,19 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week 1](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekOne.hs)
 
-1. Two Sum	Easy	15 mins
-2. Valid Parentheses	Easy	20 mins
-3. Merge Two Sorted Lists	Easy	20 mins
-4. Best Time to Buy and Sell Stock	Easy	20 mins
-5. Valid Palindrome	Easy	15 mins
-6. Invert Binary Tree	Easy	15 mins
-7. Valid Anagram	Easy	15 mins
-8. Binary Search	Easy	15 mins
-9. Flood Fill	Easy	20 mins
-10. Lowest Common Ancestor of a Binary Search Tree	Easy	20 mins
-11. Balanced Binary Tree	Easy	15 mins
-12. Linked List Cycle	Easy    20 mins
-13. Implement Queue using Stacks Easy  20 mins
+1. Two Sum	                                        Easy 15 mins
+2. Valid Parentheses	                            Easy 20 mins
+3. Merge Two Sorted Lists	                        Easy 20 mins
+4. Best Time to Buy and Sell Stock	                Easy 20 mins
+5. Valid Palindrome	                                Easy 15 mins
+6. Invert Binary Tree	                            Easy 15 mins
+7. Valid Anagram	                                Easy 15 mins
+8. Binary Search	                                Easy 15 mins
+9. Flood Fill	                                    Easy 20 mins
+10. Lowest Common Ancestor of a Binary Search Tree	Easy 20 mins
+11. Balanced Binary Tree	                        Easy 15 mins
+12. Linked List Cycle                               Easy 20 mins
+13. Implement Queue using Stacks                    Easy 20 mins
 
 (Week 1 Completed on Feb 25th, 2023)
 
