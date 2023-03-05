@@ -123,11 +123,11 @@ climb'Aux (i, end) memo
     palindrome here.
 
     Test Cases:
-    findLongestPalin "abccccdd" -> 7
-    findLongestPalin "a" -> 1
+    longestPalindrome "abccccdd" -> 7
+    longestPalindrome "a" -> 1
 -}
-findLongestPalin :: String -> Int
-findLongestPalin s1 
+longestPalindrome :: String -> Int
+longestPalindrome s1 
     | isExistOdd allVals = 2 * numOfPair + 1
     | otherwise = 2 * numOfPair
     where allVals = M.elems $ increaseDict s1
