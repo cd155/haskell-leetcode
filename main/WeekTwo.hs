@@ -28,15 +28,15 @@ isBadVersion n
     | null testVersions = error "Empty List"
     | otherwise = testVersions!!n
 
-findBadVer :: Maybe Int
-findBadVer = if isBadVersion res then Just res else Nothing
-    where res = findBadVerHelper (0, length testVersions -1)
+badVersion :: Maybe Int
+badVersion = if isBadVersion res then Just res else Nothing
+    where res = badVersionHelper (0, length testVersions -1)
 
-findBadVerHelper :: (Int, Int) -> Int
-findBadVerHelper (start,end)
+badVersionHelper :: (Int, Int) -> Int
+badVersionHelper (start,end)
     | start == end = start
-    | isBadVersion (start+mid) = findBadVerHelper (start,start+mid)
-    | otherwise = findBadVerHelper (start+mid+1, end)
+    | isBadVersion (start+mid) = badVersionHelper (start,start+mid)
+    | otherwise = badVersionHelper (start+mid+1, end)
     where mid = (end-start) `div` 2
 
 {-
