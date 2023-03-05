@@ -1,4 +1,4 @@
-module WeekWeek where
+module WeekTwo where
 
 import qualified Data.Map as M
 import Data.List
@@ -178,35 +178,35 @@ convertListToLinked (x:xs) = Node x (convertListToLinked xs)
 -}
 -- If majority always exist and it appears mor than n/2 time, 
 -- then it locates at the mid of the sort list
-findMajorNum :: Ord a => [a] -> a
-findMajorNum xs = sortedXs !! mid
+majorityNum :: Ord a => [a] -> a
+majorityNum xs = sortedXs !! mid
     where sortedXs = sort xs
           mid = length xs `div` 2
 
 -- Work in more general environment. If no majority, return Nothing
-findMajorNumHash :: Ord a => [a] -> Maybe a
-findMajorNumHash xs = findMajorNumHashAux xs (length xs `div` 2) M.empty
+majorityNumHash :: Ord a => [a] -> Maybe a
+majorityNumHash xs = majorityNumHashAux xs (length xs `div` 2) M.empty
 
-findMajorNumHashAux :: Ord a => [a] -> Int -> M.Map a Int -> Maybe a
-findMajorNumHashAux [] _ _ = Nothing
-findMajorNumHashAux (x:xs) mlen dict
+majorityNumHashAux :: Ord a => [a] -> Int -> M.Map a Int -> Maybe a
+majorityNumHashAux [] _ _ = Nothing
+majorityNumHashAux (x:xs) mlen dict
     | x `M.member` dict = if v+1 > mlen 
                           then Just x 
-                          else findMajorNumHashAux xs mlen newDict
-    | otherwise = findMajorNumHashAux xs mlen (M.insert x 1 dict)
+                          else majorityNumHashAux xs mlen newDict
+    | otherwise = majorityNumHashAux xs mlen (M.insert x 1 dict)
     where Just v = M.lookup x dict
           newDict = M.insertWith (+) x 1 dict
 
 -- Boyer–Moore majority vote algorithm
-findMajorNumBM :: Eq a => [a] -> Maybe a
-findMajorNumBM xs = findMajorNumBMAux xs (head xs) 0
+majorityNumBM :: Eq a => [a] -> Maybe a
+majorityNumBM xs = majorityNumBMAux xs (head xs) 0
 
-findMajorNumBMAux :: Eq a => [a] -> a -> Int -> Maybe a
-findMajorNumBMAux [] x count = if count < 1 then Nothing else Just x
-findMajorNumBMAux (y:ys) y' count
-    | y == y' = findMajorNumBMAux ys y (count+1)
-    | count == 0 = findMajorNumBMAux ys y 1
-    | otherwise = findMajorNumBMAux ys y' (count-1)
+majorityNumBMAux :: Eq a => [a] -> a -> Int -> Maybe a
+majorityNumBMAux [] x count = if count < 1 then Nothing else Just x
+majorityNumBMAux (y:ys) y' count
+    | y == y' = majorityNumBMAux ys y (count+1)
+    | count == 0 = majorityNumBMAux ys y 1
+    | otherwise = majorityNumBMAux ys y' (count-1)
 
 {-
     20. Add Binary
