@@ -334,3 +334,17 @@ findMidByTwoHeadAux (Node _ _) Empty _ = error "Wrong initial value"
 findMidByTwoHeadAux (Node _ next1) (Node v2 next2) isInc
     | isInc = findMidByTwoHeadAux next1 next2 (not isInc)
     | otherwise = findMidByTwoHeadAux next1 (Node v2 next2) (not isInc)
+
+{-
+    23. Maximum Depth of Binary Tree
+
+    Given the root of a binary tree, return its maximum depth.
+
+    A binary tree's maximum depth is the number of nodes along the longest path 
+    from the root node down to the farthest leaf node. 
+-}
+maxDepthOf :: BiTree a -> Int
+maxDepthOf tr = maximum $ allDepths tr
+
+allDepths :: BiTree a -> [Nat]
+allDepths tr = leavesDepthHelper tr 0
