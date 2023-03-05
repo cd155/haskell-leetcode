@@ -305,35 +305,35 @@ incPair (x,y) = (x+1, y+1)
     (Node 1 (Node 2 (Node 4 (Node 5 Empty)))) -> Node 4 (Node 5 Empty)
 -}
 -- get the length, then traverse to 1/2 length
-findMidByLen :: LinkedList a -> LinkedList a
-findMidByLen lst = findMidByLenAux lst 0 (findLengthOf lst `div` 2) 
+midListWithLen :: LinkedList a -> LinkedList a
+midListWithLen lst = midListWithLenAux lst 0 (lengthOf lst `div` 2) 
 
-findMidByLenAux :: LinkedList a -> Int -> Int -> LinkedList a
-findMidByLenAux Empty _ _ = error "Wrong initial mid length" 
-findMidByLenAux (Node v next) i mid = 
-    if i < mid then findMidByLenAux next (i+1) mid else Node v next
+midListWithLenAux :: LinkedList a -> Int -> Int -> LinkedList a
+midListWithLenAux Empty _ _ = error "Wrong initial mid length" 
+midListWithLenAux (Node v next) i mid = 
+    if i < mid then midListWithLenAux next (i+1) mid else Node v next
 
-findLengthOf :: LinkedList a -> Int
-findLengthOf Empty = 0
-findLengthOf (Node _ next) = 1 + findLengthOf next
+lengthOf :: LinkedList a -> Int
+lengthOf Empty = 0
+lengthOf (Node _ next) = 1 + lengthOf next
 
 -- store LinkedList into Array, find th second half array, then recreate LinkedList
-findMidByArr :: LinkedList a -> LinkedList a
-findMidByArr lst = convertListToLinked r
+midListWithArr :: LinkedList a -> LinkedList a
+midListWithArr lst = convertListToLinked r
     where arr = reverse $ convertLinkedToList lst
           mid = length arr `div` 2
           (_,r) = splitAt mid arr
 
 -- Traverse the LinkedList with a track value, but only update the track value 1/2 times
-findMidByTwoHead :: LinkedList a -> LinkedList a
-findMidByTwoHead lst = findMidByTwoHeadAux lst lst False
+midListWithTwoHead :: LinkedList a -> LinkedList a
+midListWithTwoHead lst = midListWithTwoHeadAux lst lst False
 
-findMidByTwoHeadAux :: LinkedList a -> LinkedList a -> Bool -> LinkedList a
-findMidByTwoHeadAux Empty res _ = res
-findMidByTwoHeadAux (Node _ _) Empty _ = error "Wrong initial value"
-findMidByTwoHeadAux (Node _ next1) (Node v2 next2) isInc
-    | isInc = findMidByTwoHeadAux next1 next2 (not isInc)
-    | otherwise = findMidByTwoHeadAux next1 (Node v2 next2) (not isInc)
+midListWithTwoHeadAux :: LinkedList a -> LinkedList a -> Bool -> LinkedList a
+midListWithTwoHeadAux Empty res _ = res
+midListWithTwoHeadAux (Node _ _) Empty _ = error "Wrong initial value"
+midListWithTwoHeadAux (Node _ next1) (Node v2 next2) isInc
+    | isInc = midListWithTwoHeadAux next1 next2 (not isInc)
+    | otherwise = midListWithTwoHeadAux next1 (Node v2 next2) (not isInc)
 
 {-
     23. Maximum Depth of Binary Tree
