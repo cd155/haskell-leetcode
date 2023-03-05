@@ -325,3 +325,12 @@ findMidByArr lst = convertListToLinked r
           (_,r) = splitAt mid arr
 
 -- Traverse the LinkedList with a track value, but only update the track value 1/2 times
+findMidByTwoHead :: LinkedList a -> LinkedList a
+findMidByTwoHead lst = findMidByTwoHeadAux lst lst False
+
+findMidByTwoHeadAux :: LinkedList a -> LinkedList a -> Bool -> LinkedList a
+findMidByTwoHeadAux Empty res _ = res
+findMidByTwoHeadAux (Node _ _) Empty _ = error "Wrong initial value"
+findMidByTwoHeadAux (Node _ next1) (Node v2 next2) isInc
+    | isInc = findMidByTwoHeadAux next1 next2 (not isInc)
+    | otherwise = findMidByTwoHeadAux next1 (Node v2 next2) (not isInc)
