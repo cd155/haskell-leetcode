@@ -503,17 +503,17 @@ findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth)
 tree4 = Node' 1 (Empty', Node' 2 (Empty', Node' 3 (Empty', Node' 4 (Empty', Empty'))))
 
 -- odd version
-isBalanced :: Eq a => BiTree a -> Bool
+isBalanced :: BiTree a -> Bool
 isBalanced tr = foldl (\acc (f, s) -> acc && (abs(f-s) <= 1)) True diffs
     where diffs = permuOfList (leavesDepthHelper tr 0)
 
 -- O(log(n)^2)
-leavesDepthHelper :: Eq a => BiTree a -> Nat -> [Nat]
+leavesDepthHelper :: BiTree a -> Nat -> [Nat]
 leavesDepthHelper Empty' d = []
-leavesDepthHelper (Node' a (l, r)) d 
-    | l == Empty' || r == Empty' = 
-        leavesDepthHelper l (d+1) ++ [d] ++ leavesDepthHelper r (d+1)
-    | otherwise = leavesDepthHelper l (d+1) ++ leavesDepthHelper r (d+1)
+leavesDepthHelper (Node' a (Empty', r)) d = [d] ++ leavesDepthHelper r (d+1)
+leavesDepthHelper (Node' a (l, Empty')) d = leavesDepthHelper l (d+1) ++ [d]
+leavesDepthHelper (Node' a (l, r)) d = 
+    leavesDepthHelper l (d+1) ++ leavesDepthHelper r (d+1)
 
 permuOfList :: [a] -> [(a,a)]
 permuOfList [] = []
