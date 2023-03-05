@@ -340,11 +340,31 @@ midListWithTwoHeadAux (Node _ next1) (Node v2 next2) isInc
 
     Given the root of a binary tree, return its maximum depth.
 
-    A binary tree's maximum depth is the number of nodes along the longest path 
-    from the root node down to the farthest leaf node. 
+    A binary tree's maximum depth is the number of nodes along the longest 
+    path from the root node down to the farthest leaf node. 
 -}
 maxDepthOf :: BiTree a -> Int
 maxDepthOf tr = maximum $ allDepths tr
 
 allDepths :: BiTree a -> [Nat]
 allDepths tr = leavesDepthHelper tr 0
+
+{-
+    24. Contains Duplicate
+
+    Given an array, return true if any value appears at least twice 
+    in the array, and return false if every element is distinct.
+-}
+
+-- Hash version
+isDuplicate :: Eq a => [a] -> Bool
+isDuplicate lst = error "NI"
+
+isDuplicateAux :: Eq a => [a] -> M.Map a Int -> Bool
+isDuplicateAux lst dict = error "NI"
+
+-- Sorting version
+
+{-
+    25. Maximum Sub-array
+-}
