@@ -19,7 +19,7 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 12. Linked List Cycle	Easy    20 mins
 13. Implement Queue using Stacks Easy  20 mins
 
-(Week 1 Completed on Feb 25, 2023)
+(Week 1 Completed on Feb 25th, 2023)
 
 [Week 2](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekTwo.hs)
 
@@ -36,4 +36,4 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 24. Contains Duplicate	Easy	15 mins
 25. Maximum Subarray Medium  20 mins
 
-(Week 2 Completed on Pending)
+(Week 2 Completed on March 5th, 2023)
