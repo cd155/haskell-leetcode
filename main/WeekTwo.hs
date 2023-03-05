@@ -367,4 +367,25 @@ isDuplicateAux lst dict = error "NI"
 
 {-
     25. Maximum Sub-array
+    Given an [Int], 
+    find the sub array with the largest sum, and return its sum.
+
+    Test Case:
+    maxSubArr [-2,1,-3,4,-1,2,1,-5,4] -> 6
+    maxSubArr [1]                     -> 1
+    maxSubArr [5,4,-1,7,8]            -> 23
+    maxSubArr [-5,-4,-1,-7,-8]        -> -1
 -}
+-- O(n)
+maxSubArr :: [Int] -> Maybe Int
+maxSubArr [] = Nothing
+maxSubArr lst = Just $ maxSubArrAux lst (head lst) []
+
+maxSubArrAux :: [Int] -> Int -> [Int] -> Int
+maxSubArrAux [] m _ = m
+maxSubArrAux (x:xs) m []
+    | x < 0 = maxSubArrAux xs (max m x) [] 
+    | otherwise = maxSubArrAux xs (max m x) [x]
+maxSubArrAux (x:xs) m pool
+    | sum (x:pool) < 0 = maxSubArrAux xs m []
+    | otherwise = maxSubArrAux xs (max m (sum(x:pool))) (x:pool)
