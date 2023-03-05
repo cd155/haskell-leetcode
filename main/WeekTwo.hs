@@ -354,16 +354,32 @@ allDepths tr = leavesDepthHelper tr 0
 
     Given an array, return true if any value appears at least twice 
     in the array, and return false if every element is distinct.
+
+    Test Cases:
+    "hello" -> True
+    "h" -> False
 -}
 
 -- Hash version
-isDuplicate :: Eq a => [a] -> Bool
-isDuplicate lst = error "NI"
+isDuplicate :: Ord a => [a] -> Bool
+isDuplicate lst = isDuplicateAux lst M.empty
 
-isDuplicateAux :: Eq a => [a] -> M.Map a Int -> Bool
-isDuplicateAux lst dict = error "NI"
+isDuplicateAux :: Ord a => [a] -> M.Map a Int -> Bool
+isDuplicateAux [] _ = False
+isDuplicateAux (x:xs) dict 
+    | x `M.member` dict = True
+    | otherwise = isDuplicateAux xs (M.insert x 1 dict) 
 
 -- Sorting version
+isDuplicate' :: Ord a => [a] -> Bool 
+isDuplicate' xs = isDuplicate'Aux $ sort xs
+
+isDuplicate'Aux :: Ord a => [a] -> Bool 
+isDuplicate'Aux [] = False
+isDuplicate'Aux [x] = False
+isDuplicate'Aux (x1:x2:xs) 
+    | x1 == x2 = True
+    | otherwise = isDuplicate'Aux (x2:xs)
 
 {-
     25. Maximum Sub-array
@@ -376,7 +392,7 @@ isDuplicateAux lst dict = error "NI"
     maxSubArr [5,4,-1,7,8]            -> 23
     maxSubArr [-5,-4,-1,-7,-8]        -> -1
 -}
--- O(n)
+-- O(n), keep track the max sum and potential max sum
 maxSubArr :: [Int] -> Maybe Int
 maxSubArr [] = Nothing
 maxSubArr lst = Just $ maxSubArrAux lst (head lst) []
