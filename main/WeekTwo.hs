@@ -264,7 +264,7 @@ addBinary x y = digitToBinary (digitX + digitY)
     of edges between them.
 
     Test Case: 
-    findDiameter tree5 -> 6
+    diameter tree5 -> 6
 -}
 tree5 = Node' 6 
     (Node' 2 
@@ -274,19 +274,19 @@ tree5 = Node' 6
                   Node' 5 (Node' 9 (Empty', Empty'), Empty'))), 
      Node' 8 (Empty', Empty'))
 -- O(n)
-findDiameter :: BiTree a -> Int
-findDiameter tr = fst $ getNodeDetail tr
+diameter :: BiTree a -> Int
+diameter tr = fst $ nodeDetail tr
 
-getNodeDetail :: BiTree a -> (Int, Int) -- (diameter,the longest path)
-getNodeDetail Empty' = (0,0)
-getNodeDetail (Node' _ (Empty', Empty')) = (0,0)
-getNodeDetail (Node' _ (l, Empty')) = incPair $ getNodeDetail l
-getNodeDetail (Node' _ (Empty', r)) = incPair $ getNodeDetail r
-getNodeDetail (Node' _ (l, r))
+nodeDetail :: BiTree a -> (Int, Int) -- (diameter,the longest path)
+nodeDetail Empty' = (0,0)
+nodeDetail (Node' _ (Empty', Empty')) = (0,0)
+nodeDetail (Node' _ (l, Empty')) = incPair $ nodeDetail l
+nodeDetail (Node' _ (Empty', r)) = incPair $ nodeDetail r
+nodeDetail (Node' _ (l, r))
     | 2 + (lp1 + lp2) > max dia1 dia2 = (2 + (lp1 + lp2), max lp1 lp2 + 1)
     | otherwise = (max dia1 dia2, max lp1 lp2 + 1)
-    where (dia1, lp1) = getNodeDetail l
-          (dia2, lp2) = getNodeDetail r
+    where (dia1, lp1) = nodeDetail l
+          (dia2, lp2) = nodeDetail r
 
 incPair :: (Int, Int) -> (Int, Int)
 incPair (x,y) = (x+1, y+1)
