@@ -37,3 +37,16 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 25. Maximum Subarray Medium  20 mins
 
 (Week 2 Completed on March 5th, 2023)
+
+[Week3]
+
+26. Insert Interval                                 Medium 25 mins
+27. 01 Matrix                                       Medium 30 mins
+28. Closest Points to Origin                        Medium 30 mins
+29. Longest Substring Without Repeating Characters  Medium 30 mins
+30. 3Sum                                            Medium 30 mins
+31. Binary Tree Level Order Traversal               Medium 20 mins
+32. Clone Graph                                     Medium 25 mins
+33. Evaluate Reverse Polish Notation                Medium 30 mins
+
+(Week 3 Completed on Pending)
