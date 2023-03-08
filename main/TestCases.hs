@@ -84,3 +84,6 @@ testAll = do
         putStrLn $ show (ts, ivp, ml)
     
     putStrLn "----End----"
+
+-- most online editors have this command for Haskell
+-- main = putStrLn $ show (twoPair test 5)
