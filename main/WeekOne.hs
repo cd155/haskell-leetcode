@@ -75,6 +75,30 @@ convToDictHelper (x:xs) dict i
     | x `M.member` dict = convToDictHelper xs (M.insertWith (++) x [i] dict) (i+1)
     | otherwise = convToDictHelper xs (M.insert x [i] dict) (i+1)  
 
+-- Various version of two sum questions
+-- return list of pair version, can have duplicate
+twoPair :: [Int] -> Int -> [(Int, Int)]
+twoPair xs target = twoPairAux (M.elems myDict) myDict target
+    where myDict = convertInputToDict xs M.empty
+
+twoPairAux :: [Int] -> M.Map Int Int -> Int -> [(Int, Int)]
+twoPairAux [] _ _ = []
+twoPairAux (x:xs) dict tar
+    | x == rest = 
+        if v > 1 
+        then (x, rest): (twoPairAux xs dict tar)
+        else (twoPairAux xs dict tar)
+    | rest `M.member` dict = (x,rest): (twoPairAux xs dict tar)
+    | otherwise = (twoPairAux xs dict tar)
+    where rest = tar - x
+        Just v = M.lookup x dict
+
+convertInputToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
+convertInputToDict [] dict = dict
+convertInputToDict (x:xs) dict
+    | x `M.member` dict = convertInputToDict xs (M.insertWith (+) x (1) dict)
+    | otherwise = convertInputToDict xs (M.insert x 1 dict)
+
 {-
     2. Valid Parentheses:
 
