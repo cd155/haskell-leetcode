@@ -34,3 +34,18 @@ lookForRight ((x1, x2):xs) right
     | right < x1 = (right, xs)
     | right < x2 = (x2, xs)
     | otherwise = lookForRight xs right
+
+{-
+    27. 01 Matrix
+
+    Given an m x n binary matrix mat, 
+    return the distance of the nearest 0-value cell for each cell.
+
+    The distance of the nearest 0 for a cell in the binary matrix 
+    is the minimum number of steps needed to reach the nearest 
+    0-valued cell from that cell, where a step is a movement from 
+    one adjacent cell to another (not diagonally).
+    
+    1. 1-1 has distance 1
+    2. 1-0 or 0-1 has distance 1
+-}
