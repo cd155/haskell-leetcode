@@ -1,7 +1,10 @@
 # haskell-leetcode
 Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75) leetcode questions
 
+---
+
 (Week 1 started on Feb 05, 2023)
+
 [Week 1](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekOne.hs)
 
 1. Two Sum	                                        Easy 15 mins
@@ -17,9 +20,13 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 11. Balanced Binary Tree	                        Easy 15 mins
 12. Linked List Cycle                               Easy 20 mins
 13. Implement Queue using Stacks                    Easy 20 mins
+
 (Week 1 Completed on Feb 25th, 2023)
 
+---
+
 (Week 2 Start on Feb 26th, 2023)
+
 [Week 2](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekTwo.hs)
 
 14. First Bad Version	            Easy	20 mins
@@ -34,10 +41,15 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 23. Maximum Depth of Binary Tree    Easy    15 mins
 24. Contains Duplicate	            Easy    15 mins
 25. Maximum Sub-array               Medium  20 mins
+
 (Week 2 Completed on March 5th, 2023)
 
+---
+
 (Week 3 started on March 13th, 2023)
-[Week3]
+
+[Week3]()
+
 26. Insert Interval                                 Medium 25 mins
 27. 01 Matrix                                       Medium 30 mins
 28. Closest Points to Origin                        Medium 30 mins
@@ -46,4 +58,7 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 31. Binary Tree Level Order Traversal               Medium 20 mins
 32. Clone Graph                                     Medium 25 mins
 33. Evaluate Reverse Polish Notation                Medium 30 mins
+
 (Week 3 Completed on Pending)
+
+---
