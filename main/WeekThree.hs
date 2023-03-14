@@ -46,6 +46,6 @@ lookForRight ((x1, x2):xs) right
     0-valued cell from that cell, where a step is a movement from 
     one adjacent cell to another (not diagonally).
     
-    1. 1-1 has distance 1
-    2. 1-0 or 0-1 has distance 1
+    The distance between two adjacent cells is 1.
 -}
+
