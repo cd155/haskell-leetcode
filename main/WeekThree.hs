@@ -47,5 +47,34 @@ lookForRight ((x1, x2):xs) right
     one adjacent cell to another (not diagonally).
     
     The distance between two adjacent cells is 1.
--}
 
+    Test case 
+-}
+data Binary = One | Zero 
+type BinMat = [[Binary]]
+type Coord = (Int, Int)
+type Dist = Maybe Int
+type DistMat = [[Dist]]
+
+mat = [[Zero,Zero,Zero],
+       [Zero,One ,Zero],
+       [One ,One ,One ]]
+
+distance :: BinMat -> DistMat
+distance binMat = error "Not Implement"
+
+{-
+    BinMat          : binary matrix, 
+    [Coord]         : potential coordinates, 
+    [(Coord, Dist)] : accumulate distance matrix, 
+    [Coord]         : visited coordinate
+-} 
+distance_aux :: BinMat -> [Coord] -> [DistMat] -> [DistMat]
+distance_aux _ [] disMat = disMat
+distance_aux binMat ((r,c):xs) disMat
+    | disMat!!r!!c = Zero 
+    | disMat!!r!!c = One -- check adjacent, if all not zero, 
+                         -- push adjacent
+    | otherwise = -- not ready for calculate distance, push adjacent instead
+    where maxCol = length $ head binMat
+          maxRow = length binMat
