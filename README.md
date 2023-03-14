@@ -48,7 +48,7 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 (Week 3 started on March 13th, 2023)
 
-[Week3]()
+[Week3](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekThree.hs)
 
 26. Insert Interval                                 Medium 25 mins
 27. 01 Matrix                                       Medium 30 mins
