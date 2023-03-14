@@ -91,7 +91,7 @@ twoPairAux (x:xs) dict tar
     | rest `M.member` dict = (x,rest): (twoPairAux xs dict tar)
     | otherwise = (twoPairAux xs dict tar)
     where rest = tar - x
-        Just v = M.lookup x dict
+          Just v = M.lookup x dict
 
 convertInputToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
 convertInputToDict [] dict = dict
@@ -379,15 +379,15 @@ findIntHelper xs t
     Return the modified image after performing the flood fill.
 
     Test case:
-    fillUp testImage1 (0,0) 3 [[3,3,3],
-                               [3,2,3],
-                               [2,1,3]]
-    fillUp testImage2 (1,1) 3 [[1,1,1],
-                               [1,3,3],
-                               [1,3,3]]
-    fillUp testImage2 (0,1) 3 [[3,3,3],
-                               [3,2,2],
-                               [3,2,2]]
+    fillUp testImage1 (0,0) 3 ->    [[3,3,3],
+                                    [3,2,3],
+                                    [2,1,3]]
+    fillUp testImage2 (1,1) 3 ->    [[1,1,1],
+                                    [1,3,3],
+                                    [1,3,3]]
+    fillUp testImage2 (0,1) 3 ->    [[3,3,3],
+                                    [3,2,2],
+                                    [3,2,2]]
 -}
 testImage1 :: Image
 testImage1 = [
@@ -411,7 +411,7 @@ fillUp [[]] _ _ = [[]]
 fillUp img (ph, pw) c = foldl (\acc x -> paint acc x c) img paintList
     where paintList = findAreaInColor img [(ph, pw)] (img!!ph!!pw) []
 
-paint :: Image -> Pixel -> Color -> Image
+paint :: [[a]] -> (Int, Int) -> a -> [[a]]
 paint img (ph, pw) c = tops ++ [newLine] ++ tail bots
     where (tops, bots) = splitAt ph img
           (l, r) = splitAt pw $ head bots
