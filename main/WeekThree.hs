@@ -44,10 +44,9 @@ lookForRight ((x1, x2):xs) right
     Given an m x n binary matrix mat, 
     return the distance of the nearest 0-value cell for each cell.
 
-    The distance of the nearest 0 for a cell in the binary matrix 
-    is the minimum number of steps needed to reach the nearest 
-    0-valued cell from that cell, where a step is a movement from 
-    one adjacent cell to another (not diagonally).
+    The distance of the nearest 0 for a cell in the binary matrix is the minimum 
+    number of steps needed to reach the nearest 0-valued cell from that cell, 
+    where a step is a movement from one adjacent cell to another (not diagonally).
     
     The distance between two adjacent cells is 1.
 
@@ -133,3 +132,18 @@ fillNothing (x:xs) = (fillNothingAux x): fillNothing xs
 fillNothingAux :: [a] -> [Dist]
 fillNothingAux [] = []
 fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
+
+{-
+    28. K Closest Points to Origin
+
+    Given an array of coordinates (Int,Int) and an integer k, return the top k 
+    closest coordinates based on its distance from the origin (0, 0).
+
+    The distance calculated based on the Euclidean distance 
+-}
+
+-- calculate all the distance, then sort them based on distance, 
+-- then select top k elements
+
+-- use distance as the key, and add coords to values.
+-- choice top k key, then find top k elements
