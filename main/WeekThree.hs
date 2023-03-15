@@ -1,5 +1,8 @@
 module WeekThree where
 
+import WeekOne
+import Data.Maybe
+
 {-
     26. Insert Interval
 
@@ -48,33 +51,78 @@ lookForRight ((x1, x2):xs) right
     
     The distance between two adjacent cells is 1.
 
-    Test case 
+    Test Cases: 
+    distance mat1
+    distance mat2
+    distance mat3
 -}
 data Binary = One | Zero 
-type BinMat = [[Binary]]
+
+instance Eq Binary where
+    Zero == Zero = True
+    One  == One  = True
+    _    == _    = False
+
+type BinaryMat = [[Binary]]
 type Coord = (Int, Int)
 type Dist = Maybe Int
 type DistMat = [[Dist]]
 
-mat = [[Zero,Zero,Zero],
-       [Zero,One ,Zero],
-       [One ,One ,One ]]
+mat1 = [[Zero,Zero,Zero,Zero],
+       [Zero,One ,Zero,Zero],
+       [One ,One ,One ,Zero],
+       [One ,One ,One ,One ]]
 
-distance :: BinMat -> DistMat
-distance binMat = error "Not Implement"
+mat2 = [[One,Zero],
+        [One,One ]]
 
+mat3 = [[One,One],
+        [One,One ]]
+       
+distance :: BinaryMat -> DistMat
+distance binaryMat 
+    | isZeroExist = distanceAux binaryMat [(0,0)] initDistMat
+    | otherwise = initDistMat
+    where isZeroExist = foldl (\acc x -> acc || x == Zero) False (concat binaryMat)
+          initDistMat = fillNothing binaryMat
 {-
-    BinMat          : binary matrix, 
-    [Coord]         : potential coordinates, 
-    [(Coord, Dist)] : accumulate distance matrix, 
-    [Coord]         : visited coordinate
+    Find distance matrix base on binary matrix and coordinates
+    the coordinates use queue to check next available coordinates
+
+    BinaryMat: binary matrix
+    [Coord]  : potential coordinates, 
+    DistMat  : matrix of distance
 -} 
-distance_aux :: BinMat -> [Coord] -> [DistMat] -> [DistMat]
-distance_aux _ [] disMat = disMat
-distance_aux binMat ((r,c):xs) disMat
-    | disMat!!r!!c = Zero 
-    | disMat!!r!!c = One -- check adjacent, if all not zero, 
-                         -- push adjacent
-    | otherwise = -- not ready for calculate distance, push adjacent instead
-    where maxCol = length $ head binMat
-          maxRow = length binMat
+distanceAux :: BinaryMat -> [Coord] -> DistMat -> DistMat
+distanceAux _ [] distMat = distMat
+distanceAux binaryMat ((r,c):xs) distMat
+    | isJust(distMat!!r!!c)= distanceAux binaryMat xs distMat
+    | binaryMat!!r!!c == Zero = distanceAux binaryMat (xs ++ validNextCoords ) (paint distMat (r,c) (Just 0))
+    | isNextToValue = distanceAux binaryMat (xs ++ validNextCoords) (paint distMat (r,c) (Just (minValue+1)))
+    | otherwise = distanceAux binaryMat (xs ++ validNextCoords ++ [(r,c)]) distMat
+    where maxRow = length distMat
+          maxCol = length $ head distMat
+          validNextCoords = validNext (maxRow, maxCol) [(r-1,c),(r+1,c),(r,c-1),(r,c+1)]
+          isNextToValue = foldl (\acc (r,c) -> acc || isJust (distMat!!r!!c)) False validNextCoords
+          minValue = minimum (nextValues distMat validNextCoords)
+
+nextValues :: DistMat -> [(Int, Int)] -> [Int]
+nextValues _ [] = []
+nextValues distMat ((r,c):xs)
+    | distMat!!r!!c == Nothing = nextValues distMat xs
+    | otherwise = v: nextValues distMat xs
+    where Just v = distMat!!r!!c
+
+validNext :: (Int, Int) -> [(Int, Int)] ->[(Int, Int)]
+validNext _ [] = []
+validNext (maxRow, maxCol) ((r,c):xs)
+    | r >= maxRow || c >= maxCol || r < 0 || c < 0 = validNext (maxRow, maxCol) xs
+    | otherwise = (r,c): validNext (maxRow, maxCol) xs
+
+fillNothing :: [[a]] -> [[Maybe Int]]
+fillNothing [] = []
+fillNothing (x:xs) = (fillNothingAux x): fillNothing xs
+
+fillNothingAux :: [a] -> [Maybe Int]
+fillNothingAux [] = []
+fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
