@@ -87,7 +87,7 @@ distance binaryMat
           initDistMat = fillNothing binaryMat
 {-
     Find distance matrix base on binary matrix and coordinates
-    the coordinates use queue to check next available coordinates
+    the coordinates use a queue do a breadth-first visit
 
     BinaryMat: binary matrix
     [Coord]  : potential coordinates, 
@@ -96,9 +96,13 @@ distance binaryMat
 distanceAux :: BinaryMat -> [Coord] -> DistMat -> DistMat
 distanceAux _ [] distMat = distMat
 distanceAux binaryMat ((r,c):xs) distMat
+    -- distance already calculate
     | isJust(distMat!!r!!c)= distanceAux binaryMat xs distMat
+    -- distance is zero
     | binaryMat!!r!!c == Zero = distanceAux binaryMat (xs ++ validNextCoords ) (paint distMat (r,c) (Just 0))
+    -- distance can be calculated
     | isNextToValue = distanceAux binaryMat (xs ++ validNextCoords) (paint distMat (r,c) (Just (minValue+1)))
+    -- distance cannot be calculated at the moment
     | otherwise = distanceAux binaryMat (xs ++ validNextCoords ++ [(r,c)]) distMat
     where maxRow = length distMat
           maxCol = length $ head distMat
@@ -106,23 +110,26 @@ distanceAux binaryMat ((r,c):xs) distMat
           isNextToValue = foldl (\acc (r,c) -> acc || isJust (distMat!!r!!c)) False validNextCoords
           minValue = minimum (nextValues distMat validNextCoords)
 
-nextValues :: DistMat -> [(Int, Int)] -> [Int]
+-- get values from valid cells
+nextValues :: DistMat -> [Coord] -> [Int]
 nextValues _ [] = []
 nextValues distMat ((r,c):xs)
     | distMat!!r!!c == Nothing = nextValues distMat xs
     | otherwise = v: nextValues distMat xs
     where Just v = distMat!!r!!c
 
-validNext :: (Int, Int) -> [(Int, Int)] ->[(Int, Int)]
+-- check valid cells for a breadth-first visited
+validNext :: Coord -> [Coord] ->[Coord]
 validNext _ [] = []
 validNext (maxRow, maxCol) ((r,c):xs)
     | r >= maxRow || c >= maxCol || r < 0 || c < 0 = validNext (maxRow, maxCol) xs
     | otherwise = (r,c): validNext (maxRow, maxCol) xs
 
-fillNothing :: [[a]] -> [[Maybe Int]]
+-- fill the initial distance matrix with Nothing
+fillNothing :: [[a]] -> DistMat
 fillNothing [] = []
 fillNothing (x:xs) = (fillNothingAux x): fillNothing xs
 
-fillNothingAux :: [a] -> [Maybe Int]
+fillNothingAux :: [a] -> [Dist]
 fillNothingAux [] = []
 fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
