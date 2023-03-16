@@ -2,6 +2,7 @@ module WeekThree where
 
 import WeekOne
 import Data.Maybe
+import Data.List
 
 {-
     26. Insert Interval
