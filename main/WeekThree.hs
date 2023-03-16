@@ -139,11 +139,23 @@ fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
     Given an array of coordinates (Int,Int) and an integer k, return the top k 
     closest coordinates based on its distance from the origin (0, 0).
 
-    The distance calculated based on the Euclidean distance 
+    The distance calculated based on the Euclidean distance.
+
+    kCloset 1 [(1,3),(-2,2)]
+    kCloset 2 [(3,3),(5,-1),(-2,4)]
 -}
+one :: Int
+one = 1
 
 -- calculate all the distance, then sort them based on distance, 
 -- then select top k elements
+kCloset :: Nat -> [Coord] -> [Coord]
+kCloset k xs = map (\(x,_) -> x) topKs
+    where topKs = take k $ kClosetAux xs
+
+kClosetAux :: [(Coord)] -> [(Coord, Int)]
+kClosetAux xs = sortBy (\(_, d1) (_, d2) -> compare d1 d2) xsWithDist
+    where xsWithDist = map (\(x,y) -> ((x,y), (x^2 + y^2))) xs
 
 -- use distance as the key, and add coords to values.
 -- choice top k key, then find top k elements
