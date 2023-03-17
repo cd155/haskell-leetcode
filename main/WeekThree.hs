@@ -195,7 +195,21 @@ mySqrt (x,y) = sqrt(fromIntegral x**2 + fromIntegral y**2)
 
     Test Cases:
 
-    "abcabcbb"  -> 3, because "abc"
-    "bbbbb"     -> 1, because "b"
-    "pwwkew"    -> 3, because "wke"
+    longestSubStr "abcabcbb"    -> 3, because "abc"
+    longestSubStr "bbbbb"       -> 1, because "b"
+    longestSubStr "pwwkewc"     -> 4, because "wke"
 -}
+longestSubStr :: String -> Nat
+longestSubStr xs = longestSubStrAux xs 0
+
+-- compare all the length of non-repeated string in each branch
+longestSubStrAux :: String -> Nat -> Nat
+longestSubStrAux [] m = m
+longestSubStrAux xs m = longestSubStrAux (tail xs) (max (longestSubStrLen xs M.empty) m) 
+
+-- calculate the length of non-repeated string in this brach
+longestSubStrLen :: String -> M.Map Char Nat -> Nat
+longestSubStrLen [] _ = 0
+longestSubStrLen (x:xs) dict
+    | x `M.member` dict = 0
+    | otherwise = 1 + longestSubStrLen xs (M.insert x (1) dict)
