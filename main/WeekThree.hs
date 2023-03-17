@@ -145,8 +145,6 @@ fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
     kCloset 1 [(1,3),(-2,2)]
     kCloset 2 [(3,3),(5,-1),(-2,4)]
 -}
-one :: Int
-one = 1
 
 -- calculate all the distance, then sort them based on distance, 
 -- then select top k elements
@@ -154,9 +152,10 @@ kCloset :: Nat -> [Coord] -> [Coord]
 kCloset k xs = map (\(x,_) -> x) topKs
     where topKs = take k $ kClosetAux xs
 
-kClosetAux :: [(Coord)] -> [(Coord, Int)]
+kClosetAux :: [(Coord)] -> [(Coord, Float)]
 kClosetAux xs = sortBy (\(_, d1) (_, d2) -> compare d1 d2) xsWithDist
-    where xsWithDist = map (\(x,y) -> ((x,y), (x^2 + y^2))) xs
+    where xsWithDist = 
+            map (\(x,y) -> ((x,y), sqrt(fromIntegral x**2 + fromIntegral y**2))) xs
 
 -- use distance as the key, and add coords to values.
 -- choice top k key, then find top k elements
