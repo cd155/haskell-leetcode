@@ -1,8 +1,9 @@
 module WeekThree where
 
-import WeekOne
+import WeekOne hiding (convToDict, convToDictHelper)
 import Data.Maybe
 import Data.List
+import qualified Data.Map as M
 
 {-
     26. Insert Interval
@@ -142,12 +143,12 @@ fillNothingAux (x: xs) = (Nothing): fillNothingAux xs
 
     The distance calculated based on the Euclidean distance.
 
-    kCloset 1 [(1,3),(-2,2)]
-    kCloset 2 [(3,3),(5,-1),(-2,4)]
+    kCloset 1 [(1,3),(-2,2)]        -> [(-2,2)]
+    kCloset 2 [(3,3),(5,-1),(-2,4)] -> [(3,3),(-2,4)]
 -}
 
 -- calculate all the distance, then sort them based on distance, 
--- then select top k elements
+-- then select top k elements, O(n log(n)), O(n) in space
 kCloset :: Nat -> [Coord] -> [Coord]
 kCloset k xs = map (\(x,_) -> x) topKs
     where topKs = take k $ kClosetAux xs
@@ -160,8 +161,28 @@ kCloset k xs = map (\(x,_) -> x) topKs
 -} 
 kClosetAux :: [(Coord)] -> [(Coord, Float)]
 kClosetAux xs = sortBy (\(_, d1) (_, d2) -> compare d1 d2) xsWithDist
-    where xsWithDist = 
-            map (\(x,y) -> ((x,y), sqrt(fromIntegral x**2 + fromIntegral y**2))) xs
+    where xsWithDist = map (\(x,y) -> ((x,y), distance x y)) xs
+          distance x y = sqrt(fromIntegral x**2 + fromIntegral y**2)
 
 -- use distance as the key, and add coords to values.
--- choice top k key, then find top k elements
+-- choice top k key, then find top k elements, O(n) in time, O(n) in space
+kCloset' :: Nat -> [Coord] -> [Coord]
+kCloset' k xs = take k (concatVal topKsPot [] dict)
+    where dict = convToDict xs 
+          topKsPot = take k (M.keys(dict))
+
+concatVal :: Ord a => [a] -> [b] -> M.Map a [b] -> [b]
+concatVal [] acc _ = acc
+concatVal (k:ks) acc dict = concatVal ks (acc++v) dict
+    where Just v = M.lookup k dict
+
+convToDict xs = convToDictHelper xs M.empty mySqrt
+
+-- generic method convert a list to a dictionary
+convToDictHelper :: Ord k => [a] -> M.Map k [a] -> (a -> k) -> M.Map k [a]
+convToDictHelper [] dict _ = dict
+convToDictHelper (x:xs) dict f
+    | (f x) `M.member` dict = convToDictHelper xs (M.insertWith (++) (f x) [x] dict) f
+    | otherwise = convToDictHelper xs (M.insert (f x) [x] dict) f
+
+mySqrt (x,y) = sqrt(fromIntegral x**2 + fromIntegral y**2)
