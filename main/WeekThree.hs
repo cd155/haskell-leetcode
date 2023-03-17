@@ -192,4 +192,10 @@ mySqrt (x,y) = sqrt(fromIntegral x**2 + fromIntegral y**2)
 
     Given a string s, find the length of the longest substring without repeating 
     characters.
+
+    Test Cases:
+
+    "abcabcbb"  -> 3, because "abc"
+    "bbbbb"     -> 1, because "b"
+    "pwwkew"    -> 3, because "wke"
 -}
