@@ -152,6 +152,12 @@ kCloset :: Nat -> [Coord] -> [Coord]
 kCloset k xs = map (\(x,_) -> x) topKs
     where topKs = take k $ kClosetAux xs
 
+{-
+    improvement: 
+    in this case we do not necessary to calculate the square root of (x^2 + y^2). 
+    Since we use compare, and all result be square root, by transitivity, 
+    all the sort order should remain the same with just (x^2 + y^2)
+-} 
 kClosetAux :: [(Coord)] -> [(Coord, Float)]
 kClosetAux xs = sortBy (\(_, d1) (_, d2) -> compare d1 d2) xsWithDist
     where xsWithDist = 
