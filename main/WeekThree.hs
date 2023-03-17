@@ -186,3 +186,10 @@ convToDictHelper (x:xs) dict f
     | otherwise = convToDictHelper xs (M.insert (f x) [x] dict) f
 
 mySqrt (x,y) = sqrt(fromIntegral x**2 + fromIntegral y**2)
+
+{-
+    29. Longest Substring Without Repeating Characters
+
+    Given a string s, find the length of the longest substring without repeating 
+    characters.
+-}
