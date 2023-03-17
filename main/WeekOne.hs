@@ -66,10 +66,10 @@ twoSumHashHelper (x:xs) tar dict
           Just indY = M.lookup y dict
 
 -- convert list to a hash table with indexes as values
-convToDict :: [Integer] -> M.Map Integer [Nat]
+convToDict :: (Ord a, Num b) => [a] -> M.Map a [b]
 convToDict xs = convToDictHelper xs M.empty 0
 
-convToDictHelper :: [Integer] -> M.Map Integer [Nat] -> Nat -> M.Map Integer [Nat]
+convToDictHelper :: (Ord a, Num b) => [a] -> M.Map a [b] -> b -> M.Map a [b]
 convToDictHelper [] dict _ = dict
 convToDictHelper (x:xs) dict i
     | x `M.member` dict = convToDictHelper xs (M.insertWith (++) x [i] dict) (i+1)
