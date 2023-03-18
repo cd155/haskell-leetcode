@@ -213,3 +213,20 @@ longestSubStrLen [] _ = 0
 longestSubStrLen (x:xs) dict
     | x `M.member` dict = 0
     | otherwise = 1 + longestSubStrLen xs (M.insert x (1) dict)
+
+{-
+    30. 3Sum
+
+    Given an array [Int], return all tuple [(array!!i, array!!j, array!!k)] 
+    such that  i != j, i != k, and j != k, and i+j+k == 0.
+
+    Notice that the solution set must not contain duplicate triplets.
+
+    (a variety of the two sum question the problem can be solved with the two sum solution.)
+
+    Test Cases: 
+
+    threeSum [-1,0,1,2,-1,-4]   -> [(-1,-1,2),(-1,0,1)]
+    threeSum [0,1,1]            -> []
+    threeSum [0,0,0]            -> [(0,0,0)]
+-}
