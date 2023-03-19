@@ -230,3 +230,12 @@ longestSubStrLen (x:xs) dict
     threeSum [0,1,1]            -> []
     threeSum [0,0,0]            -> [(0,0,0)]
 -}
+
+threeSum :: [Int] -> [(Int,Int,Int)]
+threeSum [] = []
+threeSum (x:xs) = 
+    case twoSums of 
+        [] -> threeSum xs
+        xs -> map (\(y,z) -> (x,y,z)) xs
+    where mirror = negate x
+          twoSums = twoPair xs mirror
