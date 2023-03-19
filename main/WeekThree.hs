@@ -236,6 +236,6 @@ threeSum [] = []
 threeSum (x:xs) = 
     case twoSums of 
         [] -> threeSum xs
-        xs -> map (\(y,z) -> (x,y,z)) xs
+        xs' -> (map (\(y,z) -> (x,y,z)) xs') ++ threeSum xs
     where mirror = negate x
           twoSums = twoPair xs mirror
