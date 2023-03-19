@@ -12,6 +12,10 @@ import Data.Char
     and you may not use the same element twice.
 
     You can return the answer in any order.
+
+    Test Case: 
+    twoSumHash [2,7,11,15] 9 -> (0,1)
+    twoPair [2,7,11,15] 9 -> [(2,7)]
 -}
 
 -- Natural number
@@ -78,18 +82,19 @@ convToDictHelper (x:xs) dict i
 -- Various version of two sum questions
 -- return list of pair version, can have duplicate
 twoPair :: [Int] -> Int -> [(Int, Int)]
-twoPair xs target = twoPairAux (M.elems myDict) myDict target
+twoPair xs target = twoPairAux (M.keys myDict) myDict target []
     where myDict = convertInputToDict xs M.empty
 
-twoPairAux :: [Int] -> M.Map Int Int -> Int -> [(Int, Int)]
-twoPairAux [] _ _ = []
-twoPairAux (x:xs) dict tar
+twoPairAux :: [Int] -> M.Map Int Int -> Int -> [Int]-> [(Int, Int)]
+twoPairAux [] _ _ _ = []
+twoPairAux (x:xs) dict tar visited
+    | x `elem` visited = twoPairAux xs dict tar visited
     | x == rest = 
         if v > 1 
-        then (x, rest): (twoPairAux xs dict tar)
-        else (twoPairAux xs dict tar)
-    | rest `M.member` dict = (x,rest): (twoPairAux xs dict tar)
-    | otherwise = (twoPairAux xs dict tar)
+        then (x, rest): (twoPairAux xs dict tar (rest:visited))
+        else (twoPairAux xs dict tar visited)
+    | rest `M.member` dict = (x,rest): (twoPairAux xs dict tar (rest:visited))
+    | otherwise = (twoPairAux xs dict tar visited)
     where rest = tar - x
           Just v = M.lookup x dict
 
