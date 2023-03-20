@@ -230,7 +230,6 @@ longestSubStrLen (x:xs) dict
     threeSum [0,1,1]            -> []
     threeSum [0,0,0]            -> [(0,0,0)]
 -}
-
 threeSum :: [Int] -> [(Int,Int,Int)]
 threeSum [] = []
 threeSum (x:xs) = 
@@ -239,3 +238,38 @@ threeSum (x:xs) =
         xs' -> (map (\(y,z) -> (x,y,z)) xs') ++ threeSum xs
     where mirror = negate x
           twoSums = twoPair xs mirror
+
+{-
+    31. Binary Tree Level Order Traversal
+
+    Given the root of a binary tree, 
+    return the level order traversal of its nodes' values.
+
+    Note: 
+    the level order traversal is a traversal base on the level of nodes
+
+    Test Cases:
+
+    levelOrderOf tree1 -> [[1],[2,3],[4]]
+    levelOrderOf tree3 -> [[6],[2,8],[0,4,7,9],[3,5]]
+-}
+levelOrderOf :: BiTree a -> [[a]]
+levelOrderOf tr = levelOrderOfAux [tr]
+
+levelOrderOfAux :: [BiTree a] -> [[a]]
+levelOrderOfAux xs = 
+    case levelOrders of 
+        [] -> []
+        _  -> (valOfTrees xs): levelOrderOfAux nextXs
+    where levelOrders = valOfTrees xs
+          nextXs = nextLevel xs
+
+valOfTrees :: [BiTree a] -> [a]
+valOfTrees [] = []
+valOfTrees (Empty':xs) = valOfTrees xs
+valOfTrees (Node' a _:xs) = a: valOfTrees xs
+
+nextLevel :: [BiTree a] -> [BiTree a]
+nextLevel [] = []
+nextLevel (Empty':xs) = nextLevel xs
+nextLevel (Node' _ (left, right):xs) = left: right: nextLevel xs
