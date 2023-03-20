@@ -281,3 +281,26 @@ nextLevel (Node' _ (left, right):xs) = left: right: nextLevel xs
 
     Return a deep copy (clone) of the graph.
 -}
+graph1 = Node'' 1 [Node'' 2 [Node'' 5 [], Node'' 6 []], Node'' 3 [], Node'' 4 []]
+
+-- not good to represent a graph, better use nodes and edges
+data Graph a = Node'' a [Graph a] deriving Show
+
+clone :: Graph a -> Graph a
+clone (Node'' v []) = Node'' v []
+clone (Node'' v xs) = Node'' v (map clone xs)
+
+{-
+    33. Evaluate Reverse Polish Notation
+
+    You are given an array of strings tokens that represents an arithmetic 
+    expression in a Reverse Polish Notation.
+
+    Evaluate the expression. Return an integer that represents the value of the 
+    expression
+
+    Reverse Polish Notation aka simply postfix notation
+    prefix:     + 3 4
+    infix:      3 + 4
+    postfix:    3 4 +
+-}
