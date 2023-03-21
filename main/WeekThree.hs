@@ -303,4 +303,35 @@ clone (Node'' v xs) = Node'' v (map clone xs)
     prefix:     + 3 4
     infix:      3 + 4
     postfix:    3 4 +
+
+    Test Cases:
+
+    evalPostfix ["2","1","+","3","*"] -> 9
+    evalPostfix ["4","13","5","/","+"] -> 6
+    evalPostfix ["10","6","9","3","+","-11","*","/","*","17","+","5","+"] -> 22
 -}
+operator :: Integral a => String -> a -> a -> a
+operator op 
+    | op == "+" = (+)
+    | op == "-" = (-)
+    | op == "*" = (*)
+    | op == "/" = (\_ _ -> 0) -- division truncates to zero
+    | otherwise  = error "Unrecognized operator"
+
+operators = ["+", "-", "*", "/"]
+
+evalPostfix :: [String] -> Int
+evalPostfix xs = evalPostfixAux xs []
+
+evalPostfixAux :: [String] -> [String] -> Int
+evalPostfixAux [x] _ = strToInt x
+evalPostfixAux (x1:x2:op:xs) pre
+    | op `elem` operators = evalPostfixAux (newStr) []
+    | otherwise = evalPostfixAux (x2:op:xs) (pre++[x1])
+    where arithmeticOp = operator op
+          value = (strToInt x1) `arithmeticOp` (strToInt x2) 
+          newStr = pre ++ show value: xs
+evalPostfixAux _ _ = error "Invalid arithmetic expression"
+
+strToInt :: String -> Int
+strToInt xs = read xs :: Int
