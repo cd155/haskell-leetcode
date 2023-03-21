@@ -59,6 +59,23 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 32. Clone Graph                                     Medium 25 mins
 33. Evaluate Reverse Polish Notation                Medium 30 mins
 
-(Week 3 Completed on Pending)
+(Week 3 Completed on March 20th, 2023)
+
+---
+
+(Week 4 started on March 21st, 2023)
+
+[Week4](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekFour.hs)
+
+34. Course Schedule                 Medium·30 mins
+35. Implement Trie (Prefix Tree)    Medium·35 mins
+36. Coin Change                     Medium·25 mins
+37. Product of Array Except Self    Medium·30 mins
+38. Min Stack                       Medium·20 mins
+39. Validate Binary Search Tree     Medium·20 mins
+40. Number of Islands               Medium·25 mins
+41. Rotting Oranges                 Medium·30 mins
+
+(Week 4 Completed on Pending)
 
 ---
