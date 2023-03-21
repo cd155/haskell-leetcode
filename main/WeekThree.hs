@@ -308,18 +308,19 @@ clone (Node'' v xs) = Node'' v (map clone xs)
 
     evalPostfix ["2","1","+","3","*"] -> 9
     evalPostfix ["4","13","5","/","+"] -> 6
-    evalPostfix ["10","6","9","3","+","-11","*","/","*","17","+","5","+"] -> 22
+    evalPostfix ["10","6","9","3","+","-11","*","/","*","17","+","5","+"] -> 12
 -}
 operator :: Integral a => String -> a -> a -> a
 operator op 
     | op == "+" = (+)
     | op == "-" = (-)
     | op == "*" = (*)
-    | op == "/" = (\_ _ -> 0) -- division truncates to zero
+    | op == "/" = div
     | otherwise  = error "Unrecognized operator"
 
 operators = ["+", "-", "*", "/"]
 
+-- iteration version
 evalPostfix :: [String] -> Int
 evalPostfix xs = evalPostfixAux xs []
 
@@ -335,3 +336,17 @@ evalPostfixAux _ _ = error "Invalid arithmetic expression"
 
 strToInt :: String -> Int
 strToInt xs = read xs :: Int
+
+-- stack version
+evalPostfix' :: [String] -> Int
+evalPostfix' xs = evalPostfix'Aux xs []
+
+evalPostfix'Aux :: [String] -> [String] -> Int
+evalPostfix'Aux [] st = strToInt $ head st
+evalPostfix'Aux (x:xs) st
+    | x `elem` operators = evalPostfix'Aux xs newStack
+    | otherwise = evalPostfix'Aux xs (x:st)
+    where arithmeticOp = operator x
+          left = strToInt (head (tail st))
+          right = strToInt (head st)
+          newStack = show (left `arithmeticOp` right): (tail $ tail st)
