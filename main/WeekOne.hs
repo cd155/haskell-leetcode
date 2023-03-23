@@ -465,14 +465,14 @@ tree3 = Node' 6
         (Node' 7 (Empty', Empty'), Node' 9 (Empty', Empty')))
 
 -- left, mid, right
-preOrder :: BiTree a -> [a]
-preOrder Empty' = []
-preOrder (Node' a (left, right)) = preOrder left ++ [a] ++ preOrder right
-
--- mid, left, right
 inOrder :: BiTree a -> [a]
 inOrder Empty' = []
-inOrder (Node' a (left, right)) = [a] ++ inOrder left ++ inOrder right
+inOrder (Node' a (left, right)) = inOrder left ++ [a] ++ inOrder right
+
+-- mid, left, right, Depth search
+preOrder :: BiTree a -> [a]
+preOrder Empty' = []
+preOrder (Node' a (left, right)) = [a] ++ preOrder left ++ preOrder right
 
 -- left, right, mid
 postOrder :: BiTree a -> [a]
