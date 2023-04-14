@@ -109,4 +109,68 @@ topoSortAux ps (x:xs) visited =
     (i.e., was inserted before), and false otherwise.
   - boolean startsWith(String prefix) 
     Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+  
+  Test Case:
+  1. insert "many", "my", "lie", "a" into emptyTrie
+    insertTrie "a" (insertTrie "lie" (insertTrie "my" (insertTrie "many" emptyTrie)))  
+      ->
+    [Node 'a' [Empty],
+     Node 'l' [Node 'i' [Node 'e' [Empty]]],
+     Node 'm' [Node 'y' [Empty],
+               Node 'a' [Node 'n' [Node 'y' [Empty]]]
+              ]
+    ]
+
+  2. search "man" trie -> False
+     startsWith "man" trie -> True
 -}
+
+data Trie a = Empty | Start [Trie a] | Node a [Trie a] deriving (Show)
+
+instance Eq a => Eq (Trie a) where
+  Empty == Empty = True
+  Start xs == Start ys = xs == ys
+  Node x xs == Node y ys = x == y && xs == ys
+  _ == _ = False
+
+emptyTrie = Start []
+
+insertTrie :: Eq a => [a] -> Trie a -> Trie a
+insertTrie [] t = t
+insertTrie (x:xs) Empty = Node x [insertTrie xs Empty]
+insertTrie (x:xs) (Start ys) 
+  | isNewBranchNeed = Start ((insertTrie (x:xs) Empty):ys)
+  | otherwise = Start $ map (insertTrie (x:xs)) ys
+  where isNewBranchNeed = x `notElem` map (\(Node v _) -> v) ys
+insertTrie (x:xs) (Node v ys)
+  | x == v && null xs = (Node v (Empty:ys))
+  | x == v && not (null xs) =
+    if isNewBranchNeed then 
+      Node v (insertTrie xs Empty:ys)
+    else
+      Node v $ map (insertTrie xs) ys
+  | otherwise = Node v ys
+  where isNewBranchNeed = head xs `notElem` map (\(Node v _) -> v) ys
+
+search :: Eq a => [a] -> Trie a -> Bool
+search xs t = searchWithFunc xs t (Empty `elem`)
+
+startsWith :: Eq a => [a] -> Trie a -> Bool
+startsWith xs t = searchWithFunc xs t (\x -> True)
+
+{-
+  Generic function pass a function to searchAuxWithFunc,
+  to distinguish the difference between search and startWith
+-}
+searchWithFunc :: Eq a => [a] -> Trie a -> ([Trie a] -> Bool) -> Bool
+searchWithFunc [] _ _ = False
+searchWithFunc xs Empty _ = False
+searchWithFunc xs (Start ys) f = searchAuxWithFunc xs ys f
+searchWithFunc (x:xs) (Node y ys) f = x == y && searchAuxWithFunc xs ys f
+
+searchAuxWithFunc :: Eq a => [a] -> [Trie a] -> ([Trie a] -> Bool) -> Bool
+searchAuxWithFunc _ [] _ = False
+searchAuxWithFunc [] xs f = f xs
+searchAuxWithFunc (x:xs) ((Node y next):ys) f = 
+  if x == y then searchAuxWithFunc xs next f else searchAuxWithFunc (x:xs) ys f
+searchAuxWithFunc _ _ _ = False
