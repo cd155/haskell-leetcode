@@ -174,3 +174,14 @@ searchAuxWithFunc [] xs f = f xs
 searchAuxWithFunc (x:xs) ((Node y next):ys) f = 
   if x == y then searchAuxWithFunc xs next f else searchAuxWithFunc (x:xs) ys f
 searchAuxWithFunc _ _ _ = False
+
+{-
+  36. Coin Change
+
+  You are given an integer array coins representing coins of different denominations 
+  and an integer amount representing a total amount of money.
+
+  Find the fewest number of coins that you need to make up that amount.
+  
+  What if you have limit supply of coins?
+-}
