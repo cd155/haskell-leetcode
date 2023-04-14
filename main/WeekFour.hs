@@ -34,14 +34,14 @@ preNonCycle2 = [('a','d')]
 preCycle1 = [('a','b'), ('b','c'), ('c','a'), ('a','f'), ('f','d'), ('e','a')]
 preCycle2 = [('a','a')]
 
--- use number to represent class
+-- Use number to represent class
 type Class = Char
 
 type Prereq = (Class, Class)
 
 type Graph = ([Class], [Prereq])
 
--- visit all node in a undirected graph
+-- Visit all node in a undirected graph
 undirDepthFirst :: Graph -> [Class]
 undirDepthFirst ([],_) = []
 undirDepthFirst (v,e) = undirdepthFirstAux e [head v] []
@@ -57,7 +57,7 @@ undirdepthFirstAux ps (x:xs) visited = x: undirdepthFirstAux ps (adjacencies ++ 
           possClasses = map (\(x',y') -> if x' == x then y' else x') possEdges
           possEdges   = filter (\(x'',y'') -> x'' == x || y'' == x) ps
 
--- detect cycle in a direct graph
+-- Detect cycle in a direct graph
 isCycleGraph :: Graph -> Bool
 isCycleGraph ([],_) = False
 isCycleGraph (v,e) = isCycleGraphAux e (head v) [head v]
@@ -70,11 +70,12 @@ isCycleGraphAux ps cur path =
       (map (\x -> if x `elem` path then True else isCycleGraphAux ps x (path++[x])) xs)
   where adjacencies = map snd (filter (\(x',_) -> x' == cur) ps)
 
--- visit all node in a directed graph
+-- Sort the graph topologically
 topoSort :: Graph -> [Class]
 topoSort ([],_) = []
 topoSort (v,e) = topoSortWeaver (v,e) []
 
+-- Track all nodes be visited
 topoSortWeaver :: Graph -> [Class] -> [Class]
 topoSortWeaver (v,e) visited
   | null diffs = visited
@@ -82,6 +83,7 @@ topoSortWeaver (v,e) visited
   where newVisited = topoSortAux e [head diffs] visited
         diffs = v \\ visited 
 
+-- Create a partial topological order for the selected node
 topoSortAux :: [Prereq] -> [Class] -> [Class] -> [Class]
 topoSortAux _ [] visited = visited
 topoSortAux ps (x:xs) visited =
@@ -90,4 +92,3 @@ topoSortAux ps (x:xs) visited =
     _  -> topoSortAux ps (adjacencies ++ (x:xs)) (visited)
   where adjacencies = filter (\z -> z `notElem` visited && z `notElem` (x:xs)) possClasses
         possClasses = map snd (filter (\(x',_) -> x' == x) ps)
-
