@@ -1,5 +1,7 @@
 module WeekFour where
 
+import Data.List
+
 {-
   34. Course Schedule
 
@@ -13,13 +15,16 @@ module WeekFour where
 
   Test Cases:
     1. Check wether you can finish all courses
-      (assume it is just one connected graph)
+      ( assume it is just one connected graph )
       isCycleGraph $ g preNonCycle1 -> False
       isCycleGraph $ g preNonCycle2 -> False
       isCycleGraph $ g preCycle1    -> True
       isCycleGraph $ g preCycle2    -> True
   
     2. List a path how to finish all course
+      ( assume there is no cycle in the graph )
+      topoSort $ g preNonCycle1 = "febadc"
+      topoSort $ g preNonCycle2 = "fecbad"
 -}
 
 g x = (classes, x)
@@ -66,5 +71,23 @@ isCycleGraphAux ps cur path =
   where adjacencies = map snd (filter (\(x',_) -> x' == cur) ps)
 
 -- visit all node in a directed graph
-dirDepthFirst :: Graph -> [Class]
-dirDepthFirst = error "Not Implement"
+topoSort :: Graph -> [Class]
+topoSort ([],_) = []
+topoSort (v,e) = topoSortWeaver (v,e) []
+
+topoSortWeaver :: Graph -> [Class] -> [Class]
+topoSortWeaver (v,e) visited
+  | null diffs = visited
+  | otherwise = topoSortWeaver (v,e) newVisited
+  where newVisited = topoSortAux e [head diffs] visited
+        diffs = v \\ visited 
+
+topoSortAux :: [Prereq] -> [Class] -> [Class] -> [Class]
+topoSortAux _ [] visited = visited
+topoSortAux ps (x:xs) visited =
+  case adjacencies of
+    [] -> topoSortAux ps xs (x:visited)
+    _  -> topoSortAux ps (adjacencies ++ (x:xs)) (visited)
+  where adjacencies = filter (\z -> z `notElem` visited && z `notElem` (x:xs)) possClasses
+        possClasses = map snd (filter (\(x',_) -> x' == x) ps)
+
