@@ -92,3 +92,21 @@ topoSortAux ps (x:xs) visited =
     _  -> topoSortAux ps (adjacencies ++ (x:xs)) (visited)
   where adjacencies = filter (\z -> z `notElem` visited && z `notElem` (x:xs)) possClasses
         possClasses = map snd (filter (\(x',_) -> x' == x) ps)
+
+{-
+  35. Implement Trie (Prefix Tree)
+
+  A trie (pronounced as "try") or prefix tree is a tree data structure 
+  used to efficiently store and retrieve keys in a dataset of strings.
+  There are various applications of this data structure, such as autocomplete
+  and spellchecker.
+
+  Implement the Trie class:
+
+  - insert(String word) Inserts the string word into the trie.
+  - boolean search(String word) 
+    Returns true if the string word is in the trie 
+    (i.e., was inserted before), and false otherwise.
+  - boolean startsWith(String prefix) 
+    Returns true if there is a previously inserted string word that has the prefix prefix, and false otherwise.
+-}
