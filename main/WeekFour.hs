@@ -182,6 +182,36 @@ searchAuxWithFunc _ _ _ = False
   and an integer amount representing a total amount of money.
 
   Find the fewest number of coins that you need to make up that amount.
-  
-  What if you have limit supply of coins?
+  1. Assume your have unlimited supply
+  2. What if you have limit supply of coins?
 -}
+
+-- sorted in an ascending order
+supply :: [Int] 
+supply = [100,50,20,10,5,1]
+
+type Exchange = [Int]
+type FaceValue = [Int]
+
+{-
+  greed algorithm:
+
+  choose the largest face value first, add to exchange
+    if exchange = target, output exchange
+    else if exchange < target, 
+      add the largest value of current face value to exchange
+    else if exchange > target
+      remove the largest value in face values,
+      add the largest value of new face values to exchange
+    else if we run out of face values
+      the amount can not be exchange on current supply
+-}
+cashier :: FaceValue -> Int -> Exchange
+cashier fv t = cashierAux fv t []
+
+cashierAux :: FaceValue -> Int -> Exchange -> Exchange
+cashierAux [] _ _ = error "No exchange for this amount"
+cashierAux fv t ex
+  | sum ex == t = ex
+  | sum ex < t = cashierAux fv t ((head fv): ex)
+  | sum ex > t = cashierAux (tail fv) t ((head $ tail fv): tail ex)
