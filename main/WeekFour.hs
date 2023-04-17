@@ -184,6 +184,7 @@ searchAuxWithFunc _ _ _ = False
   Find the fewest number of coins that you need to make up that amount.
   1. Assume your have unlimited supply
   2. What if you have limit supply of coins?
+    The implementation of this part 2 should be fairly similar to part 1.
 -}
 
 -- sorted in an ascending order
