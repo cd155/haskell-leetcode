@@ -250,7 +250,8 @@ suffix arr = reverse $ prefix (reverse arr) Nothing
 
 -- prefix and suffix with only one array instead of two arrays
 productArrayOnePart :: [Int] -> [Int]
-productArrayOnePart xs = reverse $ suffixMultiply (reverse xs) (reverse (prefix xs Nothing)) Nothing
+productArrayOnePart xs = reverse 
+  $ suffixMultiply (reverse xs) (reverse (prefix xs Nothing)) Nothing
 
 suffixMultiply :: [Int] -> [Int] -> Maybe Int -> [Int]
 suffixMultiply [] _ _ = []
@@ -259,3 +260,17 @@ suffixMultiply (x:xs) (y:ys) acc =
   case acc of
     Nothing -> suffixMultiply (x:xs) (y:ys) (Just 1)
     Just n -> (n*y): suffixMultiply (xs) (ys) (Just (n*x))
+
+{-
+  38. Min Stack
+
+  Design a stack that supports push, pop, top, and retrieving the minimum 
+  element in constant time.
+
+  Implement the MinStack class:
+  - push: pushes the element val onto the stack.
+  - pop: removes the element on the top of the stack.
+  - top: gets the top element of the stack.
+  - min: retrieves the minimum element in the stack.
+  You must implement a solution with O(1) time complexity for each function.
+-}
