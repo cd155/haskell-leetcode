@@ -216,3 +216,46 @@ cashierAux fv t ex
   | sum ex == t = ex
   | sum ex < t = cashierAux fv t ((head fv): ex)
   | sum ex > t = cashierAux (tail fv) t ((head $ tail fv): tail ex)
+
+{-
+  37. Product of Array Except Self
+
+  Given an array of numbers, return an array that each element is products of 
+  the rest of array of numbers.
+
+  You must write an algorithm that runs in O(n) time and without using the 
+  division operation.
+
+  [1,2,3,4,5] -> [120,60,40,30,24]
+-}
+
+-- with division operation
+productArrayDivide :: [Int] -> [Int]
+productArrayDivide arr = map (product `div`) arr
+  where product = foldl (*) 1 arr
+
+-- with prefix and suffix
+productArrayTwoParts :: [Int] -> [Int]
+productArrayTwoParts xs = zipWith (*) pref suff
+  where pref = prefix xs Nothing
+        suff = suffix xs
+
+prefix :: [Int] -> Maybe Int -> [Int]
+prefix [] _ = []
+prefix (x:xs) Nothing = 1: (prefix xs (Just x))
+prefix (x:xs) (Just n) = n: (prefix xs (Just (x*n)))
+
+suffix :: [Int] -> [Int]
+suffix arr = reverse $ prefix (reverse arr) Nothing
+
+-- prefix and suffix with only one array instead of two arrays
+productArrayOnePart :: [Int] -> [Int]
+productArrayOnePart xs = reverse $ suffixMultiply (reverse xs) (reverse (prefix xs Nothing)) Nothing
+
+suffixMultiply :: [Int] -> [Int] -> Maybe Int -> [Int]
+suffixMultiply [] _ _ = []
+suffixMultiply _ [] _ = []
+suffixMultiply (x:xs) (y:ys) acc =
+  case acc of
+    Nothing -> suffixMultiply (x:xs) (y:ys) (Just 1)
+    Just n -> (n*y): suffixMultiply (xs) (ys) (Just (n*x))
