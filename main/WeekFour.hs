@@ -1,6 +1,7 @@
 module WeekFour where
 
 import Data.List
+import WeekOne (BiTree (Empty', Node'))
 
 {-
   34. Course Schedule
@@ -310,3 +311,22 @@ top (Stack _ xs _) = head xs
 stackMin :: MinStack a -> a
 stackMin (Stack Nothing _ _) = error "empty stack"
 stackMin (Stack (Just m) _ _) = m
+
+{-
+  39. Validate Binary Search Tree
+
+  Given the root of a binary tree, determine if it is a binary search tree.
+
+  Binary search tree (BST): is a binary tree data structure with the key of 
+  each internal node being greater than all the keys in the respective node's 
+  left subtree and less than the ones in its right subtree.
+-}
+
+isBinSearchTree :: Ord a => BiTree a -> Bool
+isBinSearchTree Empty' = True
+isBinSearchTree (Node' n (l,r)) = 
+  isBinSearchTreeAux n l (<=) && isBinSearchTreeAux n r (>)
+
+isBinSearchTreeAux x Empty' f = True
+isBinSearchTreeAux x (Node' n (l,r)) f = 
+  (f x n) && isBinSearchTree l && isBinSearchTree r
