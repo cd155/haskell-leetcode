@@ -273,4 +273,40 @@ suffixMultiply (x:xs) (y:ys) acc =
   - top: gets the top element of the stack.
   - min: retrieves the minimum element in the stack.
   You must implement a solution with O(1) time complexity for each function.
+
+  Test case
+  1. push [5,3,7,1,1] sequentially into an emptyMinStack ->
+     Stack (Just 1) [1,1,7,3,5] [1,1,3,5]
 -}
+
+{-
+  Maybe a: store min value or Nothing
+  first [a]: regular stack
+  second [a]: stack keep values of used min
+-}
+data MinStack a = Stack (Maybe a) [a] [a] deriving (Show)
+
+emptyMinStack = Stack Nothing [] []
+
+push :: Ord a => a -> MinStack a -> MinStack a
+push n (Stack Nothing xs ys) = Stack (Just n) (n:xs) (n:ys)
+push n (Stack (Just m) xs ys)
+  | n <= m = Stack (Just n) (n:xs) (n:ys)
+  | otherwise = Stack (Just m) (n:xs) ys
+
+pop :: Ord a => MinStack a -> MinStack a
+pop (Stack Nothing _ _) = error "empty stack"
+pop (Stack (Just m) xs ys)
+  | m == head xs = 
+    if null nextMins then emptyMinStack 
+    else Stack (Just (head nextMins)) (tail xs) nextMins
+  | otherwise = Stack (Just m) (tail xs) ys
+  where nextMins = tail ys
+
+top :: MinStack a -> a
+top (Stack _ [] _) = error "empty stack"
+top (Stack _ xs _) = head xs
+
+stackMin :: MinStack a -> a
+stackMin (Stack Nothing _ _) = error "empty stack"
+stackMin (Stack (Just m) _ _) = m
