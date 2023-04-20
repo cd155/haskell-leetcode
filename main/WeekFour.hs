@@ -322,6 +322,18 @@ stackMin (Stack (Just m) _ _) = m
   left subtree and less than the ones in its right subtree.
 -}
 
+goodbst = 
+  Node' 3 (
+    Node' 1 (Empty',Empty'), 
+    Node' 5 (Node' 4 (Empty',Empty'), 
+             Node' 6 (Empty',Empty')))
+
+badbst =   
+  Node' 3 (
+    Node' 1 (Empty',Empty'), 
+    Node' 4 (Node' 5 (Empty',Empty'), 
+             Node' 6 (Empty',Empty')))
+
 isBinSearchTree :: Ord a => BiTree a -> Bool
 isBinSearchTree Empty' = True
 isBinSearchTree (Node' n (l,r)) = 
@@ -329,4 +341,4 @@ isBinSearchTree (Node' n (l,r)) =
 
 isBinSearchTreeAux x Empty' f = True
 isBinSearchTreeAux x (Node' n (l,r)) f = 
-  (f x n) && isBinSearchTree l && isBinSearchTree r
+  (f n x) && isBinSearchTreeAux n l (<=) && isBinSearchTreeAux n r (>)
