@@ -399,3 +399,13 @@ numIslandsAux g visited =
         numIslandsAux g ((findAreaInColor g [(r,c)] 0 []) ++ visited)
   where allCoords = coordsOf g
         diffs = allCoords \\ visited
+
+{-
+  41. Rotting Oranges
+
+  You are given an m x n grid where each cell can have one of three values:
+  empty cell, fresh orange, or rotten orange. Every minute, any fresh orange that 
+  is 4-directionally adjacent to a rotten orange becomes rotten.
+
+  Find how many minutes to make all oranges rotten.
+-}
