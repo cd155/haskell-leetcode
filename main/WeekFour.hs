@@ -1,7 +1,7 @@
 module WeekFour where
 
 import Data.List
-import WeekOne (BiTree (Empty', Node'))
+import WeekOne (BiTree (Empty', Node'), findAreaInColor)
 
 {-
   34. Course Schedule
@@ -339,6 +339,63 @@ isBinSearchTree Empty' = True
 isBinSearchTree (Node' n (l,r)) = 
   isBinSearchTreeAux n l (<=) && isBinSearchTreeAux n r (>)
 
-isBinSearchTreeAux x Empty' f = True
-isBinSearchTreeAux x (Node' n (l,r)) f = 
-  (f n x) && isBinSearchTreeAux n l (<=) && isBinSearchTreeAux n r (>)
+isBinSearchTreeAux n Empty' f = True
+isBinSearchTreeAux n (Node' n' (l,r)) f = 
+  (f n' n) && isBinSearchTreeAux n' l (<=) && isBinSearchTreeAux n' r (>)
+
+{-
+  40. Number of Islands
+
+  Given an m x n 2D binary grid which represents a map of '1's (land) and '0's 
+  (water), return the number of islands.
+
+  An island is surrounded by water and is formed by connecting adjacent lands 
+  horizontally or vertically. You may assume all four edges of the grid are all 
+  surrounded by water.
+  
+  Test Cases:
+  numIslands grid1 -> 1
+  numIslands grid2 -> 3
+-}
+
+type Grid = [[Int]] 
+
+grid1 :: Grid
+grid1 = [[1,1,1,1,0],
+         [1,1,0,1,0],
+         [1,1,0,0,0],
+         [0,0,0,0,0]]
+
+grid2 :: Grid
+grid2 = [[1,1,0,0,0],
+         [1,1,0,0,0],
+         [0,0,1,0,0],
+         [0,0,0,1,1]]
+
+-- create row by column matrix
+mBynMatrix :: Int -> Int -> a -> [[a]]
+mBynMatrix m n v = replicate m (replicate n v)
+
+-- all coordinates for the grid
+coordsOf :: Grid -> [(Int,Int)]
+coordsOf g = coordsOfAux g 0
+
+coordsOfAux :: Grid -> Int -> [(Int,Int)]
+coordsOfAux [] _ = []
+coordsOfAux (x:xs) r = (map (\x -> (r,x)) [0..(length x - 1)]) ++ coordsOfAux xs (r+1)
+
+numIslands :: Grid -> Int
+numIslands g = numIslandsAux g []
+
+-- use diffs to track which coordinates have not be visited
+numIslandsAux :: Grid -> [(Int,Int)] -> Int
+numIslandsAux g visited =
+  case diffs of
+    [] -> 0
+    (r,c):_ -> 
+      if g!!r!!c == 1 then
+        1 + numIslandsAux g ((findAreaInColor g [(r,c)] 1 []) ++ visited)
+      else
+        numIslandsAux g ((findAreaInColor g [(r,c)] 0 []) ++ visited)
+  where allCoords = coordsOf g
+        diffs = allCoords \\ visited
