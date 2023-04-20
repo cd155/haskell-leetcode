@@ -463,7 +463,8 @@ findAreaInColor img ((ph, pw) : ps) c dict
     h = length img
     w = length $ head img
     newDict = (ph, pw) : dict
-    newPs = ps ++ [(ph -1, pw), (ph + 1, pw), (ph, pw -1), (ph, pw + 1)]
+    newPs = (ph -1, pw): (ph + 1, pw): (ph, pw -1): (ph, pw + 1): ps
+    --newPs = ps ++ [(ph -1, pw), (ph + 1, pw), (ph, pw -1), (ph, pw + 1)]
 
 {-
   10. Lowest Common Ancestor of a Binary Search Tree
