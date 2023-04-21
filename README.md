@@ -8,16 +8,16 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 [Week 1](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekOne.hs)
 
 1. Two Sum	                                        Easy 15 mins
-2. Valid Parentheses	                            Easy 20 mins
-3. Merge Two Sorted Lists	                        Easy 20 mins
+2. Valid Parentheses	                              Easy 20 mins
+3. Merge Two Sorted Lists	                          Easy 20 mins
 4. Best Time to Buy and Sell Stock	                Easy 20 mins
 5. Valid Palindrome	                                Easy 15 mins
-6. Invert Binary Tree	                            Easy 15 mins
-7. Valid Anagram	                                Easy 15 mins
-8. Binary Search	                                Easy 15 mins
-9. Flood Fill	                                    Easy 20 mins
+6. Invert Binary Tree	                              Easy 15 mins
+7. Valid Anagram	                                  Easy 15 mins
+8. Binary Search	                                  Easy 15 mins
+9. Flood Fill	                                      Easy 20 mins
 10. Lowest Common Ancestor of a Binary Search Tree  Easy 20 mins
-11. Balanced Binary Tree	                        Easy 15 mins
+11. Balanced Binary Tree	                          Easy 15 mins
 12. Linked List Cycle                               Easy 20 mins
 13. Implement Queue using Stacks                    Easy 20 mins
 
@@ -29,7 +29,7 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week 2](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekTwo.hs)
 
-14. First Bad Version	            Easy	20 mins
+14. First Bad Version	              Easy	20 mins
 15. Ransom Note                     Easy	15 mins
 16. Climbing Stairs                 Easy	20 mins
 17. Longest Palindrome              Easy	20 mins
@@ -76,6 +76,23 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 40. Number of Islands               Medium·25 mins
 41. Rotting Oranges                 Medium·30 mins
 
-(Week 4 Completed on Pending)
+(Week 4 Completed on April 20th, 2023)
+
+---
+
+(Week 5 started on April 21st, 2023)
+
+[Week5](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekFive.hs)
+
+42. Search in Rotated Sorted Array            Medium·30 mins
+43. Combination Sum                           Medium·30 mins
+44. Permutations                              Medium·30 mins
+45. Merge Intervals                           Medium·30 mins
+46. Lowest Common Ancestor of a Binary Tree   Medium·25 mins
+47. Time Based Key-Value Store                Medium·35 mins
+48. Accounts Merge                            Medium·30 mins
+49. Sort Colors                               Medium·25 mins
+
+(Week 5 Completed on Pending)
 
 ---
