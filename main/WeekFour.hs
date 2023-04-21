@@ -1,7 +1,7 @@
 module WeekFour where
 
 import Data.List
-import WeekOne (BiTree (Empty', Node'), findAreaInColor)
+import WeekOne (BiTree (Empty', Node'), findAreaInColor, paint)
 
 {-
   34. Course Schedule
@@ -404,8 +404,61 @@ numIslandsAux g visited =
   41. Rotting Oranges
 
   You are given an m x n grid where each cell can have one of three values:
-  empty cell, fresh orange, or rotten orange. Every minute, any fresh orange that 
-  is 4-directionally adjacent to a rotten orange becomes rotten.
+  (0) empty cell, (1) fresh orange, or (2) rotten orange. Every minute, any fresh 
+  orange that is 4-directionally adjacent to a rotten orange becomes rotten.
 
   Find how many minutes to make all oranges rotten.
+
+  Test Cases:
+  countMins grid3 -> Just 4
+  countMins grid4 -> Nothing (some oranges never get rotten)
+  countMins grid5 -> Just 0
 -}
+
+{-
+  Grid: initial stage
+  [(Int,Int)]: list of rotten oranges
+  
+  return [(Int,Int)]: new rotten oranges
+-}
+
+grid3 :: Grid
+grid3 = [[2,1,1],
+         [1,1,0],
+         [0,1,1]]
+
+grid4 :: Grid
+grid4 = [[2,1,1],
+         [1,0,0],
+         [0,1,1]]
+
+grid5 :: Grid
+grid5 = [[2]]
+
+contacts :: Grid -> [(Int,Int)] -> [(Int,Int)]
+contacts g xs = nub 
+  (filter (\(r,c) -> r >= 0 && r < h && c >= 0 && c < w && g!!r!!c == 1) contactees)
+  where contactees = contactsAux g xs
+        h = length g
+        w = length $ head g
+
+contactsAux :: Grid -> [(Int,Int)] -> [(Int,Int)]
+contactsAux _ [] = []
+contactsAux g ((r,c) : xs) = 
+  (r -1, c): (r + 1, c): (r, c -1): (r, c + 1): contactsAux g xs
+
+countMins :: Grid -> Maybe Int
+countMins g 
+  | 1 `elem` concat newGrid = Nothing
+  | otherwise = Just (count - 1) -- this is how many steps between each computation
+  where (count, newGrid) = countMinsAux g coordsOfRotten
+        coordsOfRotten = 
+          foldl (\acc (r,c) -> if g!!r!!c == 2 then (r,c):acc else acc) [] (coordsOf g)
+
+countMinsAux :: Grid -> [(Int,Int)] -> (Int,Grid)
+countMinsAux g [] = (0,g)
+countMinsAux g xs = (1 + fst nextCountMinsAux, snd nextCountMinsAux)
+  where newContacts = contacts g xs
+        -- create new grid with newly rotten oranges
+        newG = foldl (\acc x -> paint acc x 2) g newContacts
+        nextCountMinsAux = countMinsAux newG newContacts
