@@ -75,3 +75,13 @@ combSumAux (x:xs) ys (target,max) acc =
           filter (\x -> sum x == target && length x <= max) allComb
         refineComb = 
           filter (\x -> sum x < target && length x <= max) allComb
+
+{-
+  44. Permutations
+
+  Given an array nums of distinct integers, return all the possible 
+  permutations. You can return the answer in any order.
+
+  Test Cases:
+  permutations [1,2,3] -> [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+-}
