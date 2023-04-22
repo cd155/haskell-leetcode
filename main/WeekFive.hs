@@ -87,7 +87,28 @@ combSumAux (x:xs) ys (target,max) acc =
   permutations [1,2,3] -> [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 -}
 
--- permutationsAux [[1]] [1,2,3] -> [[1,2,3],[1,3,2]]
-permutationsAux :: [[Int]] -> [Int] -> [[Int]]
-permutationsAux (x:xs) ys = error "Not Implement"
-  where allComb = map (\y -> if y `notElem` x then y:x else x) ys
+permutations :: [Int] -> [[Int]]
+permutations xs = permutationsAux xs xs
+
+{-
+  collect permutations with different start elements
+  first [Int]: for each permutation with different start
+  second [Int]: all possible elements of combinations
+-}
+permutationsAux :: [Int] -> [Int] -> [[Int]]
+permutationsAux [] _ = []
+permutationsAux (x:xs) ys = 
+  (permutationsWith [[x]] ys) ++ (permutationsAux xs ys)
+
+{-
+  all permutation with particular start
+  permutationsWith [[1]] [1,2,3] -> [[3,2,1],[2,3,1]]
+  permutationsWith [[2]] [1,2,3] -> [[3,1,2],[1,3,2]]
+-}
+permutationsWith :: [[Int]] -> [Int] -> [[Int]]
+permutationsWith [] ys = [] -- not design to have []
+permutationsWith (x:xs) ys
+  | length x == length ys = x:xs
+  | otherwise = permutationsWith (xs ++ allComb) ys
+  where allComb = filter (\x -> not (null x)) 
+          (map (\y -> if y `notElem` x then y:x else []) ys)
