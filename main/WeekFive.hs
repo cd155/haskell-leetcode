@@ -44,8 +44,8 @@ searchRotatedArrAux t xs
   chosen numbers equal to target.
 
   Test Cases
-  combSum (7,150) [2,3,6,7] -> [[2,2,3],[7]]
-  combSum (8,150) [2,3,5]   -> 
+  combSum (7,150) [2,3,6,7] -> [[3,2,2],[7]]
+  combSum (8,150) [2,3,5]   -> [[2,2,2,2],[3,3,2]]
 -}
 
 {-
@@ -59,12 +59,13 @@ searchRotatedArrAux t xs
 -}
 combSum :: (Int,Int) -> [Int] -> [[Int]]
 combSum _ [] = []
-combSum 
+combSum (target,max) (x:xs)
   | x == target = [[x]] ++ combSum (target,max) xs
   | otherwise = 
     combSumAux [[x]] (x:xs) (target,max) [] ++ combSum (target,max) xs
 
 -- continue refine combinations until they are no longer valid
+-- combSumAux [[2]] [2,3,5] (8,150) [] -> [[2,2,2,2],[3,3,2]]
 combSumAux :: [[Int]] -> [Int] -> (Int,Int) -> [[Int]] -> [[Int]]
 combSumAux [] _ _ acc = acc
 combSumAux (x:xs) ys (target,max) acc = 
@@ -85,3 +86,8 @@ combSumAux (x:xs) ys (target,max) acc =
   Test Cases:
   permutations [1,2,3] -> [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 -}
+
+-- permutationsAux [[1]] [1,2,3] -> [[1,2,3],[1,3,2]]
+permutationsAux :: [[Int]] -> [Int] -> [[Int]]
+permutationsAux (x:xs) ys = error "Not Implement"
+  where allComb = map (\y -> if y `notElem` x then y:x else x) ys
