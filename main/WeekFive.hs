@@ -6,6 +6,13 @@ module WeekFive where
   Given a sorted array of n integers that has been rotated with a unknown 
   pivot for one time, write code to find an element in the array. You may 
   assume that the array was originally sorted in increasing order.
+
+  Test Cases:
+  searchRotatedArr 6  [4,5,6,7,0,1,2] -> Just 2
+  searchRotatedArr 0  [4,5,6,7,0,1,2] -> Just 4
+  searchRotatedArr 10 [4,5,6,7,0,1,2] -> Nothing
+  searchRotatedArr 6  [6,1,2]         -> Just 0
+  searchRotatedArr 2  [6,1,2]         -> Just 2
 -}
 searchRotatedArr :: Ord a => a -> [a] -> Maybe Int
 searchRotatedArr _ [] = Nothing
