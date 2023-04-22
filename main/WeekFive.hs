@@ -35,3 +35,43 @@ searchRotatedArrAux t xs
       searchRotatedArrAux t l
   where mid = length xs `div` 2
         (l,r) = splitAt mid xs
+
+{-
+  43. Combination Sum
+
+  Given an array of distinct integers and a target integer, return a list 
+  of all unique combinations of elements in this array where sum of the 
+  chosen numbers equal to target.
+
+  Test Cases
+  combSum (7,150) [2,3,6,7] -> [[2,2,3],[7]]
+  combSum (8,150) [2,3,5]   -> 
+-}
+
+{-
+  find combination with first element + second element +...
+
+  target: the finding number
+  max: max length of the combinations
+  (x:xs): available elements
+
+  (assume max length of combination >= 1)
+-}
+combSum :: (Int,Int) -> [Int] -> [[Int]]
+combSum _ [] = []
+combSum 
+  | x == target = [[x]] ++ combSum (target,max) xs
+  | otherwise = 
+    combSumAux [[x]] (x:xs) (target,max) [] ++ combSum (target,max) xs
+
+-- continue refine combinations until they are no longer valid
+combSumAux :: [[Int]] -> [Int] -> (Int,Int) -> [[Int]] -> [[Int]]
+combSumAux [] _ _ acc = acc
+combSumAux (x:xs) ys (target,max) acc = 
+  combSumAux (xs ++ refineComb) ys (target,max) (readyAns++acc)
+  where goodPending = filter (>= head x) ys
+        allComb = (map (:x) goodPending)
+        readyAns = 
+          filter (\x -> sum x == target && length x <= max) allComb
+        refineComb = 
+          filter (\x -> sum x < target && length x <= max) allComb
