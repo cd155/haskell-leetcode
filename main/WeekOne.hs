@@ -478,7 +478,7 @@ findAreaInColor img ((ph, pw) : ps) c dict
   Test cases:
   findLCA tree3 2 8 => 6
   findLCA tree3 2 4 => 2
-  findLCA (Node' 2 (Empty', Node' 1 (Empty', Empty'))) 2 1 => 2
+  findLCA (Node' 2 (Empty', Node' 1 (Empty', Empty'))) 2 1 -> 2
 -}
 
 tree3 =
@@ -509,45 +509,43 @@ postOrder :: BiTree a -> [a]
 postOrder Empty' = []
 postOrder (Node' a (left, right)) = postOrder left ++ postOrder right ++ [a]
 
-preOrderDept :: BiTree a -> [Nat]
-preOrderDept xs = preOrderDepthHelper xs 0
+inOrderDepth :: BiTree a -> [Nat]
+inOrderDepth xs = inOrderDepthHelper xs 0
 
-preOrderDepthHelper :: BiTree a -> Nat -> [Nat]
-preOrderDepthHelper Empty' d = []
-preOrderDepthHelper (Node' a (left, right)) d =
-  preOrderDepthHelper left (d + 1) ++ [d] ++ preOrderDepthHelper right (d + 1)
+inOrderDepthHelper :: BiTree a -> Nat -> [Nat]
+inOrderDepthHelper Empty' d = []
+inOrderDepthHelper (Node' a (left, right)) d =
+  inOrderDepthHelper left (d + 1) ++ [d] ++ inOrderDepthHelper right (d + 1)
 
 index :: Eq a => [a] -> a -> Nat
 index [] _ = error "Element not existed"
 index xs t = if xs !! i == t then i else error "Element not existed"
-  where
-    i = (indexHelper xs t) -1
+  where i = indexHelper xs t
 
 indexHelper :: Eq a => [a] -> a -> Nat
 indexHelper [] _ = 0
 indexHelper (x : xs) t
-  | x == t = 1
+  | x == t = 0
   | otherwise = 1 + indexHelper xs t
 
 {-
   find the the lowest common ancestor(LCA) via range minimum query (RMQ)
 
-  1. have a pre-order list and a pre-order depth list
+  1. have a in-order list and a in-order depth list
   2. find the range we want do RMQ
   3. find the minimum depth
   4. find related node associated with the min depth
 -}
 findLCA :: Eq a => BiTree a -> a -> a -> a
-findLCA root n1 n2 = preOrderList !! (start + (index tailoredDepthList minDepth))
+findLCA root n1 n2 = inOrderList !! (start + (index subDepthList minDepth))
   where
-    preOrderList = preOrder root
-    preOrderDepthList = preOrderDept root
-    (start, end) =
-      ( min (index preOrderList n1) (index preOrderList n2),
-        max (index preOrderList n1) (index preOrderList n2)
-      )
-    tailoredDepthList = take (end - start + 1) (drop start preOrderDepthList)
-    minDepth = minimum tailoredDepthList
+    inOrderList = inOrder root
+    inOrderDepthList = inOrderDepth root
+    indexn1 = index inOrderList n1
+    indexn2 = index inOrderList n2
+    (start, end) = (min indexn1 indexn2, max indexn1 indexn2)
+    subDepthList = take (end - start + 1) (drop start inOrderDepthList)
+    minDepth = minimum subDepthList
 
 {-
   11. Balanced Binary Tree
