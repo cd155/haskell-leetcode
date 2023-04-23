@@ -532,9 +532,9 @@ indexHelper (x : xs) t
   find the the lowest common ancestor(LCA) via range minimum query (RMQ)
 
   1. have a in-order list and a in-order depth list
-  2. find the range we want do RMQ
-  3. find the minimum depth
-  4. find related node associated with the min depth
+  2. find the range in in-order list, perform RMQ in in-order depth list
+  3. find the minimum depth in in-order depth list
+  4. find related node associated with the min depth in in-order list
 -}
 findLCA :: Eq a => BiTree a -> a -> a -> a
 findLCA root n1 n2 = inOrderList !! (start + (index subDepthList minDepth))
