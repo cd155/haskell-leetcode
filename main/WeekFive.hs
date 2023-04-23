@@ -112,3 +112,25 @@ permutationsWith (x:xs) ys
   | otherwise = permutationsWith (xs ++ allComb) ys
   where allComb = filter (\x -> not (null x)) 
           (map (\y -> if y `notElem` x then y:x else []) ys)
+
+{-
+  45. Merge Intervals
+
+  Given an array of intervals, merge all overlapping intervals, and return 
+  an array of the non-overlapping intervals
+
+  Test Cases:
+  mergeIntervals [(1,3),(2,6),(8,10),(10,12),(15,18)] 
+    -> [(1,6),(8,12),(15,18)]
+  mergeIntervals [(1,4),(4,5)] -> [(1,5)]
+-}
+
+type Interval = (Int,Int)
+
+-- Assume the [Interval] is sorted ascending base on the start of Interval
+mergeIntervals :: [Interval] -> [Interval]
+mergeIntervals [] = []
+mergeIntervals [x] = [x]
+mergeIntervals ((x1s,x1e):(x2s,x2e):xs)
+  | x2s <= x1e = mergeIntervals ((x1s,x2e):xs)
+  | otherwise = (x1s,x1e): mergeIntervals ((x2s,x2e):xs)
