@@ -1,5 +1,7 @@
 module WeekFive where
 
+import WeekOne (BiTree (Empty', Node'), findLCA)
+
 {-
   42. Search in Rotated Sorted Array
 
@@ -140,4 +142,21 @@ mergeIntervals ((x1s,x1e):(x2s,x2e):xs)
 
   Given a binary tree, find the lowest common ancestor (LCA) (also called 
   least common ancestor)of two given nodes in the tree.
+
+  findLCA tree46 6 4 -> 5
+  findLCA tree46 7 4 -> 2
+  findLCA tree46 8 2 -> 3
 -}
+
+tree46 =
+  Node'
+    3
+    ( Node'
+        5
+        ( Node' 6 (Empty', Empty'),
+          Node' 2 (Node' 7 (Empty', Empty'), Node' 4 (Empty', Empty'))
+        ),
+      Node'
+        1
+        (Node' 0 (Empty', Empty'), Node' 8 (Empty', Empty'))
+    )
