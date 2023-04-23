@@ -134,3 +134,10 @@ mergeIntervals [x] = [x]
 mergeIntervals ((x1s,x1e):(x2s,x2e):xs)
   | x2s <= x1e = mergeIntervals ((x1s,x2e):xs)
   | otherwise = (x1s,x1e): mergeIntervals ((x2s,x2e):xs)
+
+{-
+  46. Lowest Common Ancestor of a Binary Tree
+
+  Given a binary tree, find the lowest common ancestor (LCA) (also called 
+  least common ancestor)of two given nodes in the tree.
+-}
