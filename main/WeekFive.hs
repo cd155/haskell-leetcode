@@ -1,5 +1,6 @@
 module WeekFive where
 
+import qualified Data.Map as M
 import WeekOne (BiTree (Empty', Node'), findLCA)
 
 {-
@@ -160,3 +161,52 @@ tree46 =
         1
         (Node' 0 (Empty', Empty'), Node' 8 (Empty', Empty'))
     )
+
+{-
+  47. Time Based Key-Value Store
+
+  Design a time-based key-value data structure that can store multiple 
+  values for the same key at different time stamps and retrieve the key's 
+  value at a certain timestamp.
+
+  Implement the TimeMap:
+  1. update(TimeMap dict, String key, int timestamp, any value) 
+  Stores the key with the value value at the given time timestamp.
+  2. lookup(TimeMap dict, String key, int timestamp) Returns a value by 
+  accessing key and timestamp in TimeMap. If current timestamp does not 
+  existed, return the value from the largest time stamp.
+
+  Test Cases:
+  lookupTimeMap testTimeMap "foo"  1 -> Just "bar"
+  lookupTimeMap testTimeMap "foo"  5 -> Just "bar2"
+  lookupTimeMap testTimeMap "abc"  2 -> Just "hey"
+  lookupTimeMap testTimeMap "good" 2 -> Nothing
+-}
+testTimeMap = update (update (update M.empty "foo" 1 "bar") "foo" 4 "bar2") "abc" 1 "hey" 
+
+type TimeMap a = M.Map String (M.Map Int a)
+
+update :: TimeMap a -> String -> Int -> a -> TimeMap a
+update timeMap key timestamp value 
+  | key `M.member` timeMap = M.adjust (\_ -> newValForExistKey) key timeMap
+  | otherwise = M.insert key newValForNonExistKey timeMap
+  where Just innerDict = M.lookup key timeMap
+        newValForExistKey = if timestamp `M.member` innerDict then
+                              M.adjust (\_ -> value) timestamp innerDict
+                            else
+                              M.insert timestamp value innerDict
+        newValForNonExistKey = M.insert timestamp value M.empty
+
+lookupTimeMap :: TimeMap a -> String -> Int -> Maybe a
+lookupTimeMap timeMap key timestamp
+  | key `M.member` timeMap = 
+      if timestamp `M.member` innerDict then
+        Just (innerDict M.! timestamp)
+      else
+        if null allKeysFromInnerDict then 
+          Nothing
+        else
+          Just (innerDict M.! (last allKeysFromInnerDict))
+  | otherwise = Nothing
+  where Just innerDict = M.lookup key timeMap
+        allKeysFromInnerDict = M.keys innerDict
