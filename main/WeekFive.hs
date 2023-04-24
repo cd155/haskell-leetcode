@@ -210,3 +210,32 @@ lookupTimeMap timeMap key timestamp
   | otherwise = Nothing
   where Just innerDict = M.lookup key timeMap
         allKeysFromInnerDict = M.keys innerDict
+
+{-
+  48. Accounts Merge
+
+  Given a list of accounts where each element accounts[i] is a list of 
+  strings, where the first element accounts[i][0] is a name, and the rest 
+  of the elements are emails representing emails of the account.
+
+  Now, we would like to merge these accounts. Two accounts definitely 
+  belong to the same person if there is some common email to both accounts. 
+  Note that even if two accounts have the same name, they may belong to 
+  different people as people could have the same name.
+
+  After merging the accounts, return the accounts in the following format: 
+  the first element of each account is the name, and the rest of the 
+  elements are emails in sorted order. The accounts themselves can be 
+  returned in any order.
+-}
+
+type Account = [String]
+
+{-
+  Assume A and B is the same person with some common email and B and C is the 
+  same person with some common email, even A and C has not email in common, 
+  by transitivity A and C are the same person.
+-}
+
+merge :: [Account] -> [Account] 
+merge = error "NI"
