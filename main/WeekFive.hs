@@ -1,5 +1,6 @@
 module WeekFive where
 
+import Data.List
 import qualified Data.Map as M
 import WeekOne (BiTree (Empty', Node'), findLCA)
 
@@ -227,6 +228,16 @@ lookupTimeMap timeMap key timestamp
   the first element of each account is the name, and the rest of the 
   elements are emails in sorted order. The accounts themselves can be 
   returned in any order.
+
+  Test Cases:
+
+  merge testAccountForGroup -> [["Don","w@123.com"],
+                                ["Don","b@123.com",
+                                       "c@123.com",
+                                       "a@123.com",
+                                       "z@123.com",
+                                       "d@123.com"],
+                                ["Tom","tom@123.com"]]
 -}
 
 type Account = [String]
@@ -250,5 +261,83 @@ type Account = [String]
   3. gathering results from each group
 -}
 
+testAccountForGroup = [["Don", "z@123.com", "a@123.com", "d@123.com"],
+                       ["Don", "a@123.com", "b@123.com", "d@123.com"],
+                       ["Don", "b@123.com", "c@123.com"],
+                       ["Don", "w@123.com"],
+                       ["Tom", "tom@123.com"]]
+
+-- using dictionary to group account base on its name
+convertToDict :: [Account] -> M.Map String [Account]
+convertToDict xs = convertToDictAux xs M.empty
+
+convertToDictAux :: [Account] -> M.Map String [Account] -> M.Map String [Account]
+convertToDictAux [] dict = dict
+convertToDictAux (x:xs) dict
+  | name `M.member` dict = convertToDictAux xs (M.insertWith (++) name [emails] dict)
+  | otherwise = convertToDictAux xs (M.insert name [emails] dict)
+  where name = head x
+        emails = tail x
+
+testAccountForMerge = [["z@123.com", "a@123.com", "d@123.com"],
+                       ["a@123.com", "b@123.com", "d@123.com"],
+                       ["b@123.com", "c@123.com"],
+                       ["w@123.com"]]
+
+type Graph a = ([a], [(a,a)])
+
+-- create a graph with list of account
+graphing :: [Account] -> Graph String
+graphing xs = (nub v, nub e)
+  where (v,e) = graphingAux xs ([],[])
+
+-- G = (V,E)
+graphingAux :: [Account] -> Graph String -> Graph String
+graphingAux [] g = g
+graphingAux (x:xs) (v,e) = graphingAux xs (v++x, e++myEdges)
+  where myEdges = edges x
+
+-- generate edges
+edges :: [String] -> [(String,String)]
+edges [] = []
+edges [x] = []
+edges (x1:x2:xs) = (x1,x2): edges (x2:xs)
+
+-- visit all node in this graph
+undirDepthFirstAllNodes :: Graph String -> [Account]
+undirDepthFirstAllNodes g = undirDepthFirstAllNodesAux g []
+
+-- using [string] to track if all node be visited
+undirDepthFirstAllNodesAux :: Graph String -> [String] -> [Account]
+undirDepthFirstAllNodesAux (v,e) visited
+  | null diff = []
+  | otherwise = newAccount: (undirDepthFirstAllNodesAux (v,e) (newAccount++visited))
+  where diff = v \\ visited
+        newAccount = undirDepthFirst e (head diff)
+
+-- give a start point, find all connected node in the graph
+undirDepthFirst :: [(String,String)] -> String -> Account
+undirDepthFirst e startNode = undirDepthFirstAux e [startNode] []
+
+{-
+  x:xs: using stack to hold next visiting node
+  visited: track visited node
+-}
+undirDepthFirstAux :: [(String,String)] -> [String] -> [String] -> Account
+undirDepthFirstAux _ [] _ = []
+undirDepthFirstAux e (x:xs) visited = x: (undirDepthFirstAux e (nonVisitedNodes++xs) (x:visited))
+  where possibleEdges = filter (\(start,end) -> start == x || end == x) e
+        possibleNodes = map (\(start,end) -> if start == x then end else start) possibleEdges
+        nonVisitedNodes = filter (\node -> node `notElem` visited && node `notElem` (x:xs)) possibleNodes
+
 merge :: [Account] -> [Account] 
-merge = error "NI"
+merge accounts = mergeAux (M.keys groupDict) groupDict
+  where groupDict = convertToDict accounts
+
+-- gathering accounts for each key
+mergeAux :: [String] -> M.Map String [Account] -> [Account]
+mergeAux [] _ = []
+mergeAux (x:xs) dict = 
+  (map (\account -> x: account) newAccounts) ++ mergeAux xs dict
+  where Just accounts = M.lookup x dict
+        newAccounts = undirDepthFirstAllNodes (graphing accounts)
