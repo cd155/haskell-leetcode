@@ -235,6 +235,19 @@ type Account = [String]
   Assume A and B is the same person with some common email and B and C is the 
   same person with some common email, even A and C has not email in common, 
   by transitivity A and C are the same person.
+
+  Thought:
+  1. Group accounts base on its name.
+  2. In each group, treat them as a graph (V,E)
+    V: set of Node
+    E: set of edge
+    Create V and E
+    
+    Arbitrarily visit an unvisited node, and visit connected node. All the 
+    connected node is a new account 
+    
+    visit all nodes in this graph
+  3. gathering results from each group
 -}
 
 merge :: [Account] -> [Account] 
