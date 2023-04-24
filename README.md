@@ -29,15 +29,15 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week 2](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekTwo.hs)
 
-14. First Bad Version	              Easy	20 mins
-15. Ransom Note                     Easy	15 mins
-16. Climbing Stairs                 Easy	20 mins
-17. Longest Palindrome              Easy	20 mins
-18. Reverse Linked List             Easy	20 mins
-19. Majority Element                Easy	20 mins
-20. Add Binary	                    Easy	15 mins
-21. Diameter of Binary Tree	        Easy	30 mins
-22. Middle of the Linked List       Easy	20 mins
+14. First Bad Version	              Easy	  20 mins
+15. Ransom Note                     Easy	  15 mins
+16. Climbing Stairs                 Easy	  20 mins
+17. Longest Palindrome              Easy	  20 mins
+18. Reverse Linked List             Easy	  20 mins
+19. Majority Element                Easy	  20 mins
+20. Add Binary	                    Easy	  15 mins
+21. Diameter of Binary Tree	        Easy	  30 mins
+22. Middle of the Linked List       Easy	  20 mins
 23. Maximum Depth of Binary Tree    Easy    15 mins
 24. Contains Duplicate	            Easy    15 mins
 25. Maximum Sub-array               Medium  20 mins
@@ -50,14 +50,14 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week3](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekThree.hs)
 
-26. Insert Interval                                 Medium 25 mins
-27. 01 Matrix                                       Medium 30 mins
-28. Closest Points to Origin                        Medium 30 mins
-29. Longest Substring Without Repeating Characters  Medium 30 mins
-30. 3Sum                                            Medium 30 mins
-31. Binary Tree Level Order Traversal               Medium 20 mins
-32. Clone Graph                                     Medium 25 mins
-33. Evaluate Reverse Polish Notation                Medium 30 mins
+26. Insert Interval                                 Medium  25 mins
+27. 01 Matrix                                       Medium  30 mins
+28. Closest Points to Origin                        Medium  30 mins
+29. Longest Substring Without Repeating Characters  Medium  30 mins
+30. 3Sum                                            Medium  30 mins
+31. Binary Tree Level Order Traversal               Medium  20 mins
+32. Clone Graph                                     Medium  25 mins
+33. Evaluate Reverse Polish Notation                Medium  30 mins
 
 (Week 3 Completed on March 20th, 2023)
 
@@ -67,14 +67,14 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week4](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekFour.hs)
 
-34. Course Schedule                 Medium·30 mins
-35. Implement Trie (Prefix Tree)    Medium·35 mins
-36. Coin Change                     Medium·25 mins
-37. Product of Array Except Self    Medium·30 mins
-38. Min Stack                       Medium·20 mins
-39. Validate Binary Search Tree     Medium·20 mins
-40. Number of Islands               Medium·25 mins
-41. Rotting Oranges                 Medium·30 mins
+34. Course Schedule                 Medium  30 mins
+35. Implement Trie (Prefix Tree)    Medium  35 mins
+36. Coin Change                     Medium  25 mins
+37. Product of Array Except Self    Medium  30 mins
+38. Min Stack                       Medium  20 mins
+39. Validate Binary Search Tree     Medium  20 mins
+40. Number of Islands               Medium  25 mins
+41. Rotting Oranges                 Medium  30 mins
 
 (Week 4 Completed on April 20th, 2023)
 
@@ -84,15 +84,33 @@ Using haskell to solve [Grind 75](https://www.techinterviewhandbook.org/grind75)
 
 [Week5](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekFive.hs)
 
-42. Search in Rotated Sorted Array            Medium·30 mins
-43. Combination Sum                           Medium·30 mins
-44. Permutations                              Medium·30 mins
-45. Merge Intervals                           Medium·30 mins
-46. Lowest Common Ancestor of a Binary Tree   Medium·25 mins
-47. Time Based Key-Value Store                Medium·35 mins
-48. Accounts Merge                            Medium·30 mins
-49. Sort Colors                               Medium·25 mins
+42. Search in Rotated Sorted Array            Medium  30 mins
+43. Combination Sum                           Medium  30 mins
+44. Permutations                              Medium  30 mins
+45. Merge Intervals                           Medium  30 mins
+46. Lowest Common Ancestor of a Binary Tree   Medium  25 mins
+47. Time Based Key-Value Store                Medium  35 mins
+48. Accounts Merge                            Medium  30 mins
+49. Sort Colors                               Medium  25 mins
 
-(Week 5 Completed on Pending)
+(Week 5 Completed on April 24th, 2023)
+
+---
+
+(Week 6 started on April 24th, 2023)
+
+[Week6](https://github.com/cd155/haskell-leetcode/blob/main/main/WeekSix.hs)
+
+50. Word Break                      Medium  30 mins
+51. Partition Equal Subset Sum      Medium  30 mins
+52. String to Integer (atoi)        Medium  25 mins
+53. Spiral Matrix                   Medium  25 mins
+54. Subsets                         Medium  30 mins
+55. Binary Tree Right Side View     Medium  20 mins
+56. Longest Palindromic Substring   Medium  25 mins
+57. Unique Paths                    Medium  20 mins
+58. Construct Binary Tree from Pre-order and In-order Traversal   Medium  25 mins
+
+(Week 6 Completed on Pending)
 
 ---
