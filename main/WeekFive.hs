@@ -363,7 +363,7 @@ mergeAux (x:xs) dict =
   Note: in-place algorithm requires mutate data which is not available in Haskell
 
   Solution in Python: 
-  https://github.com/cd155/python-leetcode/blob/d8632d9c223f704f45a3c92daec84337c82c5a16/main/weekfive.py#L22-L42
+  https://github.com/cd155/python-leetcode/blob/3f4f5119658feb2359bd015519f3c96db2973be4/main/weekfive.py#L22-L42
 -}
 
 data Color = Red | White | Blue
