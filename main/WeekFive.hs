@@ -341,3 +341,31 @@ mergeAux (x:xs) dict =
   (map (\account -> x: account) newAccounts) ++ mergeAux xs dict
   where Just accounts = M.lookup x dict
         newAccounts = undirDepthFirstAllNodes (graphing accounts)
+
+{-
+  49. Sort Colors
+
+  Given an array nums with n objects colored red, white, or blue, sort them 
+  in-place so that objects of the same color are adjacent, with the colors 
+  in the order red, white, and blue.
+
+  We will use the integers 0, 1, and 2 to represent the color red, white, 
+  and blue, respectively.
+
+  You must solve this problem without using the library's sort function.
+
+  Ask question: in results, which colors come before other colors?
+  Assume: show order in Red Blue White
+
+  Test Cases:
+  sortColor colors -> [Red,Red,Blue,Blue,White,White]
+
+  Note: in-place algorithm requires mutate data which is not available in Haskell
+
+  Solution in Python: 
+  https://github.com/cd155/python-leetcode/blob/d8632d9c223f704f45a3c92daec84337c82c5a16/main/weekfive.py#L22-L42
+-}
+
+data Color = Red | White | Blue
+
+colors = [Blue,Red,Blue,White,White,Red]
