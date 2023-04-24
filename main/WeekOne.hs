@@ -7,16 +7,13 @@ import qualified Data.Map as M
   1. Two Sum:
 
   Given an array of integers and an integer target,
-  return indexes of the two numbers that they add up to target.
-
-  You may assume that each input would have exactly one solution,
-  and you may not use the same element twice.
+  return two numbers that they add up to target.
 
   You can return the answer in any order.
 
   Test Case:
-  twoSumHash [2,7,11,15] 9 -> (0,1)
-  twoPair [2,7,11,15] 9 -> [(2,7)]
+  twoSumHash [2,7,11,15] 9 -> (2,7)
+  twoPair [4,4,8,10,0] 8 -> [(0,8),(4,4)]
 -}
 
 -- Natural number
@@ -24,71 +21,42 @@ type Nat = Int
 
 {-
   Brutal force, O(n^2)
-
-  In each element, check if the tar exist in the rest of list.
+  In each element, check if the target exist in the rest of list.
 -}
-twoSumBF :: [Integer] -> Integer -> (Nat, Nat)
-twoSumBF xs tar = twoSumBFHelper xs tar 0
-
-twoSumBFHelper :: [Integer] -> Integer -> Nat -> (Nat, Nat)
-twoSumBFHelper [] _ _ = error "No two number add up to the target"
-twoSumBFHelper (x : xs) tar i
-  | isYExist xs y = (i, i + yIndex xs y + 1)
-  | otherwise = twoSumBFHelper xs tar (i + 1)
-  where
-    y = tar - x
-
-isYExist :: [Integer] -> Integer -> Bool
-isYExist xs y = y `elem` xs
-
--- calculate the index of Y
-yIndex :: [Integer] -> Integer -> Nat
-yIndex xs y = yIndexHelper xs y 0
-
-yIndexHelper :: [Integer] -> Integer -> Nat -> Nat
-yIndexHelper [] _ _ = error "No y find, check isYExist"
-yIndexHelper (x : xs) y i
-  | x == y = i
-  | otherwise = yIndexHelper xs y (i + 1)
+twoSumBF :: [Int] -> Int -> (Int, Int)
+twoSumBF [] _ = error "No two number add up to the target" 
+twoSumBF (x:xs) t
+  | otherHalf `elem` xs = (x, otherHalf)
+  | otherwise = twoSumBF xs t
+  where otherHalf = t - x
 
 {-
   Hash table, O(n)
-
-  In each element, check if the tar exist in the hash table.
+  In each element, check if the target exist in the hash table.
 -}
-twoSumHash :: [Integer] -> Integer -> (Nat, Nat)
-twoSumHash xs tar = twoSumHashHelper xs tar dict
-  where
-    dict = convToDict xs
+convertToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
+convertToDict [] dict = dict
+convertToDict (x : xs) dict
+  | x `M.member` dict = convertToDict xs (M.insertWith (+) x 1 dict)
+  | otherwise = convertToDict xs (M.insert x 1 dict)
 
-twoSumHashHelper :: [Integer] -> Integer -> M.Map Integer [Nat] -> (Nat, Nat)
-twoSumHashHelper [] tar dict = error "No two number add up to the target"
-twoSumHashHelper (x : xs) tar dict
-  | x == y && length indX > 1 = (indX !! 1, indX !! 0) -- format (smaller #, larger #)
-  | x == y && length indX <= 1 = twoSumHashHelper xs tar dict
-  | y `M.member` dict = (head indX, head indY)
-  | otherwise = twoSumHashHelper xs tar dict
-  where
-    y = tar - x
-    Just indX = M.lookup x dict
-    Just indY = M.lookup y dict
+twoSumHash :: [Int] -> Int -> (Int, Int)
+twoSumHash xs t = twoSumHashHelper xs t dict
+  where dict = convertToDict xs M.empty
 
--- convert list to a hash table with indexes as values
-convToDict :: (Ord a, Num b) => [a] -> M.Map a [b]
-convToDict xs = convToDictHelper xs M.empty 0
+twoSumHashHelper :: [Int] -> Int -> M.Map Int Int -> (Int, Int)
+twoSumHashHelper [] t dict = error "No two number add up to the target"
+twoSumHashHelper (x:xs) t dict
+  | x == otherHalf = if count >= 2 then (x, x) else twoSumHashHelper xs t dict
+  | otherHalf `M.member` dict = (x,otherHalf)
+  | otherwise = twoSumHashHelper xs t dict
+  where otherHalf = t - x
+        Just count = M.lookup x dict
 
-convToDictHelper :: (Ord a, Num b) => [a] -> M.Map a [b] -> b -> M.Map a [b]
-convToDictHelper [] dict _ = dict
-convToDictHelper (x : xs) dict i
-  | x `M.member` dict = convToDictHelper xs (M.insertWith (++) x [i] dict) (i + 1)
-  | otherwise = convToDictHelper xs (M.insert x [i] dict) (i + 1)
-
--- Various version of two sum questions
--- return list of pair version, can have duplicate
+-- Find all the two sum solution in the list
 twoPair :: [Int] -> Int -> [(Int, Int)]
 twoPair xs target = twoPairAux (M.keys myDict) myDict target []
-  where
-    myDict = convertInputToDict xs M.empty
+  where myDict = convertToDict xs M.empty
 
 twoPairAux :: [Int] -> M.Map Int Int -> Int -> [Int] -> [(Int, Int)]
 twoPairAux [] _ _ _ = []
@@ -103,12 +71,6 @@ twoPairAux (x : xs) dict tar visited
   where
     rest = tar - x
     Just v = M.lookup x dict
-
-convertInputToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
-convertInputToDict [] dict = dict
-convertInputToDict (x : xs) dict
-  | x `M.member` dict = convertInputToDict xs (M.insertWith (+) x 1 dict)
-  | otherwise = convertInputToDict xs (M.insert x 1 dict)
 
 {-
   2. Valid Parentheses:
@@ -658,7 +620,7 @@ whereCycledHelper (Node v next) visited
   Only use stack methods to implement a queue
 -}
 {-
-  only used push and pop
+  only used push and pop (prepend)
 
   s1: e1, e2, e3
   s2: e3, e2, e1
@@ -666,9 +628,8 @@ whereCycledHelper (Node v next) visited
   s1: e1, e2, e3, e4
 -}
 enQue :: a -> [a] -> [a]
-enQue e s1 = foldl (\acc' x' -> x' : acc') [] (e : s2)
-  where
-    s2 = foldl (\acc x -> x : acc) [] s1
+enQue e s = reverse (e : (reverse s))
+  where reverse = foldl (\acc x -> x : acc) []
 
 deQue :: [a] -> [a]
 deQue [] = []
@@ -680,4 +641,4 @@ peek (x:_) = Just x
 
 isEmpty :: [a] -> Bool
 isEmpty [] = True
-isEmpty (_ : _) = False
+isEmpty _ = False
