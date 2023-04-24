@@ -1,5 +1,6 @@
 module WeekOne where
 
+import Data.List
 import Data.Char
 import qualified Data.Map as M
 
@@ -13,7 +14,7 @@ import qualified Data.Map as M
 
   Test Case:
   twoSumHash [2,7,11,15] 9 -> (2,7)
-  twoPair [4,4,8,10,0] 8 -> [(0,8),(4,4)]
+  twoPair [4,4,8,10,0] 8 -> [(0,8),(4,4),(8,0)]
 -}
 
 -- Natural number
@@ -55,22 +56,21 @@ twoSumHashHelper (x:xs) t dict
 
 -- Find all the two sum solution in the list
 twoPair :: [Int] -> Int -> [(Int, Int)]
-twoPair xs target = twoPairAux (M.keys myDict) myDict target []
+twoPair xs target = twoPairAux (M.keys myDict) myDict target
   where myDict = convertToDict xs M.empty
 
-twoPairAux :: [Int] -> M.Map Int Int -> Int -> [Int] -> [(Int, Int)]
-twoPairAux [] _ _ _ = []
-twoPairAux (x : xs) dict tar visited
-  | x `elem` visited = twoPairAux xs dict tar visited
-  | x == rest =
-    if v > 1
-      then (x, rest) : twoPairAux xs dict tar (rest : visited)
-      else twoPairAux xs dict tar visited
-  | rest `M.member` dict = (x, rest) : twoPairAux xs dict tar (rest : visited)
-  | otherwise = twoPairAux xs dict tar visited
-  where
-    rest = tar - x
-    Just v = M.lookup x dict
+twoPairAux :: [Int] -> M.Map Int Int -> Int  -> [(Int, Int)]
+twoPairAux [] _ _ = []
+twoPairAux (x : xs) dict t
+  | x == otherHalf = 
+    if count >= 2 then 
+      (x,otherHalf): twoPairAux xs dict t 
+    else 
+      twoPairAux xs dict t
+  | otherHalf `M.member` dict = (x,otherHalf) : twoPairAux xs dict t
+  | otherwise = twoPairAux xs dict t
+  where otherHalf = t - x
+        Just count = M.lookup x dict
 
 {-
   2. Valid Parentheses:
