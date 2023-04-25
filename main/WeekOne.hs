@@ -174,7 +174,7 @@ mergeLists' (Node v1 next1) (Node v2 next2)
   If you cannot achieve any profit, return 0.
 
   maxProfit  stocks1 -> 5
-  maxProfit  stocks2 -> 0
+  maxProfit  stocks2 -> -1
   maxProfit' stocks2 -> 0
   maxProfit' stocks3 -> 10
 -}
@@ -185,9 +185,8 @@ mergeLists' (Node v1 next1) (Node v2 next2)
 
 -- find every pairs of the list, then find the maximum O(n^2)
 maxProfit :: [Int] -> Int
-maxProfit xs = if maxPro < 0 then 0 else maxPro
+maxProfit xs = maximum (map (\(buy,sell) -> sell - buy) allPairs)
   where allPairs = allPairOf xs
-        maxPro = maximum (map (\x -> snd x - fst x) allPairs)
 
 allPairOf :: [Int] -> [(Int, Int)]
 allPairOf [] = []
@@ -195,7 +194,7 @@ allPairOf (x : xs) = x `pairOf` xs ++ allPairOf xs
 
 pairOf :: Int -> [Int] -> [(Int, Int)]
 pairOf _ [] = []
-pairOf x (y : ys) = (x, y) : x `pairOf` ys
+pairOf x (y:ys) = (x,y): x `pairOf` ys
 
 -- Keep track bottom and maxProfit
 maxProfit' :: [Int] -> Int
@@ -204,7 +203,7 @@ maxProfit' xs = maxProfitHelper xs (head xs) 0
 
 maxProfitHelper :: [Int] -> Int -> Int -> Int
 maxProfitHelper [] _ maxPro = maxPro
-maxProfitHelper (x : xs) minPrice maxPro
+maxProfitHelper (x:xs) minPrice maxPro
   | x < minPrice = maxProfitHelper xs x maxPro
   | otherwise = maxProfitHelper xs minPrice newMax
   where newMax = max maxPro (x - minPrice)
