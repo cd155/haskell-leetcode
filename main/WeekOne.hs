@@ -220,6 +220,9 @@ maxProfitHelper (x:xs) minPrice maxPro
 
   Test:
   isPalindrome "A man, a plan, a canal: Panama" -> True
+  isPalindrome "dogod"                          -> True
+  left to right: dogod
+  right to left: dogod
   isPalindrome "race a car"                     -> False
   isPalindrome " "                              -> True
 -}
@@ -227,22 +230,20 @@ maxProfitHelper (x:xs) minPrice maxPro
 -- clean string
 cleanStr :: String -> String
 cleanStr [] = []
-cleanStr (x : xs)
-  | lc `elem` lAlphabet = lc : cleanStr xs
+cleanStr (x:xs)
+  | lc `elem` lAlphabet = lc: cleanStr xs
   | otherwise = cleanStr xs
-  where
-    lc = toLower x
-    lAlphabet = ['a' .. 'z']
+  where lc = toLower x
+        lAlphabet = ['a'..'z']
 
 -- run palindrome checker
 isPalindrome :: String -> Bool
 isPalindrome xs
-  | reverse f == s || reverse f == tail s = True
+  | f == reverse s || f == reverse (tail s) = True
   | otherwise = False
-  where
-    cleanedData = cleanStr xs
-    mid = length cleanedData `div` 2
-    (f, s) = splitAt mid cleanedData
+  where cleanedStr = cleanStr xs
+        mid = length cleanedStr `div` 2
+        (f, s) = splitAt mid cleanedStr
 
 {-
   6. Invert a binary tree
