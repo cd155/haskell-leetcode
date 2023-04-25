@@ -13,8 +13,11 @@ import qualified Data.Map as M
   You can return the answer in any order.
 
   Test Case:
-  twoSumHash [2,7,11,15] 9 -> (2,7)
-  twoPair [4,4,8,10,0] 8 -> [(0,8),(4,4),(8,0)]
+  twoSumHash [2,7,11,15] 9      -> (2,7)
+  twoSumHash [3,2,4] 6          -> (2,4)
+  twoSumHash [3,3] 6            -> (3,3)
+  twoSumHash [5,2,3,5,1,7,1] 2  -> (1,1)
+  twoPair [4,4,8,10,0] 8        -> [(0,8),(4,4),(8,0)]
 -}
 
 -- Natural number
@@ -83,29 +86,32 @@ twoPairAux (x : xs) dict t
   Open brackets must be closed by the same type of brackets.
   Open brackets must be closed in the correct order.
   Every close bracket has a corresponding open bracket of the same type.
+
+  Test Cases:
+
+  isValidParens "()"          -> True
+  isValidParens "()[]{}"      -> True
+  isValidParens "([{()}{}])"  -> True
+  isValidParens "(]"          -> False
+  isValidParens "(([][])[})"  -> False
 -}
 
 -- hash contains cancelable characters
-parenDict =
-  M.fromList
-    [ (')', '('),
-      (']', '['),
-      ('}', '{')
-    ]
+closeParens = M.fromList [(')', '('),
+                          (']', '['),
+                          ('}', '{')]
 
-isValidParen :: String -> Bool
-isValidParen [] = error "empty string"
-isValidParen xs =
-  let isValidParenHelper :: String -> String -> Bool
-      isValidParenHelper [] s = null s
-      isValidParenHelper (y : ys) s
-        | null s = isValidParenHelper ys (y : s)
-        | (y `M.member` parenDict) && (lParen == head s) =
-          isValidParenHelper ys (tail s)
-        | otherwise = isValidParenHelper ys (y : s)
-        where
-          Just lParen = M.lookup y parenDict
-   in isValidParenHelper xs []
+isValidParens :: String -> Bool
+isValidParens [] = error "empty string"
+isValidParens xs = isValidParensAux (tail xs) [head xs]
+
+isValidParensAux :: String -> String -> Bool
+isValidParensAux [] stack = null stack
+isValidParensAux (x:xs) stack
+  | (x `M.member` closeParens) && (leftParen == head stack) = 
+    isValidParensAux xs (tail stack)
+  | otherwise = isValidParensAux xs (x:stack)
+  where Just leftParen = M.lookup x closeParens
 
 {-
   3. Merge Two Sorted Single Linked Lists
@@ -113,45 +119,40 @@ isValidParen xs =
   You are given the heads of two sorted linked lists list1 and list2.
   Merge the two linked lists in a one sorted list. Return the head of the
   merged linked list.
+
+  Test Cases:
+  mergeLists  link1 link2 -> 
+    Node 1 (Node 1 (Node 2 (Node 3 (Node 4 (Node 4 Empty)))))
+  mergeLists' link1 link2 -> 
+    Node 1 (Node 1 (Node 2 (Node 3 (Node 4 (Node 4 Empty)))))
+  mergeLists' link3 link4 -> Empty
+  mergeLists' link5 link6 -> Node 0 Empty
 -}
+
+(link1,link2) = (Node 1 (Node 2 (Node 4 Empty)), Node 1 (Node 3 (Node 4 Empty)))
+(link3,link4) = (Empty, Empty)
+(link5,link6) = (Empty, Node 0 Empty)
 
 data LinkedList a = Empty | Node a (LinkedList a) deriving (Show)
 
+-- only for practice, make LinkedList equatable
 instance Eq a => Eq (LinkedList a) where
   Empty == Empty = True
   Empty == (Node _ _) = False
   (Node _ _) == Empty = False
   (Node v1 n1) == (Node v2 n2) = v1 == v2 && n1 == n2
 
--- take list1 as default, insert elements from list2 O(n*m)
+-- take list1 as default, insert elements from list2 at a time O(n*m)
 mergeLists :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
 mergeLists l1 Empty = l1
-mergeLists l1 (Node v next) =
-  let -- insert a single node in list1 (next2 is always Empty)
-      insertNode :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
-      insertNode l1 Empty = l1
-      insertNode Empty l2 = l2
-      insertNode (Node v1 next1) (Node v2 next2)
-        | v1 < v2 = Node v1 (insertNode next1 (Node v2 next2))
-        | otherwise = Node v2 (Node v1 next1)
-   in mergeLists (insertNode l1 (Node v Empty)) next
+mergeLists l1 (Node v next) = mergeLists (insertNode l1 (Node v Empty)) next
 
--- -- this is case version
--- mergeLists l1 l2 =
---     case (l1, l2) of
---          (l1, Empty) -> l1
---          (Empty, l2) -> l2
---          (l1, Node v next) ->
---             let
---                 -- insert a single node in list1 (next2 is always Empty)
---                 insertNode :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
---                 insertNode l1 Empty = l1
---                 insertNode Empty l2 = l2
---                 insertNode (Node v1 next1) (Node v2 next2)
---                     | v1 < v2 = Node v1 (insertNode next1 (Node v2 next2))
---                     | otherwise = Node v2 (Node v1 next1)
---             in
---                 mergeLists (insertNode l1 (Node v Empty)) next
+insertNode :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
+insertNode l1 Empty = l1
+insertNode Empty l2 = l2
+insertNode (Node v1 next1) (Node v2 next2)
+  | v1 < v2 = Node v1 (insertNode next1 (Node v2 next2))
+  | otherwise = Node v2 (Node v1 next1)
 
 -- Loop two lists at the same time O(n+m)
 mergeLists' :: Ord a => LinkedList a -> LinkedList a -> LinkedList a
@@ -171,22 +172,29 @@ mergeLists' (Node v1 next1) (Node v2 next2)
 
   Return the maximum profit you can achieve from this transaction.
   If you cannot achieve any profit, return 0.
+
+  maxProfit stocks1 -> 5
+  maxProfit stocks2 -> 0
+  maxProfit stocks3 -> 10
 -}
+
+[stocks1,stocks2,stocks3] = [[7, 1, 5, 3, 6, 4],
+                             [7, 6, 4, 3, 1],
+                             [8, 7, 1, 5, 3, 6, 7, 0, 5, 10]] :: [[Int]]
 
 -- find every pairs of the list, then find the maximum O(n^2)
 maxProfit :: [Int] -> Int
 maxProfit xs = if maxPro < 0 then 0 else maxPro
-  where
-    allPairs = allPairOf xs
-    maxPro = maximum (map (\x -> snd x - fst x) allPairs)
+  where allPairs = allPairOf xs
+        maxPro = maximum (map (\x -> snd x - fst x) allPairs)
 
 allPairOf :: [Int] -> [(Int, Int)]
 allPairOf [] = []
-allPairOf (x : xs) =
-  let pairOf :: Int -> [Int] -> [(Int, Int)]
-      pairOf _ [] = []
-      pairOf x (y : ys) = (x, y) : x `pairOf` ys
-   in x `pairOf` xs ++ allPairOf xs
+allPairOf (x : xs) = x `pairOf` xs ++ allPairOf xs
+
+pairOf :: Int -> [Int] -> [(Int, Int)]
+pairOf _ [] = []
+pairOf x (y : ys) = (x, y) : x `pairOf` ys
 
 -- Keep track bottom and maxProfit
 maxProfit' :: [Int] -> Int
@@ -198,8 +206,7 @@ maxProfitHelper [] _ maxPro = maxPro
 maxProfitHelper (x : xs) minPrice maxPro
   | x < minPrice = maxProfitHelper xs x maxPro
   | otherwise = maxProfitHelper xs minPrice newMax
-  where
-    newMax = max maxPro (x - minPrice)
+  where newMax = max maxPro (x - minPrice)
 
 {-
   5. Valid Palindrome
