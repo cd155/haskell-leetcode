@@ -259,10 +259,14 @@ instance Eq a => Eq (BiTree a) where
   Node' x (l1, r1) == Node' y (l2, r2) = x == y && l1 == l2 && r1 == r2
 
 -- [1,2,3,n,n,4]
-tree1 = Node' 1 (Node' 2 (Empty', Empty'), Node' 3 (Node' 4 (Empty', Empty'), Empty'))
+tree1 = Node' 1 
+          (Node' 2 (Empty', Empty'), 
+           Node' 3 (Node' 4 (Empty', Empty'), Empty'))
 
 -- [1,3,2,n,4]
-tree2 = Node' 1 (Node' 3 (Empty', Node' 4 (Empty', Empty')), Node' 2 (Empty', Empty'))
+tree2 = Node' 1 
+          (Node' 3 (Empty', Node' 4 (Empty', Empty')), 
+           Node' 2 (Empty', Empty'))
 
 invert :: BiTree a -> BiTree a
 invert Empty' = Empty'
@@ -294,33 +298,30 @@ swap (Node' v (Node' cv1 (l1, r1), Node' cv2 (l2, r2))) =
   isAnagram "anagram" "nagaram" -> True
   isAnagram "rat" "car"         -> False
   isAnagram "" "a"              -> False
-  isAnagram """"                -> True
+  isAnagram "" ""               -> True
 -}
 
 -- convert string to dictionary (character: showup times)
-convToDict' :: String -> M.Map Char Integer
+convToDict' :: String -> M.Map Char Int
 convToDict' =
   foldl
     ( \acc x ->
-        if x `M.member` acc
-          then M.insertWith (+) x 1 acc -- combine new value (1) and old value
-          else M.insert x 1 acc
+        if x `M.member` acc then 
+          M.insertWith (+) x 1 acc -- combine new value (1) and old value
+        else 
+          M.insert x 1 acc
     )
     M.empty
-
 
 isAnagram :: String -> String -> Bool
 isAnagram s1 s2 = isAnagramHelper s1 (convToDict' s2)
 
-isAnagramHelper :: String -> M.Map Char Integer -> Bool
-isAnagramHelper [] d2 = foldl (\acc x -> acc && x == 0) True vs
-  where
-    vs = M.elems d2
-isAnagramHelper (x : xs) d2
-  | x `M.member` d2 = isAnagramHelper xs newDict
+isAnagramHelper :: String -> M.Map Char Int -> Bool
+isAnagramHelper [] dict = foldl (\acc x -> acc && x == 0) True (M.elems dict)
+isAnagramHelper (x:xs) dict
+  | x `M.member` dict = isAnagramHelper xs newDict
   | otherwise = False
-  where
-    newDict = M.insertWith (+) x (-1) d2
+  where newDict = M.insertWith (+) x (-1) dict
 
 {-
   8. Binary Search
@@ -349,9 +350,8 @@ findIntHelper xs t
   | t < xs !! mid = findIntHelper left t -- find t in left part
   | t == xs !! mid = mid
   | otherwise = mid + findIntHelper right t -- find t in right part
-  where
-    mid = length xs `div` 2
-    (left, right) = splitAt mid xs
+  where mid = length xs `div` 2
+        (left, right) = splitAt mid xs
 
 {-
   9. Flood Fill
