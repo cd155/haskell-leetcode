@@ -173,9 +173,10 @@ mergeLists' (Node v1 next1) (Node v2 next2)
   Return the maximum profit you can achieve from this transaction.
   If you cannot achieve any profit, return 0.
 
-  maxProfit stocks1 -> 5
-  maxProfit stocks2 -> 0
-  maxProfit stocks3 -> 10
+  maxProfit  stocks1 -> 5
+  maxProfit  stocks2 -> 0
+  maxProfit' stocks2 -> 0
+  maxProfit' stocks3 -> 10
 -}
 
 [stocks1,stocks2,stocks3] = [[7, 1, 5, 3, 6, 4],
