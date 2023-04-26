@@ -66,20 +66,20 @@ combSum _ [] = []
 combSum (target,max) (x:xs)
   | x == target = [[x]] ++ combSum (target,max) xs
   | otherwise = 
-    combSumAux [[x]] (x:xs) (target,max) [] ++ combSum (target,max) xs
+    combSumAux [([x],0)] (x:xs) (target,max) [] ++ combSum (target,max) xs
 
 -- continue refine combinations until they are no longer valid
--- combSumAux [[2]] [2,3,5] (8,150) [] -> [[2,2,2,2],[3,3,2]]
-combSumAux :: [[Int]] -> [Int] -> (Int,Int) -> [[Int]] -> [[Int]]
+-- combSumAux [([2],0)] [2,3,5] (8,150) [] -> [[2,2,2,2],[3,3,2]]
+combSumAux :: [([Int],Int)] -> [Int] -> (Int,Int) -> [[Int]] -> [[Int]]
 combSumAux [] _ _ acc = acc
-combSumAux (x:xs) ys (target,max) acc = 
+combSumAux ((cur,i):xs) ys (target,max) acc = 
   combSumAux (xs ++ refineComb) ys (target,max) (readyAns++acc)
-  where goodPending = filter (>= head x) ys
-        allComb = (map (:x) goodPending)
-        readyAns = 
-          filter (\x -> sum x == target && length x <= max) allComb
+  where goodPending = drop i ys
+        allComb = zip (map (:cur) goodPending) [i..(length ys - 1)]
+        readyAns = map fst
+          (filter (\x -> sum (fst x) == target && length x <= max) allComb)
         refineComb = 
-          filter (\x -> sum x < target && length x <= max) allComb
+          filter (\x -> sum (fst x) < target && length x <= max) allComb
 
 {-
   44. Permutations
