@@ -422,7 +422,7 @@ findAreaInColor img ((r, c) : ps) color visited
   -- skip outbound pixel
   | r >= (length img) || c >= (length $ head img) || r < 0 || c < 0 = 
     findAreaInColor img ps color visited
-  -- skip repeated pixel
+  -- skip visited pixel
   | (r, c) `elem` visited = findAreaInColor img ps color visited
   | img !! r !! c == color = 
     (r, c) : findAreaInColor img newPs color ((r, c) : visited)
