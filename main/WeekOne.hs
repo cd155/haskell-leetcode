@@ -411,10 +411,10 @@ paint img (c, w) color = tops ++ [newLine] ++ tail bots
         newLine = left ++ [color] ++ tail right
 
 {-
-  Find the list of pixels where equal to the color start with the pixel
+  Find all pixels that equal to the color in the stack of potential pixels
 
-  ((ph,pw):ps) is a stack of potential pixels need to check
-  visited         is tracking which position be visited
+  ((r,c):ps): is a stack of potential pixels need to check
+  visited:    is tracking which position be visited
 -}
 findAreaInColor :: Image -> [Pixel] -> Color -> [Pixel] -> [Pixel]
 findAreaInColor _ [] _ _ = []
