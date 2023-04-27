@@ -340,15 +340,13 @@ isAnagramHelper (x:xs) dict
 findInt :: [Int] -> Int -> Maybe Int
 findInt [] _ = Nothing
 findInt xs t = if xs !! i == t then Just i else Nothing
-  where
-    i = findIntHelper xs t
+  where i = findIntHelper xs t
 
 findIntHelper :: [Int] -> Int -> Int
 findIntHelper [] _ = 0
 findIntHelper [x] _ = 0
 findIntHelper xs t
   | t < xs !! mid = findIntHelper left t -- find t in left part
-  | t == xs !! mid = mid
   | otherwise = mid + findIntHelper right t -- find t in right part
   where mid = length xs `div` 2
         (left, right) = splitAt mid xs
@@ -370,15 +368,15 @@ findIntHelper xs t
   Return the modified image after performing the flood fill.
 
   Test case:
-  fillUp testImage1 (0,0) 3 ->    [[3,3,3],
-                                  [3,2,3],
-                                  [2,1,3]]
-  fillUp testImage2 (1,1) 3 ->    [[1,1,1],
-                                  [1,3,3],
-                                  [1,3,3]]
-  fillUp testImage2 (0,1) 3 ->    [[3,3,3],
-                                  [3,2,2],
-                                  [3,2,2]]
+  fillUp testImage1 (0,0) 3 ->  [[3,3,3],
+                                 [3,2,3],
+                                 [2,1,3]]
+  fillUp testImage2 (1,1) 3 ->  [[1,1,1],
+                                 [1,3,3],
+                                 [1,3,3]]
+  fillUp testImage2 (0,1) 3 ->  [[3,3,3],
+                                 [3,2,2],
+                                 [3,2,2]]
 -}
 testImage1 :: Image
 testImage1 =
@@ -403,38 +401,33 @@ type Color = Int -- integer represent color
 fillUp :: Image -> Pixel -> Color -> Image
 fillUp [] _ _ = []
 fillUp [[]] _ _ = [[]]
-fillUp img (ph, pw) c = foldl (\acc x -> paint acc x c) img paintList
-  where
-    paintList = findAreaInColor img [(ph, pw)] (img !! ph !! pw) []
+fillUp img (r, c) color = foldl (\acc x -> paint acc x color) img paintList
+  where paintList = findAreaInColor img [(r, c)] (img !! r !! c) []
 
 paint :: [[a]] -> (Int, Int) -> a -> [[a]]
-paint img (ph, pw) c = tops ++ [newLine] ++ tail bots
-  where
-    (tops, bots) = splitAt ph img
-    (l, r) = splitAt pw $ head bots
-    newLine = l ++ [c] ++ tail r
+paint img (c, w) color = tops ++ [newLine] ++ tail bots
+  where (tops, bots) = splitAt c img
+        (left, right) = splitAt w $ head bots
+        newLine = left ++ [color] ++ tail right
 
 {-
   Find the list of pixels where equal to the color start with the pixel
 
   ((ph,pw):ps) is a stack of potential pixels need to check
-  dict         is the dictionary to skip checked pixel
+  visited         is tracking which position be visited
 -}
 findAreaInColor :: Image -> [Pixel] -> Color -> [Pixel] -> [Pixel]
 findAreaInColor _ [] _ _ = []
-findAreaInColor img ((ph, pw) : ps) c dict
+findAreaInColor img ((r, c) : ps) color visited
   -- skip outbound pixel
-  | ph >= h || pw >= w || ph < 0 || pw < 0 = findAreaInColor img ps c dict
+  | r >= (length img) || c >= (length $ head img) || r < 0 || c < 0 = 
+    findAreaInColor img ps color visited
   -- skip repeated pixel
-  | (ph, pw) `elem` dict = findAreaInColor img ps c dict
-  | img !! ph !! pw == c = (ph, pw) : findAreaInColor img newPs c newDict
-  | otherwise = findAreaInColor img ps c dict
-  where
-    h = length img
-    w = length $ head img
-    newDict = (ph, pw) : dict
-    newPs = (ph -1, pw): (ph + 1, pw): (ph, pw -1): (ph, pw + 1): ps
-    --newPs = ps ++ [(ph -1, pw), (ph + 1, pw), (ph, pw -1), (ph, pw + 1)]
+  | (r, c) `elem` visited = findAreaInColor img ps color visited
+  | img !! r !! c == color = 
+    (r, c) : findAreaInColor img newPs color ((r, c) : visited)
+  | otherwise = findAreaInColor img ps color visited
+  where newPs = (r -1, c): (r + 1, c): (r, c -1): (r, c + 1): ps
 
 {-
   10. Lowest Common Ancestor of a Binary Search Tree
