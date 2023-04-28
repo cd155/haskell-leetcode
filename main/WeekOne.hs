@@ -401,7 +401,7 @@ type Color = Int -- integer represent color
 fillUp :: Image -> Pixel -> Color -> Image
 fillUp [] _ _ = []
 fillUp [[]] _ _ = [[]]
-fillUp img (r, c) color = foldl (\acc x -> paint acc x color) img paintList
+fillUp img (r,c) color = foldl (\acc x -> paint acc x color) img paintList
   where paintList = findAreaInColor img [(r, c)] (img !! r !! c) []
 
 paint :: [[a]] -> (Int, Int) -> a -> [[a]]
@@ -418,14 +418,14 @@ paint img (c, w) color = tops ++ [newLine] ++ tail bots
 -}
 findAreaInColor :: Image -> [Pixel] -> Color -> [Pixel] -> [Pixel]
 findAreaInColor _ [] _ _ = []
-findAreaInColor img ((r, c) : ps) color visited
+findAreaInColor img ((r,c): ps) color visited
   -- skip outbound pixel
   | r >= (length img) || c >= (length $ head img) || r < 0 || c < 0 = 
     findAreaInColor img ps color visited
   -- skip visited pixel
-  | (r, c) `elem` visited = findAreaInColor img ps color visited
+  | (r,c) `elem` visited = findAreaInColor img ps color visited
   | img !! r !! c == color = 
-    (r, c) : findAreaInColor img newPs color ((r, c) : visited)
+    (r,c): findAreaInColor img newPs color ((r,c): visited)
   | otherwise = findAreaInColor img ps color visited
   where newPs = (r -1, c): (r + 1, c): (r, c -1): (r, c + 1): ps
 
@@ -559,8 +559,7 @@ isBalanced'' :: BiTree a -> Bool
 isBalanced'' tr
   | mb == Nothing = False
   | otherwise = True
-  where
-    mb = isBalancedWithHeight' tr
+  where mb = isBalancedWithHeight' tr
 
 -- preferred version
 isBalancedWithHeight' :: BiTree a -> Maybe Int
@@ -569,12 +568,9 @@ isBalancedWithHeight' (Node' _ (l, r)) =
   case (lh, rh) of
     (Nothing, _) -> Nothing
     (_, Nothing) -> Nothing
-    (Just lh', Just rh') ->
-      if abs (lh' - rh') <= 1
-        then Just (max lh' rh' + 1)
-        else Nothing
-  where
-    (lh, rh) = (isBalancedWithHeight' l, isBalancedWithHeight' r)
+    (Just lh', Just rh') -> 
+      if abs (lh' - rh') <= 1 then Just (max lh' rh' + 1) else Nothing
+  where (lh, rh) = (isBalancedWithHeight' l, isBalancedWithHeight' r)
 
 -- Monad version
 isBalancedWithHeight :: BiTree a -> Maybe Int
@@ -582,9 +578,7 @@ isBalancedWithHeight Empty' = Just 0
 isBalancedWithHeight (Node' _ (l, r)) = do
   lh <- isBalancedWithHeight l
   rh <- isBalancedWithHeight r
-  if abs (lh - rh) <= 1
-    then Just $ max lh rh + 1
-    else Nothing
+  if abs (lh - rh) <= 1 then Just $ max lh rh + 1 else Nothing
 
 {-
   12. Linked List Cycle
