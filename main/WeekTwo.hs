@@ -20,7 +20,7 @@ import WeekOne
   version is bad. Implement a function to find the first bad version.
   You should minimize the number of calls to the API.
 -}
-
+-- 1,2,3,4 version are good, 5,6 version are bad
 testVersions = [False, False, False, False, True, True]
 
 isBadVersion :: Int -> Bool
@@ -30,16 +30,14 @@ isBadVersion n
 
 badVersion :: Maybe Int
 badVersion = if isBadVersion res then Just res else Nothing
-  where
-    res = badVersionHelper (0, length testVersions -1)
+  where res = badVersionHelper (0, length testVersions -1)
 
 badVersionHelper :: (Int, Int) -> Int
 badVersionHelper (start, end)
   | start == end = start
   | isBadVersion (start + mid) = badVersionHelper (start, start + mid)
   | otherwise = badVersionHelper (start + mid + 1, end)
-  where
-    mid = (end - start) `div` 2
+  where mid = (end - start) `div` 2
 
 {-
   15. Ransom Note
@@ -57,25 +55,16 @@ badVersionHelper (start, end)
 
 isConstFrom :: String -> String -> Bool
 isConstFrom note mag = isConstFromAux note dict
-  where
-    dict = increaseDict mag
+  where dict = convertToDict mag M.empty
 
 isConstFromAux :: String -> M.Map Char Int -> Bool
 isConstFromAux [] _ = True
 isConstFromAux (x : xs) dict
-  | x `M.member` dict && v >= 1 = True && isConstFromAux xs (M.insertWith (+) x (-1) dict)
+  | x `M.member` dict && v >= 1 = 
+    -- insertWith apply function with new value and old value
+    True && isConstFromAux xs (M.insertWith (+) x (-1) dict)
   | otherwise = False
-  where
-    Just v = M.lookup x dict
-
-increaseDict :: String -> M.Map Char Int
-increaseDict str = increaseDictAux str M.empty
-
-increaseDictAux :: String -> M.Map Char Int -> M.Map Char Int
-increaseDictAux [] dict = dict
-increaseDictAux (x : xs) dict
-  | x `M.member` dict = increaseDictAux xs (M.insertWith (+) x 1 dict)
-  | otherwise = increaseDictAux xs (M.insert x 1 dict)
+  where Just v = M.lookup x dict
 
 {-
   16. Climbing Stairs
@@ -136,9 +125,8 @@ longestPalindrome :: String -> Int
 longestPalindrome s1
   | isExistOdd allVals = 2 * numOfPair + 1
   | otherwise = 2 * numOfPair
-  where
-    allVals = M.elems $ increaseDict s1
-    numOfPair = foldl (\acc x -> acc + x `div` 2) 0 allVals
+  where allVals = M.elems $ convertToDict s1 M.empty
+        numOfPair = foldl (\acc x -> acc + x `div` 2) 0 allVals
 
 isExistOdd :: [Int] -> Bool
 isExistOdd [] = False
@@ -166,7 +154,7 @@ convertLinkedToList lst = convertLinkedToListAux lst []
 
 convertLinkedToListAux :: LinkedList a -> [a] -> [a]
 convertLinkedToListAux Empty acc = acc
-convertLinkedToListAux (Node x next) acc = convertLinkedToListAux next (x : acc)
+convertLinkedToListAux (Node x next) acc = convertLinkedToListAux next (x:acc)
 
 convertListToLinked :: [a] -> LinkedList a
 convertListToLinked [] = Empty
@@ -343,7 +331,8 @@ lengthOf :: LinkedList a -> Int
 lengthOf Empty = 0
 lengthOf (Node _ next) = 1 + lengthOf next
 
--- store LinkedList into Array, find th second half array, then recreate LinkedList
+-- store LinkedList into Array, find th second half array, 
+-- then recreate LinkedList
 midListWithArr :: LinkedList a -> LinkedList a
 midListWithArr lst = convertListToLinked r
   where
@@ -351,7 +340,8 @@ midListWithArr lst = convertListToLinked r
     mid = length arr `div` 2
     (_, r) = splitAt mid arr
 
--- Traverse the LinkedList with a track value, but only update the track value 1/2 times
+-- Traverse the LinkedList with a track value, 
+-- but only update the track value 1/2 times
 midListWithTwoHead :: LinkedList a -> LinkedList a
 midListWithTwoHead lst = midListWithTwoHeadAux lst lst False
 
