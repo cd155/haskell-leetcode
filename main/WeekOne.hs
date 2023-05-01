@@ -38,7 +38,7 @@ twoSumBF (x:xs) t
   Hash table, O(n)
   In each element, check if the target exist in the hash table.
 -}
-convertToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
+-- convertToDict :: [Int] -> M.Map Int Int -> M.Map Int Int
 convertToDict [] dict = dict
 convertToDict (x : xs) dict
   | x `M.member` dict = convertToDict xs (M.insertWith (+) x 1 dict)
