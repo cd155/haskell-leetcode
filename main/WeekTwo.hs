@@ -342,10 +342,12 @@ midListWithTwoHeadAux (Node _ next1) (Node v2 next2) skip
   path from the root node down to the farthest leaf node.
 -}
 maxDepthOf :: BiTree a -> Int
-maxDepthOf tr = maximum $ allDepths tr
+maxDepthOf tr = maxDepthOfAux tr - 1
 
-allDepths :: BiTree a -> [Nat]
-allDepths tr = leavesDepthHelper tr 0
+-- this will get the number of nodes in the path of the max of depth
+maxDepthOfAux :: BiTree a -> Int
+maxDepthOfAux Empty' = 0
+maxDepthOfAux (Node' _ (l,r)) = max (maxDepthOfAux l) (maxDepthOfAux r) + 1
 
 {-
   24. Contains Duplicate
@@ -375,9 +377,9 @@ isDuplicate' xs = isDuplicate'Aux $ sort xs
 isDuplicate'Aux :: Ord a => [a] -> Bool
 isDuplicate'Aux [] = False
 isDuplicate'Aux [x] = False
-isDuplicate'Aux (x1 : x2 : xs)
+isDuplicate'Aux (x1:x2:xs)
   | x1 == x2 = True
-  | otherwise = isDuplicate'Aux (x2 : xs)
+  | otherwise = isDuplicate'Aux (x2:xs)
 
 {-
   25. Maximum Sub-array
