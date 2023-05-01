@@ -228,7 +228,7 @@ binaryToDigit (Binary bx) = binaryToDigitAux (Binary bx) (length bx - 1)
 
 binaryToDigitAux :: Binary -> Int -> Int
 binaryToDigitAux (Binary []) exp = 0
-binaryToDigitAux (Binary (x : xs)) exp =
+binaryToDigitAux (Binary (x:xs)) exp =
   (digitToInt x) * 2 `powerOf` exp + binaryToDigitAux (Binary xs) (exp -1)
 
 powerOf :: Int -> Int -> Int
@@ -236,6 +236,7 @@ powerOf base times
   | times == 0 = 1
   | otherwise = base * (powerOf base (times -1))
 
+-- convert binary to digits, sum digits, then convert digit to binary
 addBinary :: Binary -> Binary -> Binary
 addBinary x y = digitToBinary (digitX + digitY)
   where digitX = binaryToDigit x
@@ -253,7 +254,7 @@ addBinary x y = digitToBinary (digitX + digitY)
   of edges between them.
 
   Test Case:
-  diameter tree5 -> 6
+  diameter' tree5 -> 6
 -}
 tree5 =
   Node'
@@ -275,22 +276,15 @@ tree5 =
     )
 
 -- O(n)
-diameter :: BiTree a -> Int
-diameter tr = fst $ nodeDetail tr
+diameter' :: BiTree a -> Int
+diameter' tr = snd $ nodeDetail' tr
 
-nodeDetail :: BiTree a -> (Int, Int) -- (diameter,the longest path)
-nodeDetail Empty' = (0, 0)
-nodeDetail (Node' _ (Empty', Empty')) = (0, 0)
-nodeDetail (Node' _ (l, Empty')) = incPair $ nodeDetail l
-nodeDetail (Node' _ (Empty', r)) = incPair $ nodeDetail r
-nodeDetail (Node' _ (l, r))
-  | 2 + (lp1 + lp2) > max dia1 dia2 = (2 + (lp1 + lp2), max lp1 lp2 + 1)
-  | otherwise = (max dia1 dia2, max lp1 lp2 + 1)
-  where (dia1, lp1) = nodeDetail l
-        (dia2, lp2) = nodeDetail r
-
-incPair :: (Int, Int) -> (Int, Int)
-incPair (x, y) = (x + 1, y + 1)
+nodeDetail' :: BiTree a -> (Int,Int) -- ((max depth)+1, diameter)
+nodeDetail' Empty' = (0,0)
+nodeDetail' (Node' _ (l, r)) = 
+  ((max depthL depthR) + 1, maximum [depthL+depthR, diameterL, diameterR])
+  where (depthL, diameterL) = nodeDetail' l
+        (depthR, diameterR) = nodeDetail' r
 
 {-
   22. Middle of the Linked List
