@@ -139,19 +139,18 @@ longestPalindrome s1
 -}
 reverseLinkedList :: LinkedList a -> LinkedList a
 reverseLinkedList lst = convertListToLinked newLst
-  where
-    newLst = convertLinkedToList lst
+  where newLst = convertLinkedToList lst
 
 convertLinkedToList :: LinkedList a -> [a]
 convertLinkedToList lst = convertLinkedToListAux lst []
 
 convertLinkedToListAux :: LinkedList a -> [a] -> [a]
-convertLinkedToListAux Empty acc = acc
-convertLinkedToListAux (Node x next) acc = convertLinkedToListAux next (x:acc)
+convertLinkedToListAux Empty lst = lst
+convertLinkedToListAux (Node x next) lst = convertLinkedToListAux next (x:lst)
 
 convertListToLinked :: [a] -> LinkedList a
 convertListToLinked [] = Empty
-convertListToLinked (x : xs) = Node x (convertListToLinked xs)
+convertListToLinked (x:xs) = Node x (convertListToLinked xs)
 
 {-
   19. Majority Element
@@ -165,13 +164,12 @@ convertListToLinked (x : xs) = Node x (convertListToLinked xs)
   [3,2,3]
   [2,2,1,1,1,2,2]
 -}
--- If majority always exist and it appears mor than n/2 time,
+-- If majority always exist and it appears more than n/2 time,
 -- then it locates at the mid of the sort list
 majorityNum :: Ord a => [a] -> a
 majorityNum xs = sortedXs !! mid
-  where
-    sortedXs = sort xs
-    mid = length xs `div` 2
+  where sortedXs = sort xs
+        mid = length xs `div` 2
 
 -- Work in more general environment. If no majority, return Nothing
 majorityNumHash :: Ord a => [a] -> Maybe a
@@ -179,15 +177,14 @@ majorityNumHash xs = majorityNumHashAux xs (length xs `div` 2) M.empty
 
 majorityNumHashAux :: Ord a => [a] -> Int -> M.Map a Int -> Maybe a
 majorityNumHashAux [] _ _ = Nothing
-majorityNumHashAux (x : xs) mlen dict
-  | x `M.member` dict =
-    if v + 1 > mlen
-      then Just x
-      else majorityNumHashAux xs mlen newDict
-  | otherwise = majorityNumHashAux xs mlen (M.insert x 1 dict)
-  where
-    Just v = M.lookup x dict
-    newDict = M.insertWith (+) x 1 dict
+majorityNumHashAux (x:xs) mid dict
+  | x `M.member` dict = 
+    if v+1 > mid then 
+      Just x 
+    else 
+      majorityNumHashAux xs mid (M.insertWith (+) x 1 dict)
+  | otherwise = majorityNumHashAux xs mid (M.insert x 1 dict)
+  where Just v = M.lookup x dict
 
 -- Boyer–Moore majority vote algorithm
 majorityNumBM :: Eq a => [a] -> Maybe a
@@ -195,10 +192,10 @@ majorityNumBM xs = majorityNumBMAux xs (head xs) 0
 
 majorityNumBMAux :: Eq a => [a] -> a -> Int -> Maybe a
 majorityNumBMAux [] x count = if count < 1 then Nothing else Just x
-majorityNumBMAux (y : ys) y' count
-  | y == y' = majorityNumBMAux ys y (count + 1)
+majorityNumBMAux (y:ys) majority count
+  | y == majority = majorityNumBMAux ys y (count+1)
   | count == 0 = majorityNumBMAux ys y 1
-  | otherwise = majorityNumBMAux ys y' (count -1)
+  | otherwise = majorityNumBMAux ys majority (count-1)
 
 {-
   20. Add Binary
@@ -221,10 +218,9 @@ digitToBinary :: Int -> Binary
 digitToBinary n
   | divided == 0 = Binary (show moded)
   | otherwise = Binary (nextBinary ++ show moded)
-  where
-    divided = n `div` 2
-    moded = n `mod` 2
-    Binary nextBinary = digitToBinary divided
+  where divided = n `div` 2
+        moded = n `mod` 2
+        Binary nextBinary = digitToBinary divided
 
 -- decimal = d_0 * 2^0 + d_1 * 2^1 + d_2 * 2^2 + ...
 binaryToDigit :: Binary -> Int
@@ -242,9 +238,8 @@ powerOf base times
 
 addBinary :: Binary -> Binary -> Binary
 addBinary x y = digitToBinary (digitX + digitY)
-  where
-    digitX = binaryToDigit x
-    digitY = binaryToDigit y
+  where digitX = binaryToDigit x
+        digitY = binaryToDigit y
 
 {-
   21. Diameter of Binary Tree
@@ -291,9 +286,8 @@ nodeDetail (Node' _ (Empty', r)) = incPair $ nodeDetail r
 nodeDetail (Node' _ (l, r))
   | 2 + (lp1 + lp2) > max dia1 dia2 = (2 + (lp1 + lp2), max lp1 lp2 + 1)
   | otherwise = (max dia1 dia2, max lp1 lp2 + 1)
-  where
-    (dia1, lp1) = nodeDetail l
-    (dia2, lp2) = nodeDetail r
+  where (dia1, lp1) = nodeDetail l
+        (dia2, lp2) = nodeDetail r
 
 incPair :: (Int, Int) -> (Int, Int)
 incPair (x, y) = (x + 1, y + 1)
@@ -328,10 +322,9 @@ lengthOf (Node _ next) = 1 + lengthOf next
 -- then recreate LinkedList
 midListWithArr :: LinkedList a -> LinkedList a
 midListWithArr lst = convertListToLinked r
-  where
-    arr = reverse $ convertLinkedToList lst
-    mid = length arr `div` 2
-    (_, r) = splitAt mid arr
+  where arr = reverse $ convertLinkedToList lst
+        mid = length arr `div` 2
+        (_, r) = splitAt mid arr
 
 -- Traverse the LinkedList with a track value, 
 -- but only update the track value 1/2 times
