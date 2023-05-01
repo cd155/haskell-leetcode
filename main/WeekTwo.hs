@@ -391,6 +391,8 @@ isDuplicate'Aux (x1:x2:xs)
   maxSubArr [1]                     -> 1
   maxSubArr [5,4,-1,7,8]            -> 23
   maxSubArr [-5,-4,-1,-7,-8]        -> -1
+  maxSubArr [1,2,3,4]               -> 10
+  maxSubArr [1,2,3,4,-20,11]        -> 11
 -}
 -- O(n), keep track the max sum and potential max sum
 maxSubArr :: [Int] -> Maybe Int
@@ -398,10 +400,7 @@ maxSubArr [] = Nothing
 maxSubArr lst = Just $ maxSubArrAux lst (head lst) []
 
 maxSubArrAux :: [Int] -> Int -> [Int] -> Int
-maxSubArrAux [] m _ = m
-maxSubArrAux (x : xs) m []
-  | x < 0 = maxSubArrAux xs (max m x) []
-  | otherwise = maxSubArrAux xs (max m x) [x]
-maxSubArrAux (x : xs) m pool
-  | sum (x : pool) < 0 = maxSubArrAux xs m []
-  | otherwise = maxSubArrAux xs (max m (sum (x : pool))) (x : pool)
+maxSubArrAux [] myMax _ = myMax
+maxSubArrAux (x:xs) myMax pool
+  | sum (x:pool) < 0 = maxSubArrAux xs (max myMax x) []
+  | otherwise = maxSubArrAux xs (max myMax (sum (x:pool))) (x:pool)
