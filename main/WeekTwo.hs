@@ -90,7 +90,7 @@ climbAux :: Int -> Int
 climbAux n
   | n == 0 = 1
   | n == 1 = 1
-  | otherwise = climbAux (n -2) + climbAux (n -1)
+  | otherwise = climbAux (n-2) + climbAux (n-1)
 
 -- memorization version O(n)
 climb' :: Int -> Int
@@ -98,15 +98,13 @@ climb' n
   | n == 0 = 0
   | n == 1 = 1
   | otherwise = head climbMemo
-  where
-    climbMemo = climb'Aux (2, n) [2, 1]
+  where climbMemo = climb'Aux (2, n) [2, 1]
 
 climb'Aux :: (Int, Int) -> [Int] -> [Int]
 climb'Aux (i, end) memo
   | i >= end = memo
-  | otherwise = climb'Aux (i + 1, end) newMemo
-  where
-    newMemo = (head memo + head (tail memo)) : memo
+  | otherwise = climb'Aux (i+1, end) newMemo
+  where newMemo = (head memo + head (tail memo)) : memo
 
 {-
   17. Longest Palindrome
@@ -123,16 +121,11 @@ climb'Aux (i, end) memo
 -}
 longestPalindrome :: String -> Int
 longestPalindrome s1
-  | isExistOdd allVals = 2 * numOfPair + 1
+  | isOddExist = 2 * numOfPair + 1
   | otherwise = 2 * numOfPair
-  where allVals = M.elems $ convertToDict s1 M.empty
-        numOfPair = foldl (\acc x -> acc + x `div` 2) 0 allVals
-
-isExistOdd :: [Int] -> Bool
-isExistOdd [] = False
-isExistOdd (x : xs)
-  | odd x = True
-  | otherwise = isExistOdd xs
+  where values = M.elems $ convertToDict s1 M.empty
+        isOddExist = foldl (\acc x -> acc || odd x) False values
+        numOfPair = foldl (\acc x -> acc + x `div` 2) 0 values
 
 {-
   18. Reverse Linked List
