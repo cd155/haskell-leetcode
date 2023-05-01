@@ -279,7 +279,8 @@ tree5 =
 diameter' :: BiTree a -> Int
 diameter' tr = snd $ nodeDetail' tr
 
-nodeDetail' :: BiTree a -> (Int,Int) -- (# of node, diameter)
+-- (Int,Int) -> (# of node in its largest depth, diameter)
+nodeDetail' :: BiTree a -> (Int,Int) 
 nodeDetail' Empty' = (0,0)
 nodeDetail' (Node' _ (l, r)) = 
   ((max numL numR) + 1, maximum [numL+numR, diameterL, diameterR])
