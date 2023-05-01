@@ -279,12 +279,12 @@ tree5 =
 diameter' :: BiTree a -> Int
 diameter' tr = snd $ nodeDetail' tr
 
-nodeDetail' :: BiTree a -> (Int,Int) -- ((max depth)+1, diameter)
+nodeDetail' :: BiTree a -> (Int,Int) -- (# of node, diameter)
 nodeDetail' Empty' = (0,0)
 nodeDetail' (Node' _ (l, r)) = 
-  ((max depthL depthR) + 1, maximum [depthL+depthR, diameterL, diameterR])
-  where (depthL, diameterL) = nodeDetail' l
-        (depthR, diameterR) = nodeDetail' r
+  ((max numL numR) + 1, maximum [numL+numR, diameterL, diameterR])
+  where (numL, diameterL) = nodeDetail' l
+        (numR, diameterR) = nodeDetail' r
 
 {-
   22. Middle of the Linked List
@@ -328,9 +328,9 @@ midListWithTwoHead lst = midListWithTwoHeadAux lst lst False
 midListWithTwoHeadAux :: LinkedList a -> LinkedList a -> Bool -> LinkedList a
 midListWithTwoHeadAux Empty res _ = res
 midListWithTwoHeadAux (Node _ _) Empty _ = error "Wrong initial value"
-midListWithTwoHeadAux (Node _ next1) (Node v2 next2) isInc
-  | isInc = midListWithTwoHeadAux next1 next2 (not isInc)
-  | otherwise = midListWithTwoHeadAux next1 (Node v2 next2) (not isInc)
+midListWithTwoHeadAux (Node _ next1) (Node v2 next2) skip
+  | skip = midListWithTwoHeadAux next1 next2 (not skip)
+  | otherwise = midListWithTwoHeadAux next1 (Node v2 next2) (not skip)
 
 {-
   23. Maximum Depth of Binary Tree
