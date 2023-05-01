@@ -472,6 +472,7 @@ postOrder :: BiTree a -> [a]
 postOrder Empty' = []
 postOrder (Node' a (left, right)) = postOrder left ++ postOrder right ++ [a]
 
+-- The depth of a node is the number of edges from the root to the node. 
 inOrderDepth :: BiTree a -> [Nat]
 inOrderDepth xs = inOrderDepthHelper xs 0
 
